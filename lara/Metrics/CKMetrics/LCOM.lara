@@ -1,0 +1,56 @@
+import Metrics.Metric;
+
+
+//Weighted Methods per Class
+
+function LCOM94() {
+	var name = "Lack of Cohesion of Methods";
+	var author = "Chidamber and Kemerer";
+	var year = 1994;
+	var description = "Lack of Cohesion of Methods (LCOM) describes the lack of cohesion among the methods of a class.";
+
+    // Parent constructor    
+    Metric.call(this, name, author, year, description);
+}
+
+// Inheritance
+LCOM94.prototype = Object.create(Metric.prototype);
+
+
+// Override
+LCOM94.prototype.calculateForClass = function($class) {
+	return $class.methods.length;
+
+	var lcom96b = {};
+	for( var $class of Query.search("class")) {
+		
+		var numMethods = $class.methods.length;
+		var numAttributes = $class.fields.length;
+		var lcomClass = 0;
+
+		for( var field of $class.fields) {
+			var numMethodsUsingField = 0;
+			for( var method of $class.methods) {
+
+				//if(method.uses(field))
+					//numMethodsUsingField++;
+				if(method.body){
+					println(method.name);
+					println(method.body.code);
+
+					}
+					
+
+			}
+			lcomClass += (numMethods - numMethodsUsingField)/numMethods;
+		
+		}
+
+		lcomClass /= numAttributes;
+		lcom96b[$class.name]=lcomClass;
+	}
+
+}
+
+
+

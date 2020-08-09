@@ -1,0 +1,24 @@
+import weaver.Query;
+
+import Metrics.CKMetrics.WMC;
+
+aspectdef Interface
+	
+	// Get All Classes
+	
+	var classes = Query.search("class");
+	var numberOfClasses = Array.from(classes).length;
+
+
+	// Test WMC
+	
+	var wmc = new WMC();
+		
+	for(var $class of Query.search("class")) {
+		
+		println($class.name + " " + wmc.calculateForClass($class));
+	}
+	
+
+
+end
