@@ -1,0 +1,24 @@
+import Metrics.Metric;
+
+
+// Depth of Inheritance Tree
+
+function DIT() {
+	var name = "Depth of Inheritance Tree";
+	var author = "Chidamber and Kemerer";
+	var year = 1994;
+	var description = "Depth of Inheritance Tree (DIT) measures the maximum inheritance path from the class to the root class.";
+
+    // Parent constructor    
+    Metric.call(this, name, author, year, description);
+}
+
+// Inheritance
+DIT.prototype = Object.create(Metric.prototype);
+
+
+// Override
+DIT.prototype.calculateForClass = function($class) {
+	return 0;
+}
+
