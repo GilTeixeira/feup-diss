@@ -1,17 +1,16 @@
 import weaver.Query;
 import weaver.Selector;
 
-import Metrics.CKMetrics.WMC;
-import Metrics.CKMetrics.DIT;
-import Metrics.CKMetrics.LCOM;
+import Metrics.Metrics;
+
 import Utils.Visitor;
 
 aspectdef Interface
 	
 	// Get All Classes
 	
-	var classes = Query.search("class");
-	var numberOfClasses = Array.from(classes).length;
+	var $classes = Query.search("class").get();
+	var numberOfClasses = $classes.length;
 
 
 	// Test WMC
@@ -38,51 +37,62 @@ aspectdef Interface
 		
 	for(var $class of Query.search("class")) {
 		var lcom94Cal = lcom94.calculateForClass($class);
-		println("LCOM9994 for "+ $class.name + " = " + lcom94Cal);
+		println("LCOM94 for class "+ $class.name + " = " + lcom94Cal);
 		//lcom94.calculateForClass($class);
 
 		
 	}
 
-	// Test Visitor
+	// Test CBO
+	print("\n\n Testing CBO \n\n");
+	var cbo = new CBO();
 
-/*
-	print(attributesUsedByClassField(0,0));
+	for(var $class of Query.search("class")) {
+		var cboCal = cbo.calculateForClass($class);
+		println("CBO for class "+ $class.name + " = " + cboCal);
+		//lcom94.calculateForClass($class);
 
-	var contacts = new Map();
-	contacts.set('Jessie', {phone: "213-555-1234", address: "123 N 1st Ave"});
-	contacts.has('Jessie'); // true
-	contacts.get('Hilary'); // undefined
-	contacts.set('Hilary', {phone: "617-555-4321", address: "321 S 2nd St"});
-	contacts.get('Jessie'); // {phone: "213-555-1234", address: "123 N 1st Ave"}
-	//contacts.delete('Raymond'); // false
-	//contacts.delete('Jessie'); // true
-	print(contacts.has('Jessie'));
-	print(contacts.size); // 1
+		
+	}
 
-	// Random Tests
+	
+	// Test RFC
+	print("\n\n Testing RFC \n\n");
+	var rfc = new RFC();
 
-	/*
-	var arr = [1,2,4];
+	for(var $class of Query.search("class")) {
+		var rfcCal = rfc.calculateForClass($class);
+		println("RFC for class "+ $class.name + " = " + rfcCal);
 
-	for (a of arr)
-		for (b of arr){
-		if(a==b)
-			continue;
-		print(a+" "+b+"\n");
-		}
-	*/
-/*
-	var query = Query
-			.search("file")
-			.search("function", {"name": "main"})
-			.children("scope")
-			.chain()[0];
+		
+	}
 
 
-	var $body = query["scope"];
 
-	print("\n\n\nHERE\n\n");
-	print($body);
-*/
+	// Test CC
+
+	print("\n\n Testing CC \n\n");
+	var cc = new CC();
+
+	for(var $function of Query.search("function")) {
+		var ccCal = cc.calculateForFunction($function);
+		println("CC for function "+ $function.signature + " = " + ccCal);
+
+		
+	}
+
 end
+
+/*
+	for (var i = 0; i < $classes.length - 1; i++) {
+		for (var j = i + 1; j < $classes.length; j++) {
+			var $class1 = $classes[i];
+			var $class2 = $classes[j];
+			
+			var cboCal = cbo.calculateForClasses($class1, $class2);
+			println("CBO for classes "+ $class1.name + " and " + $class2.name  + " = " + cboCal);
+		}
+	}
+*/
+
+

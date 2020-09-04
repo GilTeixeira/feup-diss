@@ -8,6 +8,7 @@ function Metric(name, author, year, description) {
 	this.author = author;
 	this.year = year;
 	this.description = description;
+	//this.recommendedValue = description;
 }
 
 Metric.prototype.getName = function() {

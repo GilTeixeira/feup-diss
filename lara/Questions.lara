@@ -1,0 +1,39 @@
+import weaver.Query;
+import weaver.Selector;
+
+
+aspectdef Questions
+
+	var set1 = new Set();
+	var object1 = {};
+	
+	set1.add(42);
+	set1.add('forty two');
+	set1.add('forty two');
+	set1.add(object1);
+
+	// Size does not work on sets
+	println("Print size set");
+	println(set1.values().length);
+	//println(set1.size);
+
+	// Foreach does not work on sets
+	/*
+	println("Print foreach set");
+	set1.forEach(val=>{
+		println(val);
+  		
+	});
+	*/
+	
+	
+	var map1 = new Map();
+	map1.set('bar', 'foo');
+	println("Print map");
+	// Cant delete elements of map
+	//println(map1.delete('bar'));
+
+	println(map1.has('bar'));
+
+	
+end
