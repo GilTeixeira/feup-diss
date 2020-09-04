@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "animal.cpp"
+
 #include "box.cpp"
 #include "rectangle.cpp"
 
@@ -26,6 +26,7 @@ int main () {
 
    // volume of box 1
    volume = Box1.getVolume();
+
    std::cout << "Volume of Box1 : " << volume << std::endl;
 
    // volume of box 2
