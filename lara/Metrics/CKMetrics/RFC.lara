@@ -1,0 +1,24 @@
+import Metrics.Metric;
+
+
+// Response For Class
+
+function RFC() {
+	var name = "Response For Class";
+	var author = "Chidamber and Kemerer";
+	var year = 1994;
+	var description = "Response For Class (RFC) measures the set of methods that can potentially be executed in response to a message received by an object of that class.";
+
+    // Parent constructor    
+    Metric.call(this, name, author, year, description);
+}
+
+// Inheritance
+RFC.prototype = Object.create(Metric.prototype);
+
+
+// Override
+RFC.prototype.calculateForClass = function($class) {
+	return 0;
+}
+
