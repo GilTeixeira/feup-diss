@@ -22,7 +22,7 @@ LCOM94.prototype.calculateForClass = function($class) {
 	// print("	Class: " + $class.name+"\n");
 
 	// Calculate Field Access by Method
-	// TODO : Right now it MAY also include access to fields of other classes
+	// TODO : Right now it also includes access to fields of other classes
 	var methodFieldsMap = new Map();
 	for($method of $class.methods){
 		var fieldsAccessedArr = [];
