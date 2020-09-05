@@ -14,12 +14,14 @@ aspectdef Interface
 
 
 	// Test WMC
-	
+
+	print("\n\n Testing WMC \n\n");
 	var wmc = new WMC();
 		
 	for(var $class of Query.search("class")) {
+		var wmcCal = wmc.calculateForClass($class);
+		println("WMC for class "+ $class.name + " = " + wmcCal);
 		
-		println($class.name + " " + wmc.calculateForClass($class));
 	}
 
 	// Test DIT

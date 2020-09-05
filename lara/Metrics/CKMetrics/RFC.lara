@@ -19,6 +19,23 @@ RFC.prototype = Object.create(Metric.prototype);
 
 // Override
 RFC.prototype.calculateForClass = function($class) {
-	return 0;
+
+	// Given a class, its RFC is the addition of:
+	// Method elements
+	// References to any Method
+
+	var methodsSignatures = new Set();
+
+	for (var $method of $class.methods)
+		methodsSignatures.add($method.signature);
+
+	// Functions called by the methods of $class
+	var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
+	
+	println("\n Methods Called");
+	methodsCalled.forEach(methodCalled => methodsSignatures.add(methodCalled.signature));
+
+	var rfc = methodsSignatures.values().length;
+	return rfc;
 }
 
