@@ -1,8 +1,9 @@
 import Metrics.Metric;
-
-
-// Response For Class
-
+ 
+/**
+ * Measures the Response For Class
+ * @constructor
+ */
 function RFC() {
 	var name = "Response For Class";
 	var author = "Chidamber and Kemerer";

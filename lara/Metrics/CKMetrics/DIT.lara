@@ -1,8 +1,10 @@
 import Metrics.Metric;
 
 
-// Depth of Inheritance Tree
-
+/**
+ * Measures the Depth of Inheritance Tree
+ * @constructor
+ */
 function DIT() {
 	var name = "Depth of Inheritance Tree";
 	var author = "Chidamber and Kemerer";

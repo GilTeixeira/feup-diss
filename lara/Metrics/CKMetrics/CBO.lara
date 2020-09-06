@@ -1,8 +1,9 @@
 import Metrics.Metric;
 
-
-// Coupling between Object Classes
-
+/**
+ * Measures the Coupling between Object Classes
+ * @constructor
+ */
 function CBO() {
 	var name = "Coupling between Object Classes";
 	var author = "Chidamber and Kemerer";
@@ -61,98 +62,3 @@ CBO.prototype.calculateForClass = function($class) {
 
 	return classesCoupled.values().length;
 }
-CBO.prototype.calculateForClasses3 = function($class1, $class2) {
-
-	/// Exemple working
-
-	
-    	var funcName = 'setLength';
-
-	var calljoinpoints = Query.search("function", funcName).search("call").get();
-	print(calljoinpoints+ "\n");
-
-	calljoinpoints = calljoinpoints.map(sweetItem => {
-    		return sweetItem.name;
-	});
-	
-	println(calljoinpoints+ "\n");
-
-	/////////////////////////
-	// calljoinpoints = ;
-
-	for(var query of Query.search("function").search("call", funcName).chain()) {
-		println("loop:" + query["function"].name);
-	}
-	
-	println(calljoinpoints.keys()+ "\n");
-	println(calljoinpoints[0]+ "\n");
-	println(Object.keys(calljoinpoints[0])+ "\n");
-
-	/*
-	calljoinpoints = calljoinpoints.map(sweetItem => {
-    		return sweetItem.name;
-	});
-
-	println(calljoinpoints+ "\n");
-	*/
-	////////////////////////////
-
-	return 0;
-	
-}
-
-CBO.prototype.calculateForClasses = function($class1, $class2) {
-
-		println("class " + $class.name);
-	for($method of $class.methods){
-		println("	method " + $method.name);
-		//print($method.calls);
-		for($call of $method.calls){
-			var test = (new Selector($call)).search('callee').get().length;
-			println("		call " + $call.parent.parent.parent.name);
-			//println("		call " + Query.searchFrom($call,"callee").get().length);
-			
-		}
-	}
-
-	
-	return 0;
-	
-}
-
-/*
-aspectdef StaticCallGraph
-
-	// Utility object that counts tuples
-	var callGraph = {};
-	
-	// Collect information 
-	select function.call end
-	apply
-		// Test 1st key
-		if(!($function.signature in callGraph)) {
-			callGraph[$function.signature] = {};
-		}
-
-		// Test 2nd key
-		if(!($call.signature in callGraph[$function.signature])){
-			callGraph[$function.signature][$call.signature] = 0;
-		}
-
-		// Increment
-		callGraph[$function.signature][$call.signature]++;
-	end
-
-	// Create graph in dot format (Graphviz) and print it to the console
-	println('// Copy this code, open the web page http://webgraphviz.com/, paste the code and click Generate Graph!');
-	println('digraph static_call_graph {\n');
-	
-	for (f in callGraph) {
-		for (c in callGraph[f]) {		
-			println('\t"' + f + '"->"' + c + '" [label="' + callGraph[f][c] + '"];');
-		}
-	}
-	
-	println('}');
-end
-*/

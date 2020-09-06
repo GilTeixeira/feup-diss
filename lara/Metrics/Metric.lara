@@ -2,6 +2,9 @@
  * Reprents a metric we want to extract.
  * @constructor
  * @param {string} name - The name of the metric
+ * @param {string} author - The author of the metric
+ * @param {number} year - The year in which the metric was purposed
+ * @param {string} description - The name of the metric
  */
 function Metric(name, author, year, description) {
 	this.name = name;
@@ -11,66 +14,60 @@ function Metric(name, author, year, description) {
 	//this.recommendedValue = description;
 }
 
+
+/**
+ * Get the metric's name.
+ *
+ * @return {string} metric's name
+ */
 Metric.prototype.getName = function() {
 	return this.name;
 }
 
+/**
+ * Get the metric's author.
+ *
+ * @return {string} metric's author
+ */
 Metric.prototype.getAuthor = function() {
 	return this.author;
 }
 
+/**
+ * Get the metric's year.
+ *
+ * @return {string} metric's year
+ */
 Metric.prototype.getYear = function() {
 	return this.year;
 }
 
+/**
+ * Get the metric's description.
+ *
+ * @return {string} metric's description
+ */
 Metric.prototype.getDescription = function() {
 	return this.description;
 }
 
-Metric.prototype.calculate = function() {
+/**
+ * Calculate metric.
+ *
+ * @param {joinpoint} $joinpoint - join point where the metric is gonna be calculated
+ * @return {number} metric's value
+ */
+Metric.prototype.calculate = function($joinpoint) {
 	throw "Calculation not implemented";
 }
 
+/**
+ * Calculate metric for a class.
+ *
+ * @param {class} $class - class where the metric is gonna be calculated
+ * @return {number} metric's value
+ */
 Metric.prototype.calculateForClass = function($class) {
 	throw "Calculation not implemented";
 }
 
-
-
-
-
-
-//////////////////////////////////////////
-
-/**
- * Instruments code so that when executed, it produces information about the metric to measure.
- * @param {joinpoint} $start - join point representing the start point of the instrumentation
- * @param {joinpoint} [$end=$start] - join point representing the end point of the instrumentation
- */
-Metric.prototype.instrument = function($start, $end) {
-		notImplemented("Metric.instrument");
-}
-
-/**
- * Extract metric.
- *
- * @param {L#lara.util.ProcessExecutor} processExecutor - instance after program execution
- * @return {L#lara.metrics.MetricResult} metric after program execution
- */
-Metric.prototype.report = function(processExecutor) {
-		notImplemented("Metric.report");
-}
-
-/**
- * @returns {string} A string with the LARA import of this Metric.
- */
-Metric.prototype.getImport = function() {
-		notImplemented("Metric.getImport");
-}
-
-/**
- * @returns {string} A string with the current unit of this metric.
- */
-Metric.prototype.getUnit = function() {
-		notImplemented("Metric.getUnit");
-}

@@ -3,8 +3,9 @@ import weaver.Selector;
 
 import Metrics.Metrics;
 
-import Utils.Visitor;
-
+/**
+ * Aspect used to test the metrics.
+ */
 aspectdef Interface
 	
 	// Get All Classes
@@ -13,88 +14,67 @@ aspectdef Interface
 	var numberOfClasses = $classes.length;
 
 
-	// Test WMC
-
 	print("\n\n Testing WMC \n\n");
 	var wmc = new WMC();
 		
 	for(var $class of Query.search("class")) {
 		var wmcCal = wmc.calculateForClass($class);
-		println("WMC for class "+ $class.name + " = " + wmcCal);
-		
+		println("WMC for class "+ $class.name + " = " + wmcCal);		
 	}
 
-	// Test DIT
-	
+
+	print("\n\n Testing DIT \n\n");	
 	var dit = new DIT();
 		
-	for(var $class of Query.search("class")) {
-		
+	for(var $class of Query.search("class")) {		
 		
 	}
 
-	// Test LCOM
+
 	print("\n\n Testing LCOM \n\n");
 	var lcom94 = new LCOM94();
 		
 	for(var $class of Query.search("class")) {
 		var lcom94Cal = lcom94.calculateForClass($class);
 		println("LCOM94 for class "+ $class.name + " = " + lcom94Cal);
-		//lcom94.calculateForClass($class);
-
-		
+		//lcom94.calculateForClass($class);		
 	}
 
-	// Test CBO
+
 	print("\n\n Testing CBO \n\n");
 	var cbo = new CBO();
 
 	for(var $class of Query.search("class")) {
 		var cboCal = cbo.calculateForClass($class);
 		println("CBO for class "+ $class.name + " = " + cboCal);
-		//lcom94.calculateForClass($class);
-
-		
+		//lcom94.calculateForClass($class);		
 	}
 
 	
-	// Test RFC
 	print("\n\n Testing RFC \n\n");
 	var rfc = new RFC();
 
 	for(var $class of Query.search("class")) {
 		var rfcCal = rfc.calculateForClass($class);
-		println("RFC for class "+ $class.name + " = " + rfcCal);
-
-		
+		println("RFC for class "+ $class.name + " = " + rfcCal);		
 	}
 
-
-
-	// Test CC
 
 	print("\n\n Testing CC \n\n");
 	var cc = new CC();
 
 	for(var $function of Query.search("function")) {
 		var ccCal = cc.calculateForFunction($function);
-		println("CC for function "+ $function.signature + " = " + ccCal);
-
-		
+		println("CC for function "+ $function.signature + " = " + ccCal);		
 	}
+
+
+	print("\n\n Random Tests\n\n");
+	for(var $class of Query.search("class")) {
+		println($class.name);
+		for(var $method of Query.search("method")) {
+		
+		}		
+	}	
 
 end
-
-/*
-	for (var i = 0; i < $classes.length - 1; i++) {
-		for (var j = i + 1; j < $classes.length; j++) {
-			var $class1 = $classes[i];
-			var $class2 = $classes[j];
-			
-			var cboCal = cbo.calculateForClasses($class1, $class2);
-			println("CBO for classes "+ $class1.name + " and " + $class2.name  + " = " + cboCal);
-		}
-	}
-*/
-
-

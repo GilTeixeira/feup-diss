@@ -1,8 +1,10 @@
 import Metrics.Metric;
 import weaver.Selector;
 
-//Weighted Methods per Class
-
+/**
+ * Measures the Lack of Cohesion of Methods
+ * @constructor
+ */
 function LCOM94() {
 	var name = "Lack of Cohesion of Methods";
 	var author = "Chidamber and Kemerer";
@@ -22,11 +24,11 @@ LCOM94.prototype.calculateForClass = function($class) {
 	// print("	Class: " + $class.name+"\n");
 
 	// Calculate Field Access by Method
-	// TODO : Right now it also includes access to fields of other classes
+	// TODO : Right now it also includes access to fields of other classes with the same name
 	var methodFieldsMap = new Map();
 	for($method of $class.methods){
 		var fieldsAccessedArr = [];
-		var fieldsAccessesByMethod = Query.searchFrom($method.definitionJp.body,"memberAccess").get(); // it does not need body?
+		var fieldsAccessesByMethod = Query.searchFrom($method.definitionJp,"memberAccess").get(); // TODO; memberAccess must belong to class
 		fieldsAccessesByMethod = fieldsAccessesByMethod.map(jp => jp.name);
 		
 		for($field of $class.fields)
@@ -46,15 +48,15 @@ LCOM94.prototype.calculateForClass = function($class) {
 
 
 	// TODO : Consider Methods that access other methods
-	var numPairMethodCommomFieldAccess = 0;
-	var numPairMethodNoCommomFieldAccess = 0;
+	var numPairMethodCommomFieldAccess = 0; // Q
+	var numPairMethodNoCommomFieldAccess = 0; // P
 	
 	for (i = 0; i < $class.methods.length; i++)
 		for (j = i + 1; j < $class.methods.length; j++){
 			var $method1 = $class.methods[i].name;
 			var $method2 = $class.methods[j].name;
 	
-			
+			// Check if methods access the same field
 			var commonFields = methodFieldsMap.get($method1).filter(function(value) { 
 				return methodFieldsMap.get($method2).indexOf(value) > -1;
 	      	});
@@ -66,96 +68,13 @@ LCOM94.prototype.calculateForClass = function($class) {
 
 		}
 
+	// LCOM = |P| - |Q|, if |P| > |Q|
+	// LCOM = 0, if |P| <= |Q|
 	
-	return Math.max((numPairMethodNoCommomFieldAccess - 
-			numPairMethodCommomFieldAccess), 0); 
+	var cbo = Math.max((numPairMethodNoCommomFieldAccess - 
+			numPairMethodCommomFieldAccess), 0);
+	
+	return cbo; 
 
 
 }
-
-LCOM94.prototype.calculateForClass2 = function($class) {
-	for($method1 of $class.methods)
-		for($method2 of $class.methods) {
-			if($method1.name == $method2.name)
-				continue;
-
-			var query = Query
-					.searchFrom($method1)
-
-					.get();
-
-
-				
-			
-			// Calculate methods used by fields
-			//var att1 = attributesUsedByClassField($class, field1);
-			//print(att1);
-			print("\n");
-			print("\n");
-			print($class.name);
-			print("\n");
-			print($method1.name);
-			print("\n");
-			//print($method1.definitionJp.descendants);
-			print($method1.definitionJp.body.stmts);
-			print("\n");
-			for(stmt of $method1.definitionJp.body.stmts){
-				//print(stmt.contains();
-			}
-			print("\n");
-
-			//print($method2.body.stmts);
-			/*
-			var das = $method2.body.insertBefore("jljkljlkçjkljkldfs");
-
-			print("\n");
-			print("\n");
-
-			var query = Query
-			.search("file")
-			.search("function", {"name": "main"})
-			.children("scope")
-			.chain()[0];
-
-			var $body = query["scope"];
-			print($body);
-			*/
-		}
-
-	return 0;
-		
-
-/*
-	var lcom96b = {};
-	for( var $class of Query.search("class")) {
-		
-		var numMethods = $class.methods.length;
-		var numAttributes = $class.fields.length;
-		var lcomClass = 0;
-
-		for( var field of $class.fields) {
-			var numMethodsUsingField = 0;
-			for( var method of $class.methods) {
-
-				//if(method.uses(field))
-					//numMethodsUsingField++;
-				if(method.body){
-					println(method.name);
-					println(method.body.code);
-
-					}
-					
-
-			}
-			lcomClass += (numMethods - numMethodsUsingField)/numMethods;
-		
-		}
-
-		lcomClass /= numAttributes;
-		lcom96b[$class.name]=lcomClass;
-	}
-*/
-}
-
-
-
