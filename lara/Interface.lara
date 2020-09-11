@@ -10,9 +10,41 @@ aspectdef Interface
 	
 	// Get All Classes
 	
-	var $classes = Query.search("class").get();
+	var $classes = Query.search('class').get();
 	var numberOfClasses = $classes.length;
 
+	testClassMetric(new LCOM94());
+
+/*
+	print('\n\n Testing LCOM \n\n');
+	var lcom94 = new LCOM94();
+		
+	for(var $class of Query.search("class")) {
+		var lcom94Cal = lcom94.calculateForClass($class);
+		println("LCOM94 for class "+ $class.name + " = " + lcom94Cal);
+	}
+	
+
+
+		var fieldsAccessesByMethod = Query.search("function").search("memberAccess").chain(); // TODO; memberAccess must belong to class
+
+		for(query of fieldsAccessesByMethod){
+			println("METHOD: " + query["function"].signature);
+			println("MEMBER: " + query["memberAccess"].getCode());
+			println("BASE: " + query["memberAccess"].base.getCode());
+			if(query["memberAccess"].base.getCode() === "this")			
+				println("Class Name: " + query["memberAccess"].base.type.pointee.decl.name);
+			else println("Class Name: " + query["memberAccess"].base.vardecl.name);
+			//else println("Class Name: " + query["memberAccess"].base.decl);
+			//println("VARDECL: " + query["memberAccess"].vardecl);
+			println("memberChain: " + query["memberAccess"].memberChain);
+			println("memberChainNames: " + query["memberAccess"].memberChainNames);
+			//println("memberChain: " + fieldAccessesByMethod.memberChain.getCode());
+			println();
+
+		}
+	
+	
 
 	print("\n\n Testing WMC \n\n");
 	var wmc = new WMC();
@@ -31,14 +63,6 @@ aspectdef Interface
 	}
 
 
-	print("\n\n Testing LCOM \n\n");
-	var lcom94 = new LCOM94();
-		
-	for(var $class of Query.search("class")) {
-		var lcom94Cal = lcom94.calculateForClass($class);
-		println("LCOM94 for class "+ $class.name + " = " + lcom94Cal);
-		//lcom94.calculateForClass($class);		
-	}
 
 
 	print("\n\n Testing CBO \n\n");
@@ -75,6 +99,22 @@ aspectdef Interface
 		for(var $method of Query.search("method")) {
 		
 		}		
-	}	
+	}
+
+	*/
+	
 
 end
+
+function testClassMetric(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $class of Query.search("class")) {
+		var metricResult = metric.calculateForClass($class);
+		println(metric.sigla + 'for class '+ $class.name + ' = ' + metricResult);
+	}
+
+	println();	
+
+}

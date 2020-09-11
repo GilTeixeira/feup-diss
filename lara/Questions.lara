@@ -16,9 +16,10 @@ aspectdef Questions
 
 	// Size does not work on sets
 	println("Print size set");
-	println(set1.values().length);
-	//println(set1.size);
+	println(set1.size);
 
+	//println(set1.values().length);
+	
 	// Foreach does not work on sets
 	/*
 	println("Print foreach set");
@@ -33,9 +34,71 @@ aspectdef Questions
 	map1.set('bar', 'foo');
 	println("Print map");
 	// Cant delete elements of map
-	//println(map1.delete('bar'));
+	println(map1.has('bar'));
+	println(map1.delete('bar'));
+	//println();
 
 	println(map1.has('bar'));
 
+
+	print("\n\n Check method belongs to class\n\n");
+	// duplicated methods??
+	/*
+	for(var $class of Query.search("class")) {
+		println($class.name);
+		for(var $method of Query.search("method")) {
+			if($method.record.name === $class.name)
+				println($class.name + "  " + $method.name);
+		
+		}		
+	}
+	*/	
 	
+	for(var $method of Query.search("method", {"body": body => body !== undefined})) {
+			println($method.record.name + "  " + $method.name + "  " + $method.body);	
+	}
+
+	print("\n\n Check subclasses\n\n");
+	for(var $class of Query.search("class")) {
+		for(var $subclass of Query.search("class")) {
+		 	if(true)
+		 		println($class.getNode() + "  " + $subclass.name);
+		 }
+	}
+
+	//throw statements, switch, case, default, 
+	// ? ternary operator, 
+	//catch, break, continue, goto.
+
+	// memberAccess is fields + methods?
+	// memberAccess, how to get accessed class
+	for(var $method of Query.search("method")) {
+ 		var memberAccessesByMethod = Query.searchFrom($method.definitionJp,"memberAccess").get();
+ 		memberAccessesByMethod = memberAccessesByMethod.map(jp => jp.name);
+ 		println($method.signature);
+ 		println(memberAccessesByMethod);
+ 		println();
+ 		
+
+	}
+
+     
+
+/*
+     	var fieldsAccessesByMethod = Query.searchFrom($method.definitionJp,"memberAccess").get(); // TODO; memberAccess must belong to class
+
+
+		for(fieldAccessesByMethod of fieldsAccessesByMethod){
+			if(fieldAccessesByMethod.base.decl !== undefined)
+				continue;				
+			println("METHOD: " + $method.signature);
+			println("BASE: " + fieldAccessesByMethod.getCode());
+
+			// GET CLASS
+			if(fieldAccessesByMethod.base.decl !== undefined)
+				println("BASE: " + fieldAccessesByMethod.base.decl.name); // this.bar1()
+			else
+				println("BASE: " + fieldAccessesByMethod.base.vardecl.type); // myAnimal.animalSound
+
+				*/
 end
