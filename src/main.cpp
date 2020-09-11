@@ -1,8 +1,8 @@
 #include <iostream>
 
 
-#include "box.cpp"
-#include "rectangle.cpp"
+#include "Box.cpp"
+#include "Rectangle.cpp"
 
 int main () {
   Rectangle rect;
