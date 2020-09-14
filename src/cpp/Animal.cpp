@@ -21,8 +21,9 @@ class Pig : public Animal {
 
 // Derived class
 class Dog : public Animal {
+	Animal* ancestor;
   public:
     void animalSound() {
-    std::cout << "The dog says: bow wow " << std::endl;
+    std::cout << "The dog says: bow wow "<< ancestor->age << std::endl;
   }\
 };
