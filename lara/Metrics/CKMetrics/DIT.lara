@@ -7,12 +7,13 @@ import Metrics.Metric;
  */
 function DIT() {
 	var name = "Depth of Inheritance Tree";
+	var sigla = "DIT";
 	var author = "Chidamber and Kemerer";
 	var year = 1994;
 	var description = "Depth of Inheritance Tree (DIT) measures the maximum inheritance path from the class to the root class.";
 
     // Parent constructor    
-    Metric.call(this, name, author, year, description);
+    Metric.call(this, name, sigla, author, year, description);
 }
 
 // Inheritance
@@ -21,6 +22,15 @@ DIT.prototype = Object.create(Metric.prototype);
 
 // Override
 DIT.prototype.calculateForClass = function($class) {
-	return 0;
+	if($class === null)
+		return 0;
+
+	var depth = 0;
+	for($base of $class.bases)
+		if(this.calculateForClass($base) + 1 > depth)
+			depth = this.calculateForClass($base) + 1;
+
+	return depth;
+			
 }
 
