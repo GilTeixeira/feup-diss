@@ -6,81 +6,32 @@ import weaver.Selector;
  */
 aspectdef Questions
 
-	var set1 = new Set();
-	var object1 = {};
+	// Kadabra (Java) does not have memberCall, memberAccess, Bases?
 	
-	set1.add(42);
-	set1.add('forty two');
-	set1.add('forty two');
-	set1.add(object1);
-
-	// Size does not work on sets
-	println("Print size set");
-	println(set1.size);
-
-	//println(set1.values().length);
-	
-	// Foreach does not work on sets
-	/*
-	println("Print foreach set");
-	set1.forEach(val=>{
-		println(val);
-  		
-	});
-	*/
-	
-	
-	var map1 = new Map();
-	map1.set('bar', 'foo');
-	println("Print map");
-	// Cant delete elements of map
-	println(map1.has('bar'));
-	println(map1.delete('bar'));
-	//println();
-
-	println(map1.has('bar'));
+	// Jackdaw (JS) does not have the  weaver.Query API?
 
 
-	print("\n\n Check method belongs to class\n\n");
-	// duplicated methods??
-	/*
-	for(var $class of Query.search("class")) {
-		println($class.name);
-		for(var $method of Query.search("method")) {
-			if($method.record.name === $class.name)
-				println($class.name + "  " + $method.name);
-		
-		}		
-	}
-	*/	
+	// memberAccess get base class
+	var fieldsAccessed = Query.search('method', 'accessTest').search('memberAccess').get(); // TODO; memberAccess must belong to class
+
+
+	for(var fieldAccessed of fieldsAccessed) {
+		println("Code: " + fieldAccessed.code);
+		// println("Type: " + fieldAccessed.base.type.name);
+		if(fieldAccessed.base.decl !== undefined)
+					println("BASE1: " + fieldAccessed.base.decl.name); // this.age
+				else
+					if (fieldAccessed.base.vardecl !== undefined)
+						println("BASE2: " + fieldAccessed.base.vardecl.type.name); //  atal.age
+					else if (fieldAccessed.base.type.pointee !== undefined)
+						println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->at)->age
+					else println("BASE4: " + fieldAccessed.base.type.name); //  (this->ata).age
+		println();
 	
-	for(var $method of Query.search("method", {"body": body => body !== undefined})) {
-			println($method.record.name + "  " + $method.name + "  " + $method.body);	
 	}
 
-	print("\n\n Check subclasses\n\n");
-	for(var $class of Query.search("class")) {
-		for(var $subclass of Query.search("class")) {
-		 	if(true)
-		 		println($class.getNode() + "  " + $subclass.name);
-		 }
-	}
 
-	//throw statements, switch, case, default, 
-	// ? ternary operator, 
-	//catch, break, continue, goto.
-
-	// memberAccess is fields + methods?
-	// memberAccess, how to get accessed class
-	for(var $method of Query.search("method")) {
- 		var memberAccessesByMethod = Query.searchFrom($method.definitionJp,"memberAccess").get();
- 		memberAccessesByMethod = memberAccessesByMethod.map(jp => jp.name);
- 		println($method.signature);
- 		println(memberAccessesByMethod);
- 		println();
- 		
-
-	}
+	
 
      
 
@@ -99,6 +50,12 @@ aspectdef Questions
 				println("BASE: " + fieldAccessesByMethod.base.decl.name); // this.bar1()
 			else
 				println("BASE: " + fieldAccessesByMethod.base.vardecl.type); // myAnimal.animalSound
+
+				memberAccess.base.type.pointee.decl
+
+		//throw statements, switch, case, default, 
+	// ? ternary operator, 
+	//catch, break, continue, goto.
 
 				*/
 end

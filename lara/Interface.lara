@@ -13,7 +13,20 @@ aspectdef Interface
 	var $classes = Query.search('class').get();
 	var numberOfClasses = $classes.length;
 
-	testClassMetric(new LCOM94());
+	println('The project has ' + numberOfClasses + ' classes');
+
+	//testClassMetric(new LCOM94());
+	//testClassMetric(new WMC());
+	//testClassMetric(new RFC());
+	//testClassMetric(new CBO());
+	//testClassMetric(new DIT());
+	//testClassMetric(new NOC());
+	/*
+	for(var $function of Query.search("function")) {
+		var ccCal = cc.calculateForFunction($function);
+		println("CC for function "+ $function.signature + " = " + ccCal);		
+	}
+	*/
 
 /*
 	print('\n\n Testing LCOM \n\n');
@@ -112,7 +125,7 @@ function testClassMetric(metric){
 		
 	for(var $class of Query.search("class")) {
 		var metricResult = metric.calculateForClass($class);
-		println(metric.sigla + 'for class '+ $class.name + ' = ' + metricResult);
+		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
 	}
 
 	println();	
