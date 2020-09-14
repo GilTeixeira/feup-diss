@@ -7,12 +7,13 @@ import Metrics.Metric;
  */
 function WMC() {
 	var name = "Weighted Methods per Class";
+	var sigla = "WMC";
 	var author = "Chidamber and Kemerer";
 	var year = 1994;
 	var description = "Weighted Methods per Class (WMC) sums all the complexities of the methods in the class.";
 
     // Parent constructor    
-    Metric.call(this, name, author, year, description);
+    Metric.call(this, name, sigla, author, year, description);
 }
 
 // Inheritance
@@ -21,5 +22,6 @@ WMC.prototype = Object.create(Metric.prototype);
 
 // Override
 WMC.prototype.calculateForClass = function($class) {
+	
 	return $class.methods.length;
 }

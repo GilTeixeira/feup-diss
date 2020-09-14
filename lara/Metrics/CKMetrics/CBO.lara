@@ -6,12 +6,13 @@ import Metrics.Metric;
  */
 function CBO() {
 	var name = "Coupling between Object Classes";
+	var sigla = "CBO";
 	var author = "Chidamber and Kemerer";
 	var year = 1994;
 	var description = "Coupling between Object Classes (CBO) measures the number of classes to which a class is coupled.";
 
     // Parent constructor    
-    Metric.call(this, name, author, year, description);
+    Metric.call(this, name, sigla, author, year, description);
 }
 
 // Inheritance
@@ -23,7 +24,7 @@ CBO.prototype.calculateForClass = function($class) {
 
 	var classesCoupled = new Set();
 
-	// Functions called by the methods of $class
+	// Methods called by the methods of $class
 	var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
 
 	//println("\nFunctions Called");
@@ -37,9 +38,9 @@ CBO.prototype.calculateForClass = function($class) {
 
 	// do not include self class
 	methodsCalled.forEach(methodCalled=>{
-		var classNameOfMethod = methodCalled.definition.record.name;
-		if(methodCalled.definition.record.name !== $class.name)
-			classesCoupled.add(classNameOfMethod); 
+		var classCoupled = methodCalled.definition.record.name;
+		if(classCoupled !== $class.name)
+			classesCoupled.add(classCoupled); 
   		
 	});
 
@@ -60,5 +61,51 @@ CBO.prototype.calculateForClass = function($class) {
 
 	// TODO: fields accesses
 
-	return classesCoupled.values().length;
+	// Fields Accessed by the methods of $class
+	var fieldsAccessed = Query.search("method", {"record": r => r.name === $class.name}).search("memberAccess").get();
+
+	for(var fieldAccessed of fieldsAccessed) {
+	println("Code: " + fieldAccessed.code);
+	println("Type: " + fieldAccessed.base.type.name);
+	if(fieldAccessed.base.decl !== undefined)
+				println("BASE1: " + fieldAccessed.base.decl.name); // this.bar1()
+			else
+				if (fieldAccessed.base.vardecl !== undefined)
+					println("BASE2: " + fieldAccessed.base.vardecl.type.name); // myAnimal.animalSound
+				else if (fieldAccessed.base.type.pointee !== undefined)
+					println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->ancestor)->age
+				else println("BASE4: " + fieldAccessed.base.type.name); // (this->ancestor).age
+	
+	}
+
+	println();
+
+	
+
+
+
+
+
+
+
+
+	///......................::///
+
+	// Methods that call the methods of $class
+	var methodsThatCall = Query.search("method").search("memberCall", 
+		{"definition": d => d.record.name === $class.name}).chain();
+
+	//println("\Methods that call method of class:");
+	for(var query of methodsThatCall) {
+		if(query["method"].record.name !== $class.name)
+			classesCoupled.add(query["method"].record.name);
+
+		//println(query["method"].record.name);
+		//println();
+	}
+
+
+	
+
+	return classesCoupled.size;
 }

@@ -22,49 +22,16 @@ LCOM94.prototype = Object.create(Metric.prototype);
 
 // Override
 LCOM94.prototype.calculateForClass = function($class) {
-	println("	Class: " + $class.name+"\n");
-
-	//if($class.name != 'Pig')
-		//return 0;
 
 	// Calculate Field Access by Method
-	// TODO : Right now it also includes access to fields of other classes with the same name
 	var methodFieldsMap = new Map();
 	for($method of $class.methods){
-		//println("	Method: " + $method.name+"\n");
 
-	
-		//println("	Method: " + $method.body+"\n");
-	
 		var fieldsAccessed = [];
-		//var fieldsAccessesByMethod1 = Query.searchFrom($method.definitionJp,"memberAccess").get(); // Only counts self classes Accesses
 		var memberAccesses = Query.searchFrom($method.definitionJp,"memberAccess", {"base": base => base.code === 'this'}).get(); // Only counts self classes Accesses
 		//var fieldsAccessesByMethod2 = Query.searchFrom($method.definitionJp,"memberAccess", {"base": base => base.decl !== undefined && base.decl.name === $class.name}).get(); // Should be equivalent to previous
 
-		//println('Number Accesses = ' + fieldsAccessesByMethod.length);
-		//println('Number Accesses = ' + fieldsAccessesByMethod2.length);
-
-		for(memberAccess of memberAccesses){
-			//if(fieldAccessesByMethod.base.decl === undefined)
-			//	continue;				
-			//println("METHOD: " + $method.signature);
-			//println("CODE: " + fieldAccessesByMethod.getCode());
-			//println("BASECODE: " + fieldAccessesByMethod.base.code);
-			//println("BASECODE: " + fieldAccessesByMethod.base.type.pointee.decl.name);
-			/*
-			if(fieldAccessesByMethod.base.decl !== undefined)
-				println("BASE: " + fieldAccessesByMethod.base.decl.name);
-			else
-				println("BASE: " + fieldAccessesByMethod.base.vardecl.type);
-
-			*/
-			//println("BASE: " + fieldAccessesByMethod.base.decl.name);
-			//println("memberChain: " + fieldAccessesByMethod.memberChain);
-			//println("memberChain: " + fieldAccessesByMethod.memberChain.getCode());
-			println();
-
-		}
-			
+	
 		// MemberAccesses to the name of the Access
 		memberAccessesNames = memberAccesses.map(jp => jp.name);
 
@@ -78,13 +45,6 @@ LCOM94.prototype.calculateForClass = function($class) {
 	}
 	
 	
-	methodFieldsMap.forEach((value, key)=>{
-		print("	Method: " + key + "\n");
-		print("	Fields: " + value + "\n\n");
-	});
-	
-
-
 	// TODO : Consider Methods that access other methods
 	var numPairMethodCommomFieldAccess = 0; // Q
 	var numPairMethodNoCommomFieldAccess = 0; // P

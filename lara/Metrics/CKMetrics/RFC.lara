@@ -6,12 +6,13 @@ import Metrics.Metric;
  */
 function RFC() {
 	var name = "Response For Class";
+	var sigla = "RFC";
 	var author = "Chidamber and Kemerer";
 	var year = 1994;
 	var description = "Response For Class (RFC) measures the set of methods that can potentially be executed in response to a message received by an object of that class.";
 
     // Parent constructor    
-    Metric.call(this, name, author, year, description);
+    Metric.call(this, name, sigla, author, year, description);
 }
 
 // Inheritance
@@ -30,13 +31,12 @@ RFC.prototype.calculateForClass = function($class) {
 	for (var $method of $class.methods)
 		methodsSignatures.add($method.signature);
 
-	// Functions called by the methods of $class
+	// Methods called by the methods of $class
 	var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
-	
-	println("\n Methods Called");
+
 	methodsCalled.forEach(methodCalled => methodsSignatures.add(methodCalled.signature));
+	
+	var rfc = methodsSignatures.size;
 
-	var rfc = methodsSignatures.values().length;
-	return rfc;
+	return methodsSignatures.size;
 }
-

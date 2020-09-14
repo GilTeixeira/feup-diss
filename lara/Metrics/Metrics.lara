@@ -3,4 +3,5 @@ import Metrics.CKMetrics.DIT;
 import Metrics.CKMetrics.LCOM;
 import Metrics.CKMetrics.CBO;
 import Metrics.CKMetrics.RFC;
+import Metrics.CKMetrics.NOC;
 import Metrics.CC;
