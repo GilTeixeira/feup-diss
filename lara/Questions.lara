@@ -1,3 +1,4 @@
+
 import weaver.Query;
 import weaver.Selector;
 
@@ -5,6 +6,8 @@ import weaver.Selector;
  *  LARA Questions
  */
 aspectdef Questions
+
+	// Sonarqube Community version does not support C++
 
 	// Kadabra (Java) does not have memberCall, memberAccess, Bases?
 	
@@ -17,7 +20,8 @@ aspectdef Questions
 
 	for(var fieldAccessed of fieldsAccessed) {
 		println("Code: " + fieldAccessed.code);
-		// println("Type: " + fieldAccessed.base.type.name);
+		println("Type: " + fieldAccessed.base.type.name); // works for 2 and 4
+		println("BASE0: " + fieldAccessed.base.joinPointType); //  atal.age
 		if(fieldAccessed.base.decl !== undefined)
 					println("BASE1: " + fieldAccessed.base.decl.name); // this.age
 				else
@@ -29,7 +33,6 @@ aspectdef Questions
 		println();
 	
 	}
-
 
 	
 

@@ -15,12 +15,53 @@ aspectdef Interface
 
 	println('The project has ' + numberOfClasses + ' classes');
 
+	//println(Query.searchFrom($classes[0]).search('method').get().length);
+
+	println("CLASS HERE--: ");
+	println($classes[7].name);
+	println(Query.searchFromInclusive($classes[7]).search('method').get().length);
+	println(Query.search('class',{'name':'Foo1'}).search('method').get().length);
+	println("CLASS HERE--: ");
+
 	//testClassMetric(new LCOM94());
 	//testClassMetric(new WMC());
 	//testClassMetric(new RFC());
 	//testClassMetric(new CBO());
 	//testClassMetric(new DIT());
 	//testClassMetric(new NOC());
+
+
+		
+	for (c of Query.search("class").search("method").chain()){
+		println("CLASS: " + c["class"].name);
+		println("METHOD: " + c["method"].signature);
+		println("METHOD: " + c["method"].parent.name);
+		println();
+	
+		}
+
+	for (c of Query.search("class").search("method").get()){
+	
+		println("METHOD: " + c.name);
+	
+	
+		}
+
+	for (c of Query.search("class").get()){
+		println("CLASS: " + c.name);
+		println("SUPER: " + c.superClass);
+		println();
+	}
+
+
+
+	testClassMetricJava(new NOC());
+	testClassMetricJava(new DIT());
+	testClassMetricJava(new RFC());
+
+
+
+	
 	/*
 	for(var $function of Query.search("function")) {
 		var ccCal = cc.calculateForFunction($function);
@@ -131,3 +172,17 @@ function testClassMetric(metric){
 	println();	
 
 }
+
+function testClassMetricJava(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $class of Query.search("class")) {
+		var metricResult = metric.calculateForClassJava($class);
+		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+	}
+
+	println();	
+
+}
+
