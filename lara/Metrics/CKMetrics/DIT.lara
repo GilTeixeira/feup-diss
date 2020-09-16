@@ -34,3 +34,18 @@ DIT.prototype.calculateForClass = function($class) {
 			
 }
 
+DIT.prototype.calculateForClassJava = function($class) {
+
+	var dit = 0;
+	var currClass = $class;
+
+	while(Query.search("class",currClass.superClass).get().length){
+	//while(currClass.superClass !== 'java.lang.Object'){
+		currClass = Query.search("class",$class.superClass).first();
+		dit++;
+	}
+
+	return dit;
+
+}
+

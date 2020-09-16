@@ -40,3 +40,35 @@ RFC.prototype.calculateForClass = function($class) {
 
 	return methodsSignatures.size;
 }
+
+
+// Override
+RFC.prototype.calculateForClassJava = function($class) {
+
+	// Should main be considered a method???
+
+	// Given a class, its RFC is the addition of:
+	// Method elements
+	// References to any Method
+
+	var methodsSignatures = new Set();	 
+
+	//for (var $method of Query.search("class", $class.name).search("method").get())
+		//methodsSignatures.add($class.name, 'method': $method.name});
+
+	methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
+/*
+	// Methods called by the methods of $class
+	var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
+
+	methodsCalled.forEach(methodCalled => methodsSignatures.add(methodCalled.signature));
+	
+	var rfc = methodsSignatures.size;
+	*/
+
+	println(Array.from(methodsSignatures));
+	methodsSignatures.forEach(methodSignature => println("CLASS: " + methodSignature.class + " Method: " + methodSignature.method));
+	//println(methodsSignatures.content);
+	
+	return methodsSignatures.size; 
+}

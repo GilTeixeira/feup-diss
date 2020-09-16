@@ -22,11 +22,20 @@ NOC.prototype = Object.create(Metric.prototype);
 
 // Override
 NOC.prototype.calculateForClass = function($class) {
+	// Required
+	// class.bases : Array of classes
+	
 
 	return Query.search("class", 
 		{"bases": bases => bases.map(base => base.name).includes($class.name)})
 		.get().length;
 
+			
+}
+
+NOC.prototype.calculateForClassJava = function($class) {
+
+	return Query.search("class",{'superClass':$class.name}).get().length;
 			
 }
 
