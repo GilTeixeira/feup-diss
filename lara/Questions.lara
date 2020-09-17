@@ -7,6 +7,18 @@ import weaver.Selector;
  */
 aspectdef Questions
 
+
+	// Implement signature in Kadabra
+
+
+
+
+
+
+
+
+	//---------------__///
+
 	// Sonarqube Community version does not support C++
 
 	// Kadabra (Java) does not have memberCall, memberAccess, Bases?
@@ -33,6 +45,46 @@ aspectdef Questions
 		println();
 	
 	}
+
+
+	// Wierd search vars
+		/*
+	var methodFieldsMap = new Map();
+	println($class.name);
+
+	for ($method of Query.searchFromInclusive($class).search("method").get()){
+		println("	" + $method.name);
+		var fieldsAccessed = []; // TODO : Maybe change to Set
+		for ($var of Query.searchFromInclusive($method).search("var").get()){
+			println("		" + $var.name);
+			
+				if($var.isField && $var.declaration)  // check if var.decl is  not undefined Ex: (PrintStream)
+					if($var.declaration.parent.name === $class.name)
+						fieldsAccessed.push($var.declaration.name);
+		
+		}
+		println();
+
+		methodFieldsMap.set($method.name, fieldsAccessed);
+
+	}
+	*/ 
+
+	
+	var methodFieldsMap = new Map();
+	println($class.name);
+
+	for (query of Query.searchFromInclusive($class).search("method").search("var").chain()){
+		println("	" + query["method"].name);
+		println("	" + query["var"].name);
+		//println("	" + query["var"].parent.srcCode);
+		println();
+		//println("	" + query["method"].name);
+		
+
+	}
+	/**/
+	
 
 	
 
@@ -61,4 +113,20 @@ aspectdef Questions
 	//catch, break, continue, goto.
 
 				*/
+
+
+	/* How to get field accesses
+	for (c of Query.search("class").search("method").search("var").chain()){
+		println("class: " + c["class"].name);
+		println("method: " + c["method"].name);
+		println("var: " + c["var"].name);
+		if(c["var"].isField){
+			println("declaration: " + c["var"].declaration); // FIELD
+			if(c["var"].declaration){
+				println("parent: " + c["var"].declaration.parent); // CLASS
+			}
+
+
+		}
+	*/			
 end

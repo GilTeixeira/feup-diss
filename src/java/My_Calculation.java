@@ -7,7 +7,7 @@ class Calculation {
     }
 
 
-    public void Subtraction(int x, int y) {
+    public void subtraction(int x, int y) {
         z = x - y;
         System.out.println("The difference between the given numbers:" + z);
     }
@@ -24,7 +24,7 @@ class Calculation {
         int b = 10;
         My_Calculation demo = new My_Calculation();
         demo.addition(a, b);
-        demo.Subtraction(a, b);
+        demo.subtraction(a, b);
         demo.multiplication(a, b);
     }
 

@@ -15,14 +15,23 @@ aspectdef Interface
 
 	println('The project has ' + numberOfClasses + ' classes');
 
+	/*
 	//println(Query.searchFrom($classes[0]).search('method').get().length);
+	for(c of $classes)
+		println('	'+c.name);
 
 	println("CLASS HERE--: ");
-	println($classes[7].name);
-	println(Query.searchFromInclusive($classes[7]).search('method').get().length);
-	println(Query.search('class',{'name':'Foo1'}).search('method').get().length);
+	println($classes[5].name);
+	println(Query.searchFromInclusive($classes[5]).search('method').get().length);
+	println(Query.search('class',{'name':'Box'}).search('method').get().length);
+	println(Query.search("method", {"record": r => r.name === 'Box'}).get().length);
+
+	println($classes[5].methods.length);
 	println("CLASS HERE--: ");
 
+
+	*/
+	
 	//testClassMetric(new LCOM94());
 	//testClassMetric(new WMC());
 	//testClassMetric(new RFC());
@@ -31,7 +40,7 @@ aspectdef Interface
 	//testClassMetric(new NOC());
 
 
-		
+	/*		
 	for (c of Query.search("class").search("method").chain()){
 		println("CLASS: " + c["class"].name);
 		println("METHOD: " + c["method"].signature);
@@ -52,16 +61,52 @@ aspectdef Interface
 		println("SUPER: " + c.superClass);
 		println();
 	}
-
+	*/
 
 
 	testClassMetricJava(new NOC());
 	testClassMetricJava(new DIT());
 	testClassMetricJava(new RFC());
+	testClassMetricJava(new WMC());
+	testClassMetricJava(new LCOM94());
+
+	/*
+	for (c of Query.search("class").search("method").search("var").chain()){
+		println("class: " + c["class"].name);
+		println("method: " + c["method"].name);
+		println("var: " + c["var"].name);
+		if(c["var"].isField){
+			println("declaration: " + c["var"].declaration); // FIELD
+			if(c["var"].declaration){
+				println("parent: " + c["var"].declaration.parent); // CLASS
+			}
 
 
+		}
+		
+		
+		//if(c["var"].declaration !== undefined)
+			//println("declaration: " + c["var"].declaration.typeReference);
+		//else println("declaration: " + c["var"].declaration);
+		//println("type: " + c["var"].type);
+		
+		//println("typeref: " + c["var"].typeReference);
 
+		//println("referenceChain: " + c["var"].referenceChain);
+		//println("referenceChain: " + c["var"].isField);
+
+		
+		
+
+		
+		println();
+		//println("METHOD: " + c.name);
 	
+	
+		}
+
+
+	*/
 	/*
 	for(var $function of Query.search("function")) {
 		var ccCal = cc.calculateForFunction($function);

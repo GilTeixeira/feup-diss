@@ -2,7 +2,7 @@ public class Farm {
     Puppy p = new Puppy("tommy");
 
     int getPuppyAge() {
-        return p.getAge();
+        return p.getAge() + p.puppyAge;
     }
 
 }
