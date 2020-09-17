@@ -1,7 +1,7 @@
 import weaver.Query;
-import weaver.Selector;
 
 import Metrics.Metrics;
+import MetricQuery.MetricQueryClava;
 
 /**
  * Aspect used to test the metrics.
@@ -36,8 +36,8 @@ aspectdef Interface
 	//testClassMetric(new WMC());
 	//testClassMetric(new RFC());
 	//testClassMetric(new CBO());
-	//testClassMetric(new DIT());
-	//testClassMetric(new NOC());
+	testClassMetric(new DIT());
+	testClassMetric(new NOC());
 
 
 	/*		
@@ -63,13 +63,14 @@ aspectdef Interface
 	}
 	*/
 
-
+	/*
 	testClassMetricJava(new NOC());
 	testClassMetricJava(new DIT());
 	testClassMetricJava(new RFC());
 	testClassMetricJava(new WMC());
 	testClassMetricJava(new LCOM94());
-
+	testClassMetricJava(new CBO());
+	*/ 
 	/*
 	for (c of Query.search("class").search("method").search("var").chain()){
 		println("class: " + c["class"].name);
@@ -201,7 +202,32 @@ aspectdef Interface
 	}
 
 	*/
+
+
+	///////////////////////////////////
+	// Test metric queries
+	///////////////////////////////////
+	println();
+	println();
+	println('Test metric queries');
+	println();
+	println();
+	for(c of $classes){
+		println('	'+c.name);
+		println('		'+MetricQuery.getSuperClasses(c));
+	}
+	//MetricQuery.getSuperClasses
+
+
+
 	
+	testClassMetricInd(new NOC());
+	testClassMetricInd(new DIT());
+	//testClassMetricInd(new RFC());
+	//testClassMetricInd(new WMC());
+	//testClassMetricInd(new LCOM94());
+	//testClassMetricInd(new CBO());
+
 
 end
 
@@ -224,6 +250,19 @@ function testClassMetricJava(metric){
 		
 	for(var $class of Query.search("class")) {
 		var metricResult = metric.calculateForClassJava($class);
+		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+	}
+
+	println();	
+
+}
+
+function testClassMetricInd(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $class of Query.search("class")) {
+		var metricResult = metric.calculateForClassInd($class);
 		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
 	}
 

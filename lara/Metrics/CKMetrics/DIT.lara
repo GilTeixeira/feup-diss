@@ -52,3 +52,19 @@ DIT.prototype.calculateForClassJava = function($class) {
 
 }
 
+DIT.prototype.calculateForClassInd = function($class) {
+	if($class === null)
+		return 0;
+
+	
+	var depth = 0;
+	var superClasses = MetricQuery.getSuperClasses($class);
+	
+	for(superClass of superClasses)
+		if(this.calculateForClassInd(superClass) + 1 > depth)
+			depth = this.calculateForClassInd(superClass) + 1;
+
+	return depth;
+			
+}
+

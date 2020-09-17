@@ -1,0 +1,19 @@
+import weaver.Query;
+
+/**
+ * 
+ *
+ * @class
+ */
+var MetricQuery = {};
+
+/**
+ * Adds
+ *
+ * @param {string} $class - join point represented the class to be
+ * @return {Class[]} 
+ */
+MetricQuery.getSuperClasses = function($class) {
+	notImplemented('MetricQuery.getSuperClasses');
+}
+

@@ -42,3 +42,19 @@ NOC.prototype.calculateForClassJava = function($class) {
 			
 }
 
+NOC.prototype.calculateForClassInd = function($class) {
+
+	var noc = 0;
+
+	var $classes = Query.search('class').get();
+	for(subclass of $classes){
+		var superClasses = MetricQuery.getSuperClasses(subclass);
+
+		if(superClasses.some(superClass => superClass.name === $class.name))
+			noc++;
+	}
+
+	return noc;
+
+}
+

@@ -1,0 +1,9 @@
+import weaver.Query;
+import MetricQuery.MetricQueryBase;
+
+
+MetricQuery.getSuperClasses = function($class) {
+
+	return $class.bases;
+}
+
