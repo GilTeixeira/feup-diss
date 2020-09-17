@@ -109,3 +109,119 @@ CBO.prototype.calculateForClass = function($class) {
 
 	return classesCoupled.size;
 }
+
+
+
+// Override
+CBO.prototype.calculateForClassJava = function($class) {
+
+	var classesCoupled = new Set();
+
+	// Methods called by the methods of $class
+	var methodCallChain = Query.searchFromInclusive($class).search("method").search("call").chain();
+
+	//println("\nFunctions Called");
+	//functionsCalled.forEach(functionCalled => println(functionCalled.name));
+
+	// Filter functions and operator<< (cout), only methods required
+	// var methodsCalled = functionsCalled.filter(func => func.definition && func.definition.record);
+
+	//println("\n Methods Called");
+	//methodsCalled.forEach(methodCalled => println(methodCalled.name));
+
+	// do not include self class
+	methodCallChain.forEach(methodCallElem=>{
+		var classCoupled = methodCallElem["call"].targetType.name;
+		//println("Class: "+$class.name );
+		//println("method: "+methodCallElem["method"].name );
+		//println("Sig: "+methodCallElem["call"].targetType.name+ '::' + methodCallElem["call"].name );
+		//println();
+		
+		if(classCoupled !== $class.name)
+			classesCoupled.add(classCoupled); 
+  		
+	});
+
+	
+	//print(classesCoupled.values()+ "\n");
+
+	// Methods that call the methods of $class
+
+	var methodsThatCall = Query.search("method").search("call", {"targetType": targetType => targetType.name === $class.name}).chain();
+	//var methodsThatCall = Query.search("method").search("memberCall", 
+		//{"definition": d => d.record.name === $class.name}).chain();
+
+	//println("\Methods that call method of class:");
+	for(var query of methodsThatCall) {
+		if(query["method"].parent.name !== $class.name)
+			classesCoupled.add(query["method"].parent.name);
+
+		/*
+		println();
+		println("Class: "+$class.name );
+		println("Classmethod: "+query["method"].parent.name );
+		println("method: "+query["method"].name );
+		println("Sig: "+query["call"].targetType.name+ '::' + query["call"].name );
+		println();
+		*/
+
+		//println(query["method"].record.name);
+		//println();
+	}
+
+	
+/*
+	// TODO: fields accesses
+
+	// Fields Accessed by the methods of $class
+	var fieldsAccessed = Query.search("method", {"record": r => r.name === $class.name}).search("memberAccess").get();
+
+	for(var fieldAccessed of fieldsAccessed) {
+	println("Code: " + fieldAccessed.code);
+	println("Type: " + fieldAccessed.base.type.name);
+	if(fieldAccessed.base.decl !== undefined)
+				println("BASE1: " + fieldAccessed.base.decl.name); // this.bar1()
+			else
+				if (fieldAccessed.base.vardecl !== undefined)
+					println("BASE2: " + fieldAccessed.base.vardecl.type.name); // myAnimal.animalSound
+				else if (fieldAccessed.base.type.pointee !== undefined)
+					println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->ancestor)->age
+				else println("BASE4: " + fieldAccessed.base.type.name); // (this->ancestor).age
+	
+	}
+
+	println();
+
+	
+
+
+
+
+
+
+
+
+	///......................::///
+
+	// Methods that call the methods of $class
+	var methodsThatCall = Query.search("method").search("memberCall", 
+		{"definition": d => d.record.name === $class.name}).chain();
+
+	//println("\Methods that call method of class:");
+	for(var query of methodsThatCall) {
+		if(query["method"].record.name !== $class.name)
+			classesCoupled.add(query["method"].record.name);
+
+		//println(query["method"].record.name);
+		//println();
+	}
+
+
+	
+*/	
+	println("Class: " + $class.name);
+	println(Array.from(classesCoupled));
+	return classesCoupled.size;
+
+	
+}
