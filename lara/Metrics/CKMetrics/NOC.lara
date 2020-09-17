@@ -35,6 +35,9 @@ NOC.prototype.calculateForClass = function($class) {
 
 NOC.prototype.calculateForClassJava = function($class) {
 
+	// Required
+	// class.superClass : Name of superClass
+
 	return Query.search("class",{'superClass':$class.name}).get().length;
 			
 }

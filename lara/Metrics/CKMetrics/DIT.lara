@@ -36,6 +36,9 @@ DIT.prototype.calculateForClass = function($class) {
 
 DIT.prototype.calculateForClassJava = function($class) {
 
+	// Required
+	// class.superClass : Name of superClass
+
 	var dit = 0;
 	var currClass = $class;
 

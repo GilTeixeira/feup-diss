@@ -45,18 +45,40 @@ RFC.prototype.calculateForClass = function($class) {
 // Override
 RFC.prototype.calculateForClassJava = function($class) {
 
+	
+	// Required
+	// call.targetType.name : $class of call
+
 	// Should main be considered a method???
 
 	// Given a class, its RFC is the addition of:
 	// Method elements
-	// References to any Method
+	// References to any Method (PrintStream::println is being considered )
 
 	var methodsSignatures = new Set();	 
 
-	//for (var $method of Query.search("class", $class.name).search("method").get())
-		//methodsSignatures.add($class.name, 'method': $method.name});
+	for (var $method of Query.searchFromInclusive($class).search("method").get())
+		methodsSignatures.add($class.name + '::' + $method.name);
 
-	methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
+	//methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
+
+	// Methods called by the methods of $class
+	var $calls = Query.searchFromInclusive($class).search("method").search("call").get();
+
+	$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name ));
+
+	/*
+	println("Calls:");
+	$calls.forEach($call => {
+		println("Method: " + $call.name);
+		println("Class:  " + $call.targetType.name);
+		println();
+		
+	});
+	
+	*/
+
+	
 /*
 	// Methods called by the methods of $class
 	var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
@@ -66,8 +88,8 @@ RFC.prototype.calculateForClassJava = function($class) {
 	var rfc = methodsSignatures.size;
 	*/
 
-	println(Array.from(methodsSignatures));
-	methodsSignatures.forEach(methodSignature => println("CLASS: " + methodSignature.class + " Method: " + methodSignature.method));
+	//println(Array.from(methodsSignatures));
+	//methodsSignatures.forEach(methodSignature => println(methodSignature));
 	//println(methodsSignatures.content);
 	
 	return methodsSignatures.size; 
