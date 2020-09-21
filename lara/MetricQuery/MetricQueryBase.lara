@@ -5,7 +5,7 @@ import weaver.Query;
  *
  * @class
  */
-var MetricQuery = {};
+var MetricQuery = {class:{}};
 
 /**
  * Adds
@@ -17,3 +17,22 @@ MetricQuery.getSuperClasses = function($class) {
 	notImplemented('MetricQuery.getSuperClasses');
 }
 
+MetricQuery.class.test = function($class) {
+	return 0;
+}
+
+////////////////////////////////////////
+// Methods
+/////////////////////////////////////////
+
+MetricQuery.getMethodsCalled = function($method) {
+	notImplemented('MetricQuery.getMethodsCalled');
+}
+
+MetricQuery.getFieldsAccessed = function($method) {
+	notImplemented('MetricQuery.getFieldsAccessed');
+}
+
+MetricQuery.getMethodSignature = function($method) {
+	notImplemented('MetricQuery.getMethodSignature');
+}

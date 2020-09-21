@@ -9,3 +9,88 @@ MetricQuery.getSuperClasses = function($class) {
 	return Query.search("class",superClassName).get();
 }
 
+MetricQuery.getMethodsCalled = function($method) {
+	//println("Method Name: " + $method.name);
+
+	//var $calls = Query.searchFrom($method).search('call').get(); // why duplicated ?
+	var $calls = Query.search("class", $method.parent.name).search("method", $method.name).search('call').get();
+
+	// Filter out System, Math, etc.. calls
+	// TODO : Should it? ; Find a better way
+	$calls = $calls.filter($call => {
+		var isSystemCall = false;
+		try {
+		 var $methodCalled = $call.child(1).declaration;
+		}
+		catch(err) {
+		 	isSystemCall = true;
+		}
+
+		return !isSystemCall;		
+	});
+	
+	//println("Calls:");
+	//$calls.forEach($call => {
+	/*
+		println("attributes: " + $call.attributes);
+		println("qualifiedDecl: " + $call.arguments);
+		println("name: " + $call.name);
+		println("Class:  " + $call.targetType.name);
+		println("AST: ");
+		println($call.ast);
+		println();
+		println($call.child(1).declaration);
+	*/
+	//println($call.name);
+	//println($call.child(1).declaration);
+	/*
+	println($call.ast);
+	try {
+	  println($call.child(1).declaration);
+	}
+	catch(err) {
+	 	println(err);
+	}
+	
+	println();
+	*/
+
+	//});
+	
+	// does not work with Math and System.out
+	var $methods = $calls.map($call => $call.child(1).declaration);
+	// $call.child(0) -> bases var Ex: (Math) (System.out)
+	// $call.child(1) -> method reference Ex:  (sqrt) (println)
+	// $call.child(2..) -> params var Ex: (a) (b)
+
+	return $methods;
+	
+}
+
+
+MetricQuery.getFieldsAccessed = function($method) {
+
+	//for (query of Query.searchFromInclusive($class).search("method").search("var").chain()){
+
+	//println("Method Name: " + $method.getNode().signature);
+
+	var $vars = Query.search("class", $method.parent.name).search("method", $method.name).search("var").get(); // problem method overload
+	//var $vars = Query.searchFromInclusive($method).search("var").get(); // why duplicated ?
+
+	// check if var is field and not undefined Ex: (PrintStream)
+	var $varsField = $vars.filter($var => $var.isField && $var.declaration); 
+
+	//var to field
+	var $fields = $varsField.map($varField => $varField.declaration);
+
+	///if(!includeSelfAccesses)
+	//	$fields = $fields.filter($field => $field.parent.name !== $method.parent.name); 
+
+	return $fields;
+
+}
+
+MetricQuery.getMethodSignature = function($method) {
+	//Signature in format Class::Method(paramType...)
+	return $method.parent.name + "::" + $method.getNode().signature;
+}
