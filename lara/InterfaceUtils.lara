@@ -1,0 +1,64 @@
+
+
+function testClassMetricCpp(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $class of Query.search("class")) {
+		var metricResult = metric.calculateForClass($class);
+		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+	}
+
+	println();	
+
+}
+
+function testClassMetricJava(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $class of Query.search("class")) {
+		var metricResult = metric.calculateForClassJava($class);
+		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+	}
+
+	println();	
+
+}
+
+function testClassMetricInd(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $class of Query.search("class")) {
+		var metricResult = metric.calculateForClassInd($class);
+		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+	}
+
+	println();	
+
+}
+
+
+  //////////////
+ /// Prints ///
+//////////////
+
+function printNumberOfClasses(){
+
+	// Get All Classes
+	
+	var $classes = Query.search('class').get();
+	var numberOfClasses = $classes.length;
+
+	println('The project has ' + numberOfClasses + ' classes');
+}
+
+function printSuperClasses(){
+
+	for(c of $classes){
+		println('	'+c.name);
+		println('		'+MetricQuery.getSuperClasses(c));
+	}
+
+}

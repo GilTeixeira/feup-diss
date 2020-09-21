@@ -1,272 +1,81 @@
 import weaver.Query;
 
+import InterfaceUtils;
 import Metrics.Metrics;
-import MetricQuery.MetricQueryClava;
+//import MetricQuery.MetricQueryClava;
+import MetricQuery.MetricQueryKadabra;
 
 /**
  * Aspect used to test the metrics.
  */
 aspectdef Interface
 	
-	// Get All Classes
+	printNumberOfClasses();
+
+	var classMetrics = [];
+	var functionMetrics = [];
+
+
+	// Add metrics
+
+	//classMetrics.push(new NOC());
+	//classMetrics.push(new DIT());
+	//classMetrics.push(new RFC());
+	//classMetrics.push(new WMC());
+	//classMetrics.push(new LCOM94());
+	//classMetrics.push(new CBO());
 	
-	var $classes = Query.search('class').get();
-	var numberOfClasses = $classes.length;
-
-	println('The project has ' + numberOfClasses + ' classes');
-
-	/*
-	//println(Query.searchFrom($classes[0]).search('method').get().length);
-	for(c of $classes)
-		println('	'+c.name);
-
-	println("CLASS HERE--: ");
-	println($classes[5].name);
-	println(Query.searchFromInclusive($classes[5]).search('method').get().length);
-	println(Query.search('class',{'name':'Box'}).search('method').get().length);
-	println(Query.search("method", {"record": r => r.name === 'Box'}).get().length);
-
-	println($classes[5].methods.length);
-	println("CLASS HERE--: ");
-
-
-	*/
-	
-	//testClassMetric(new LCOM94());
-	//testClassMetric(new WMC());
-	//testClassMetric(new RFC());
-	//testClassMetric(new CBO());
-	testClassMetric(new DIT());
-	testClassMetric(new NOC());
-
-
-	/*		
-	for (c of Query.search("class").search("method").chain()){
-		println("CLASS: " + c["class"].name);
-		println("METHOD: " + c["method"].signature);
-		println("METHOD: " + c["method"].parent.name);
-		println();
-	
-		}
-
-	for (c of Query.search("class").search("method").get()){
-	
-		println("METHOD: " + c.name);
-	
-	
-		}
-
-	for (c of Query.search("class").get()){
-		println("CLASS: " + c.name);
-		println("SUPER: " + c.superClass);
-		println();
-	}
-	*/
-
-	/*
-	testClassMetricJava(new NOC());
-	testClassMetricJava(new DIT());
-	testClassMetricJava(new RFC());
-	testClassMetricJava(new WMC());
-	testClassMetricJava(new LCOM94());
-	testClassMetricJava(new CBO());
-	*/ 
-	/*
-	for (c of Query.search("class").search("method").search("var").chain()){
-		println("class: " + c["class"].name);
-		println("method: " + c["method"].name);
-		println("var: " + c["var"].name);
-		if(c["var"].isField){
-			println("declaration: " + c["var"].declaration); // FIELD
-			if(c["var"].declaration){
-				println("parent: " + c["var"].declaration.parent); // CLASS
-			}
-
-
-		}
-		
-		
-		//if(c["var"].declaration !== undefined)
-			//println("declaration: " + c["var"].declaration.typeReference);
-		//else println("declaration: " + c["var"].declaration);
-		//println("type: " + c["var"].type);
-		
-		//println("typeref: " + c["var"].typeReference);
-
-		//println("referenceChain: " + c["var"].referenceChain);
-		//println("referenceChain: " + c["var"].isField);
-
-		
-		
-
-		
-		println();
-		//println("METHOD: " + c.name);
-	
-	
-		}
-
-
-	*/
-	/*
-	for(var $function of Query.search("function")) {
-		var ccCal = cc.calculateForFunction($function);
-		println("CC for function "+ $function.signature + " = " + ccCal);		
-	}
-	*/
-
 /*
-	print('\n\n Testing LCOM \n\n');
-	var lcom94 = new LCOM94();
-		
-	for(var $class of Query.search("class")) {
-		var lcom94Cal = lcom94.calculateForClass($class);
-		println("LCOM94 for class "+ $class.name + " = " + lcom94Cal);
-	}
-	
+	testClassMetricCpp(new LCOM94());
+	testClassMetricCpp(new WMC());
+	testClassMetricCpp(new RFC());
+	testClassMetricCpp(new CBO());
+	testClassMetricCpp(new DIT());
+	testClassMetricCpp(new NOC());
+*/ 
 
-
-		var fieldsAccessesByMethod = Query.search("function").search("memberAccess").chain(); // TODO; memberAccess must belong to class
-
-		for(query of fieldsAccessesByMethod){
-			println("METHOD: " + query["function"].signature);
-			println("MEMBER: " + query["memberAccess"].getCode());
-			println("BASE: " + query["memberAccess"].base.getCode());
-			if(query["memberAccess"].base.getCode() === "this")			
-				println("Class Name: " + query["memberAccess"].base.type.pointee.decl.name);
-			else println("Class Name: " + query["memberAccess"].base.vardecl.name);
-			//else println("Class Name: " + query["memberAccess"].base.decl);
-			//println("VARDECL: " + query["memberAccess"].vardecl);
-			println("memberChain: " + query["memberAccess"].memberChain);
-			println("memberChainNames: " + query["memberAccess"].memberChainNames);
-			//println("memberChain: " + fieldAccessesByMethod.memberChain.getCode());
-			println();
-
-		}
-	
-	
-
-	print("\n\n Testing WMC \n\n");
-	var wmc = new WMC();
-		
-	for(var $class of Query.search("class")) {
-		var wmcCal = wmc.calculateForClass($class);
-		println("WMC for class "+ $class.name + " = " + wmcCal);		
-	}
-
-
-	print("\n\n Testing DIT \n\n");	
-	var dit = new DIT();
-		
-	for(var $class of Query.search("class")) {		
-		
-	}
-
-
-
-
-	print("\n\n Testing CBO \n\n");
-	var cbo = new CBO();
-
-	for(var $class of Query.search("class")) {
-		var cboCal = cbo.calculateForClass($class);
-		println("CBO for class "+ $class.name + " = " + cboCal);
-		//lcom94.calculateForClass($class);		
-	}
 
 	
-	print("\n\n Testing RFC \n\n");
-	var rfc = new RFC();
+	//testClassMetricJava(new NOC());
+	//testClassMetricJava(new DIT());
+	//testClassMetricJava(new RFC());
+	//testClassMetricJava(new WMC());
+	//testClassMetricJava(new LCOM94());
+	//testClassMetricJava(new CBO());
+	
 
-	for(var $class of Query.search("class")) {
-		var rfcCal = rfc.calculateForClass($class);
-		println("RFC for class "+ $class.name + " = " + rfcCal);		
-	}
-
-
-	print("\n\n Testing CC \n\n");
-	var cc = new CC();
-
-	for(var $function of Query.search("function")) {
-		var ccCal = cc.calculateForFunction($function);
-		println("CC for function "+ $function.signature + " = " + ccCal);		
-	}
-
-
-	print("\n\n Random Tests\n\n");
-	for(var $class of Query.search("class")) {
-		println($class.name);
-		for(var $method of Query.search("method")) {
-		
-		}		
-	}
-
-	*/
-
-
-	///////////////////////////////////
-	// Test metric queries
-	///////////////////////////////////
-	println();
-	println();
-	println('Test metric queries');
-	println();
-	println();
-	for(c of $classes){
-		println('	'+c.name);
-		println('		'+MetricQuery.getSuperClasses(c));
-	}
-	//MetricQuery.getSuperClasses
+	
 
 
 
 	
-	testClassMetricInd(new NOC());
-	testClassMetricInd(new DIT());
-	//testClassMetricInd(new RFC());
+	//testClassMetricInd(new NOC());
+	//testClassMetricInd(new DIT());
+	//testClassMetricInd(new RFC());  // Different from Java because it does not count System, Math calls
 	//testClassMetricInd(new WMC());
 	//testClassMetricInd(new LCOM94());
 	//testClassMetricInd(new CBO());
 
 
+	/////////////////////////////////
+
+	//for (var $method of Query.search('class','My_Calculation').search("method",'main').get())
+	//	methodsSignatures.add($class.name + '::' + $method.name); // TODO change to signature
+
+	//methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
+
+	// Methods called by the methods of $class
+	//var $methods = Query.search('class','My_Calculation').search("method").get();
+	//var $calls = Query.search('class').search("method").search("call").get();
+
+	//$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name ));
+
+	/*
+	println("Calls:");
+	$methods.forEach($method => {
+		MetricQuery.getMethodsCalled($method);
+		
+	});
+	*/
+
 end
-
-function testClassMetric(metric){
-
-	println('Testing '+ metric.sigla + '\n');
-		
-	for(var $class of Query.search("class")) {
-		var metricResult = metric.calculateForClass($class);
-		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
-	}
-
-	println();	
-
-}
-
-function testClassMetricJava(metric){
-
-	println('Testing '+ metric.sigla + '\n');
-		
-	for(var $class of Query.search("class")) {
-		var metricResult = metric.calculateForClassJava($class);
-		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
-	}
-
-	println();	
-
-}
-
-function testClassMetricInd(metric){
-
-	println('Testing '+ metric.sigla + '\n');
-		
-	for(var $class of Query.search("class")) {
-		var metricResult = metric.calculateForClassInd($class);
-		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
-	}
-
-	println();	
-
-}
-

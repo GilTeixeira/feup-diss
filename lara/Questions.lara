@@ -7,6 +7,8 @@ import weaver.Selector;
  */
 aspectdef Questions
 
+	// LARA keeps copying Java files to outside of folder (does not happen in Cpp)
+
 
 	// Implement signature in Kadabra
 
@@ -29,11 +31,11 @@ aspectdef Questions
 	// memberAccess get base class
 	var fieldsAccessed = Query.search('method', 'accessTest').search('memberAccess').get(); // TODO; memberAccess must belong to class
 
-
+	/*
 	for(var fieldAccessed of fieldsAccessed) {
 		println("Code: " + fieldAccessed.code);
-		println("Type: " + fieldAccessed.base.type.name); // works for 2 and 4
-		println("BASE0: " + fieldAccessed.base.joinPointType); //  atal.age
+		//println("Type: " + fieldAccessed.base.type.name); // works for 2 and 4
+		println("BASE joinPointType: " + fieldAccessed.base.joinPointType); //  atal.age
 		if(fieldAccessed.base.decl !== undefined)
 					println("BASE1: " + fieldAccessed.base.decl.name); // this.age
 				else
@@ -41,7 +43,74 @@ aspectdef Questions
 						println("BASE2: " + fieldAccessed.base.vardecl.type.name); //  atal.age
 					else if (fieldAccessed.base.type.pointee !== undefined)
 						println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->at)->age
-					else println("BASE4: " + fieldAccessed.base.type.name); //  (this->ata).age
+					else println("BASE4: " + fieldAccessed.base.type.methods); //  (this->ata).age
+		println();
+	
+	}
+	*/
+
+
+	for(var fieldAccessed of fieldsAccessed) {
+
+		//varref
+		//memberAccess
+		
+		/*
+		if(fieldAccessed.base.joinPointType === 'this'){
+			println("Code:       " + fieldAccessed.code);	
+			println("BaseJPType: " + fieldAccessed.base.joinPointType);	
+			println("Class Base: " + fieldAccessed.base.decl.name);	
+			println("Class Methods: " + fieldAccessed.base.decl.methods);
+
+		}
+	
+
+		if(fieldAccessed.base.joinPointType === 'varref'){
+			println("Code:       " + fieldAccessed.code);	
+			println("BaseJPType: " + fieldAccessed.base.joinPointType);	
+			println("Class Base: " + fieldAccessed.base.decl.type.decl.name);	
+			println("Class Methods: " + fieldAccessed.base.decl.type.decl.methods);
+		}	*/
+			
+		
+		if(fieldAccessed.base.joinPointType === 'memberAccess'){
+			println("Code:       " + fieldAccessed.code);	
+			println("BaseJPType: " + fieldAccessed.base.joinPointType);	
+			println("Kind: " + fieldAccessed.base.type.kind);	
+			//println("Class Base: " + fieldAccessed.base.type.decl);
+
+			if(fieldAccessed.base.type.isPointer){
+				println("Class Base: " + fieldAccessed.base.type.pointee.decl.name);	
+			 	println("Class Methods: " + fieldAccessed.base.type.pointee.decl.methods);
+
+			 }
+				
+				
+			else  {				
+				println("Class Base: " + fieldAccessed.base.type.decl.name);	
+			 	println("Class Methods: " + fieldAccessed.base.type.decl.methods);
+			}
+			
+			println("Class BaseOri: " + fieldAccessed.base.decl.name);	
+			println("Class MethodsOri: " + fieldAccessed.base.decl.methods);
+
+		}
+
+	
+/*
+		if(fieldAccessed.base.decl !== undefined){
+					println("Code: " + fieldAccessed.code);		
+					println("BASE joinPointType: " + fieldAccessed.base.joinPointType); //  atal.age
+					println("BASE1: " + fieldAccessed.base.decl.name); // this.age
+					println("BASE1: " + fieldAccessed.base.decl.type.decl.methods); // this.age
+
+					}
+				else
+					if (fieldAccessed.base.vardecl !== undefined)
+						println("BASE2: " + fieldAccessed.base.vardecl.type.name); //  atal.age
+					else if (fieldAccessed.base.type.pointee !== undefined)
+						println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->at)->age
+					else println("BASE4: " + fieldAccessed.base.type.methods); //  (this->ata).age*/+
 		println();
 	
 	}
@@ -70,7 +139,7 @@ aspectdef Questions
 	}
 	*/ 
 
-	
+	/*
 	var methodFieldsMap = new Map();
 	println($class.name);
 
@@ -83,10 +152,26 @@ aspectdef Questions
 		
 
 	}
+
+	*/
 	/**/
 	
 
+	println("MemberAccess decl");
+	for(var $memberAccess of Query.search('method', 'accessTest').search('memberAccess').get()) {
+		if($memberAccess.base.joinPointType === 'memberAccess'){
+			println($memberAccess.base.type.isPointer);
+			println($memberAccess.code);
+			println($memberAccess.base.decl.name);}
+	}
+	for(var $memberAccess of Query.search('method', 'accessPointerTest').search('memberAccess').get()) {
+		if($memberAccess.base.joinPointType === 'memberAccess'){
+			println($memberAccess.base.type.isPointer);
+			println($memberAccess.code);
+			println($memberAccess.base.decl.name);}
+	}
 	
+
 
      
 
@@ -128,5 +213,80 @@ aspectdef Questions
 
 
 		}
-	*/			
+	*/
+
+					/*
+	//println(Query.searchFrom($classes[0]).search('method').get().length);
+	for(c of $classes)
+		println('	'+c.name);
+
+	println("CLASS HERE--: ");
+	println($classes[5].name);
+	println(Query.searchFromInclusive($classes[5]).search('method').get().length);
+	println(Query.search('class',{'name':'Box'}).search('method').get().length);
+	println(Query.search("method", {"record": r => r.name === 'Box'}).get().length);
+
+	println($classes[5].methods.length);
+	println("CLASS HERE--: ");
+
+
+	*/
+
+		/*
+	for (c of Query.search("class").search("method").search("var").chain()){
+		println("class: " + c["class"].name);
+		println("method: " + c["method"].name);
+		println("var: " + c["var"].name);
+		if(c["var"].isField){
+			println("declaration: " + c["var"].declaration); // FIELD
+			if(c["var"].declaration){
+				println("parent: " + c["var"].declaration.parent); // CLASS
+			}
+
+
+		}
+		
+		
+		//if(c["var"].declaration !== undefined)
+			//println("declaration: " + c["var"].declaration.typeReference);
+		//else println("declaration: " + c["var"].declaration);
+		//println("type: " + c["var"].type);
+		
+		//println("typeref: " + c["var"].typeReference);
+
+		//println("referenceChain: " + c["var"].referenceChain);
+		//println("referenceChain: " + c["var"].isField);
+
+		
+		
+
+		
+		println();
+		//println("METHOD: " + c.name);
+	
+	
+		}
+
+
+		
+		var fieldsAccessesByMethod = Query.search("function").search("memberAccess").chain(); // TODO; memberAccess must belong to class
+
+		for(query of fieldsAccessesByMethod){
+			println("METHOD: " + query["function"].signature);
+			println("MEMBER: " + query["memberAccess"].getCode());
+			println("BASE: " + query["memberAccess"].base.getCode());
+			if(query["memberAccess"].base.getCode() === "this")			
+				println("Class Name: " + query["memberAccess"].base.type.pointee.decl.name);
+			else println("Class Name: " + query["memberAccess"].base.vardecl.name);
+			//else println("Class Name: " + query["memberAccess"].base.decl);
+			//println("VARDECL: " + query["memberAccess"].vardecl);
+			println("memberChain: " + query["memberAccess"].memberChain);
+			println("memberChainNames: " + query["memberAccess"].memberChainNames);
+			//println("memberChain: " + fieldAccessesByMethod.memberChain.getCode());
+			println();
+
+		}
+
+		*/
+	
 end
