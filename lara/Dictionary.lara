@@ -1,0 +1,7 @@
+//Dictionary
+
+var dictionary = [
+	{"keyword":"function", "java":"method"},
+	{"keyword":"memberCall", "java":"call"}
+
+]
