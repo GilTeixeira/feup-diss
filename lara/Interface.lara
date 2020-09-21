@@ -40,7 +40,7 @@ aspectdef Interface
 	//testClassMetricJava(new DIT());
 	//testClassMetricJava(new RFC());
 	//testClassMetricJava(new WMC());
-	//testClassMetricJava(new LCOM94());
+	testClassMetricJava(new LCOM94());
 	//testClassMetricJava(new CBO());
 	
 
@@ -53,7 +53,7 @@ aspectdef Interface
 	//testClassMetricInd(new DIT());
 	//testClassMetricInd(new RFC());  // Different from Java because it does not count System, Math calls
 	//testClassMetricInd(new WMC());
-	//testClassMetricInd(new LCOM94());
+	testClassMetricInd(new LCOM94());
 	//testClassMetricInd(new CBO());
 
 

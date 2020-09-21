@@ -1,5 +1,6 @@
 import Metrics.Metric;
 import weaver.Selector;
+import Utils.Utils;
 
 /**
  * Measures the Lack of Cohesion of Methods
@@ -185,6 +186,53 @@ LCOM94.prototype.calculateForClassJava = function($class) {
 
 	return 0;
 }
+
+// Override
+LCOM94.prototype.calculateForClassInd = function($class) {
+
+	var methodFieldsMap = new Map();
+	var $methods = Query.searchFromInclusive($class).search("method").get();
+	
+	for ($method of $methods){
+		var $fieldsAccessed = MetricQuery.getFieldsAccessed($method);
+		$fieldsAccessed = $fieldsAccessed.filter($fieldAccessed=> $fieldAccessed.parent.name == $class.name);
+		var fieldsAccessedNames = $fieldsAccessed.map($fieldAccessed => $fieldAccessed.name);
+		methodFieldsMap.set(MetricQuery.getMethodSignature($method),new Set(fieldsAccessedNames));
+
+	}
+
+	/*
+	for ([key, value] of methodFieldsMap.entries()) {
+	  println(key + "  " + Array.from(value));
+	}
+	*/
+
+
+	var numPairMethodCommomFieldAccess = 0; // Q
+	var numPairMethodNoCommomFieldAccess = 0; // P
+	
+	for (i = 0; i < $methods.length; i++)
+		for (j = i + 1; j < $methods.length; j++){
+			var method1Signature = MetricQuery.getMethodSignature($methods[i]);
+			var method2Signature = MetricQuery.getMethodSignature($methods[j]);
+
+			var commomFieldsSet = intersectionSets(methodFieldsMap.get(method1Signature), methodFieldsMap.get(method2Signature));
+
+			if(commomFieldsSet.size === 0)
+	      		numPairMethodNoCommomFieldAccess++;
+	      	else numPairMethodCommomFieldAccess++;
+
+		}
+
+	// LCOM = |P| - |Q|, if |P| > |Q|
+	// LCOM = 0, if |P| <= |Q|
+	
+	var lcom = Math.max((numPairMethodNoCommomFieldAccess - 
+			numPairMethodCommomFieldAccess), 0);
+	
+	return lcom; 
+}
+
 
 /*
 How many fields Accesses?
