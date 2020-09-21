@@ -58,25 +58,27 @@ RFC.prototype.calculateForClassJava = function($class) {
 	var methodsSignatures = new Set();	 
 
 	for (var $method of Query.searchFromInclusive($class).search("method").get())
-		methodsSignatures.add($class.name + '::' + $method.name);
+		methodsSignatures.add($class.name + '::' + $method.name); // TODO change to signature
 
 	//methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
 
 	// Methods called by the methods of $class
 	var $calls = Query.searchFromInclusive($class).search("method").search("call").get();
 
-	$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name ));
+	$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name )); // TODO: does not handle method overload
 
 	/*
 	println("Calls:");
 	$calls.forEach($call => {
-		println("Method: " + $call.name);
+		println("attributes: " + $call.attributes);
+		println("qualifiedDecl: " + $call.arguments);
+		println("name: " + $call.name);
 		println("Class:  " + $call.targetType.name);
 		println();
 		
 	});
-	
 	*/
+
 
 	
 /*
@@ -91,6 +93,33 @@ RFC.prototype.calculateForClassJava = function($class) {
 	//println(Array.from(methodsSignatures));
 	//methodsSignatures.forEach(methodSignature => println(methodSignature));
 	//println(methodsSignatures.content);
+
+	//println(Array.from(methodsSignatures));
 	
 	return methodsSignatures.size; 
+}
+
+
+
+
+RFC.prototype.calculateForClassInd = function($class) {
+
+	// Given a class, its RFC is the addition of:
+	// Method elements
+	// References to any Method
+
+	var methodsSignatures = new Set();	 
+
+	for (var $method of Query.searchFromInclusive($class).search("method").get()){
+		methodsSignatures.add(MetricQuery.getMethodSignature($method));
+
+		var $methodsCalled = MetricQuery.getMethodsCalled($method);
+		for (var $methodCalled of $methodsCalled)
+			methodsSignatures.add(MetricQuery.getMethodSignature($methodCalled));	
+
+
+	}
+
+	//println(Array.from(methodsSignatures));
+	return methodsSignatures.size;
 }
