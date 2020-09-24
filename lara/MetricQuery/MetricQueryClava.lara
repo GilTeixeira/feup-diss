@@ -188,3 +188,101 @@ MetricQuery.getFieldsAccessedDEL = function($method) {
 	
 	return [];
 }
+
+
+MetricQuery.usesClass = function($type, $class) {
+	// Types not tested 
+	//if($type.kind === 'TemplateTypeParmType')
+		//return false;
+
+	
+	/////
+
+
+	if($type.isBuiltin)
+		return false;
+	
+	if($type.kind === 'TemplateTypeParmType')
+		return false;
+
+	if($type.kind === 'RecordType')
+		if($type.decl.name === $class.name) 
+			return true;
+		else return false;
+
+	if($type.isArray)
+		return MetricQuery.usesClass($type.unwrap, $class);
+
+	if($type.isPointer)
+		return MetricQuery.usesClass($type.unwrap, $class);
+
+	if($type.kind === 'ElaboratedType' || $type.kind === 'TemplateSpecializationType'){
+		if( $type.desugarAll.decl.name === $class.name)
+			return true;
+
+		for ($typeArg of $type.templateArgsTypes)
+			if(MetricQuery.usesClass($typeArg, $class))
+				return true;
+
+		return false;
+	}
+		
+
+	
+	//if($type.kind === 'ConstantArrayType')
+		//return MetricQuery.usesClass()
+	
+
+	/////// tests
+	/*
+	println("type: " + $type.kind);
+	println("hasSugar: " + $type.hasSugar);
+	println("unwrap: " + $type.unwrap);
+	println("desugarAll: " + $type.desugarAll.decl.name);
+	println("hasTemplateArgs: " + $type.hasTemplateArgs);
+
+	//println("fieldTree: " + $type.fieldTree);
+
+	
+	
+
+	println("ERRRORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr");
+	println($type.kind);
+	return false;
+	*/
+	throw new Error('MetricQuery.usesClass not implemented when type is ' + $type.kind); 
+}
+
+// IMP : Can have duplicates
+MetricQuery.usedClasses = function($type) {
+
+	if($type.isBuiltin)
+		return [];
+	
+	if($type.kind === 'TemplateTypeParmType')
+		return [];
+
+	if($type.kind === 'RecordType')
+		return [$type.decl];
+
+	if($type.isArray)
+		return MetricQuery.usedClasses($type.unwrap);
+
+	if($type.isPointer)
+		return MetricQuery.usedClasses($type.unwrap);
+
+	if($type.kind === 'ElaboratedType' || $type.kind === 'TemplateSpecializationType'){
+		var $classesUsed = [];
+		
+		$classesUsed.push($type.desugarAll.decl);
+
+		for ($typeArg of $type.templateArgsTypes)
+			$classesUsed = $classesUsed.concat(MetricQuery.usedClasses($typeArg));
+
+		return $classesUsed;
+	}
+		
+
+	throw new Error('MetricQuery.usedClasses not implemented when type is ' + $type.kind); 
+}
+
