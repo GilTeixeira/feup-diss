@@ -7,3 +7,184 @@ MetricQuery.getSuperClasses = function($class) {
 	return $class.bases;
 }
 
+
+MetricQuery.getMethodSignature = function($method) {
+	return $method.signature;
+}
+
+
+MetricQuery.getMethodsCalled = function($method) {
+	//var $calls = Query.searchFrom($method).search("method", $method.name).search('call').get();
+
+	// Methods called by the methods of $class
+	//println('method: ' + $method.signature);
+	//var methodsCalled = Query.search("method", {"signature": s => s === $method.signature}).search("memberCall").get();
+	var $memberCalls = Query.searchFrom($method.definitionJp).search("memberCall").get();
+
+	return $memberCalls.map($memberCall => $memberCall.definition);
+
+}
+
+
+MetricQuery.getFieldsAccessed = function($method) {
+
+	var $fieldsAccessed = [];
+
+	var $memberAccesses = Query.search("method", {"signature": s => s === $method.signature}).search('memberAccess').get();	
+
+	for(var $memberAccess of $memberAccesses) {
+		$classBase = MetricQuery.getMemberAccessBaseClass($memberAccess);
+
+		//println("$classBase:" + $classBase);
+		//println("fields:" + $classBase.fields);
+		
+		for($field of $classBase.fields)
+			if($field.name === $memberAccess.name){
+				$fieldsAccessed.push($field);
+				break;
+			}
+
+	
+
+	}
+
+	return $fieldsAccessed;
+
+}
+
+MetricQuery.getMemberAccessBaseClass = function($memberAccess) {
+
+	if($memberAccess.base.joinPointType === 'this'){
+		return $memberAccess.base.decl;
+	}
+
+	if($memberAccess.base.joinPointType === 'varref'){
+		return $memberAccess.base.decl.type.decl;
+		//println("Class Base: " + $memberAccess.base.decl.type.decl.name);	
+		//println("Class Methods: " + $memberAccess.base.decl.type.decl.methods);
+	}
+		
+	
+	if($memberAccess.base.joinPointType === 'memberAccess'){
+		if($memberAccess.base.type.isPointer){
+			return $memberAccess.base.type.pointee.decl;
+		 }			
+		else  {				
+			return $memberAccess.base.type.decl;	
+		 	
+		}
+	
+		//println("ret: " + $memberAccess.base.type);	
+		//return $memberAccess.base.type.decl;
+		//println("Code:       " + $memberAccess.code);	
+		//println("BaseJPType: " + $memberAccess.base.joinPointType);	
+		//println("Kind: " + $memberAccess.base.type.kind);	
+		//println("Class Base: " + $memberAccess.base.type.decl);
+	}
+
+
+}
+
+
+MetricQuery.getFieldsAccessedDEL = function($method) {
+	//if($method.parent.name !== "AccessTest")
+		//return [];
+
+	println('method: ' + $method.signature);
+	println();
+	println();
+	println();
+/*
+	var methodFieldsMap = new Map();
+	var $memberAccesses = [];
+	var $memberAccesses = Query.searchFrom($method.definitionJp,"memberAccess").get();
+
+	
+
+	for ($memberAccess of $memberAccesses){
+		if($memberAccess.decl)
+		println("$memberAccess: " + $memberAccess.decl.name);
+		else println("$memberAccess: " + $memberAccess.decl);
+		println("$memberName: " + $memberAccess.name);
+		println();
+		}
+	
+
+	// MemberAccesses to the name of the Access
+	memberAccessesNames = $memberAccesses.map(jp => jp.name);
+
+	// Only field accesses
+	//for($field of $class.fields)
+	//	if(memberAccessesNames.includes($field.name))
+	//		fieldsAccessed.push($field.name);
+			
+
+	methodFieldsMap.set($method.name, $memberAccesses);
+	*/
+	/*
+	var $memberAccesses = Query.searchFrom($method.definitionJp,"varref").get();
+
+	for ($memberAccess of $memberAccesses){
+		if($memberAccess.decl)
+		println("$memberAccess: " + $memberAccess.decl.name);
+		else println("$memberAccess: " + $memberAccess.decl);
+		println("$memberName: " + $memberAccess.name);
+		println();
+	}
+	*/
+		var fieldsAccessed = Query.searchFromInclusive($method).search('memberAccess').get();
+		//var fieldsAccessed = Query.search('method', 'accessTest').search('memberAccess').get(); 
+		var fieldsAccessed = Query.search("method", {"signature": s => s === $method.signature}).search('memberAccess').get();
+		//Query.search("method", {"signature": s => s === $method.signature})
+
+		var ffieldAccessed = fieldsAccessed[1];
+		println("att: ");
+		println(ffieldAccessed.attributes);
+
+		for(var fieldAccessed of fieldsAccessed) {
+		println("Code: " + fieldAccessed.code);
+		//println("Type: " + fieldAccessed.base.type.name); // works for 2 and 4
+		println("BASE joinPointType: " + fieldAccessed.base.joinPointType); //  atal.age
+
+
+		println();
+		println("ast: ");
+		println(fieldAccessed.ast);
+		println();
+		println("node: ");
+		println(fieldAccessed.getNode());
+		println(fieldAccessed.vardecl);
+		println();
+		println();
+		println();
+		
+		var memberchild = fieldAccessed.child(0);
+		println("memberchilddecl :" + memberchild.decl);
+		//if( memberchild.decl)
+		//println("memberchilddecl :" + memberchild.decl.code);
+
+		println();
+		println();
+		println();
+		}
+
+		/*
+		for(var fieldAccessed of fieldsAccessed) {
+		println("Code: " + fieldAccessed.code);
+		//println("Type: " + fieldAccessed.base.type.name); // works for 2 and 4
+		println("BASE joinPointType: " + fieldAccessed.base.joinPointType); //  atal.age
+		if(fieldAccessed.base.decl !== undefined)
+					println("BASE1: " + fieldAccessed.base.decl.name); // this.age
+				else
+					if (fieldAccessed.base.vardecl !== undefined)
+						println("BASE2: " + fieldAccessed.base.vardecl.type.name); //  atal.age
+					else if (fieldAccessed.base.type.pointee !== undefined)
+						println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->at)->age
+					else println("BASE4: " + fieldAccessed.base.type.methods); //  (this->ata).age
+		println();
+	
+	}
+	*/
+	
+	return [];
+}
