@@ -8,6 +8,7 @@ class Animal {
     void animalSound() {
     std::cout << "The animal makes a sound " << std::endl;
   }
+  	int getAge() { return age;}
 };
 
 // Derived class
@@ -25,5 +26,5 @@ class Dog : public Animal {
   public:
     void animalSound() {
     std::cout << "The dog says: bow wow "<< ancestor->age << std::endl;
-  }\
+  }
 };

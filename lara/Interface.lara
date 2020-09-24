@@ -2,8 +2,8 @@ import weaver.Query;
 
 import InterfaceUtils;
 import Metrics.Metrics;
-//import MetricQuery.MetricQueryClava;
-import MetricQuery.MetricQueryKadabra;
+import MetricQuery.MetricQueryClava;
+//import MetricQuery.MetricQueryKadabra;
 
 /**
  * Aspect used to test the metrics.
@@ -22,17 +22,17 @@ aspectdef Interface
 	//classMetrics.push(new DIT());
 	//classMetrics.push(new RFC());
 	//classMetrics.push(new WMC());
-	//classMetrics.push(new LCOM94());
+	classMetrics.push(new LCOM94());
 	//classMetrics.push(new CBO());
 	
-/*
-	testClassMetricCpp(new LCOM94());
-	testClassMetricCpp(new WMC());
-	testClassMetricCpp(new RFC());
+	
+	//testClassMetricCpp(new NOC());
+	//testClassMetricCpp(new DIT());
+	//testClassMetricCpp(new RFC());	
+	//testClassMetricCpp(new WMC());
+	//testClassMetricCpp(new LCOM94());
 	testClassMetricCpp(new CBO());
-	testClassMetricCpp(new DIT());
-	testClassMetricCpp(new NOC());
-*/ 
+
 
 
 	
@@ -40,7 +40,7 @@ aspectdef Interface
 	//testClassMetricJava(new DIT());
 	//testClassMetricJava(new RFC());
 	//testClassMetricJava(new WMC());
-	testClassMetricJava(new LCOM94());
+	//testClassMetricJava(new LCOM94());
 	//testClassMetricJava(new CBO());
 	
 
@@ -53,8 +53,8 @@ aspectdef Interface
 	//testClassMetricInd(new DIT());
 	//testClassMetricInd(new RFC());  // Different from Java because it does not count System, Math calls
 	//testClassMetricInd(new WMC());
-	testClassMetricInd(new LCOM94());
-	//testClassMetricInd(new CBO());
+	//testClassMetricInd(new LCOM94());
+	testClassMetricInd(new CBO());
 
 
 	/////////////////////////////////
@@ -77,5 +77,33 @@ aspectdef Interface
 		
 	});
 	*/
+
+
+	////// TEST member access 
+	/*
+	var memberAccess = Query.search('class','Animal').search("method",'getAge').search("memberAccess").first();
+	println("memberAccess:");
+	println(memberAccess.base.joinPointType );
+	var fieldAccessed = memberAccess;
+	if(fieldAccessed.base.joinPointType === 'this'){
+		println("Code:       " + fieldAccessed.code);	
+		println("BaseJPType: " + fieldAccessed.base.joinPointType);	
+		println("Class Base: " + fieldAccessed.base.decl.name);	
+		println("Class Methods: " + fieldAccessed.base.decl.methods);
+
+	}
+
+
+	if(fieldAccessed.base.joinPointType === 'varref'){
+		println("Code:       " + fieldAccessed.code);	
+		println("BaseJPType: " + fieldAccessed.base.joinPointType);	
+		println("Class Base: " + fieldAccessed.base.decl.type.decl.name);	
+		println("Class Methods: " + fieldAccessed.base.decl.type.decl.methods);
+	}
+	*/
+
+	var classAcessTest =  Query.search('class','AccessTest').first();
+	MetricQuery.getFieldsAccessed(classAcessTest.methods[0]);
+	
 
 end

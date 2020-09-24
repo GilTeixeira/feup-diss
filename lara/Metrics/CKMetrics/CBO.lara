@@ -64,6 +64,7 @@ CBO.prototype.calculateForClass = function($class) {
 	// Fields Accessed by the methods of $class
 	var fieldsAccessed = Query.search("method", {"record": r => r.name === $class.name}).search("memberAccess").get();
 
+	/*
 	for(var fieldAccessed of fieldsAccessed) {
 	println("Code: " + fieldAccessed.code);
 	println("Type: " + fieldAccessed.base.type.name);
@@ -79,7 +80,7 @@ CBO.prototype.calculateForClass = function($class) {
 	}
 
 	println();
-
+	*/
 	
 
 
@@ -224,4 +225,112 @@ CBO.prototype.calculateForClassJava = function($class) {
 	return classesCoupled.size;
 
 	
+}
+
+
+// Override
+CBO.prototype.calculateForClassInd = function($class) {
+	println("Class: " + $class.name);
+
+   // The Coupling Between Object classes metric represents the number of classes coupled to a given class. This coupling can happen throuhg:
+    // method call
+    // class extends
+    // properties or parameters
+    // method arguments, or return types
+    // variables in methods
+
+
+	// CPP TYPES
+	//// adjustedType
+	//// arrayType
+	//// 
+	//// 
+	//// 
+    
+
+    
+	var $classesCoupled = new Set();
+	/*
+    	for (var $method of Query.searchFromInclusive($class).search("method").get()){
+		
+		var $methodsCalled = MetricQuery.getMethodsCalled($method);
+		$methodsCalled = $methodsCalled.filter($methodCalled=> $methodCalled.parent.name !== $class.name);
+		for (var $methodCalled of $methodsCalled)
+			$classesCoupled.add($methodCalled.parent.name);	
+
+
+	}
+	*/
+
+
+	for (var $field of Query.searchFromInclusive($class).search("field").get()){
+	//for (var $field of Query.searchFromInclusive($class).search("field", "myobject4").get()){
+
+		/*
+		if($field.type.isBuiltin)
+			continue;
+
+		if($field.type.kind === 'RecordType')
+			continue;
+
+		
+		if($field.type.isArray)
+			continue;
+
+		if($field.type.kind === 'TemplateTypeParmType')
+			continue;
+
+		if($field.type.isPointer)
+			continue;	
+		*/
+		println("Field: " + $field.name);
+		var usedClasses = MetricQuery.usedClasses($field.type);
+		for (usedClass of usedClasses)
+			println('used: ' + usedClass.name);
+		/*
+		for(var $class2 of Query.search("class").get()) {
+			if(MetricQuery.usesClass($field.type, $class2))
+				println('used: ' + $class2.name);
+			
+		}
+		*/
+		println();
+		
+		
+
+		/*
+		println("Field: " + $field.name);
+		println("typeReference: " + $field.typeReference);
+		try{
+		// Java
+		//var decl = $field.typeReference.declaration;
+
+		// C
+		println("decl: " + $field.decl);
+		println("type: " + $field.type.kind);
+		var decl = $field.type.decl;
+		println(decl);
+		}
+		catch(err) {
+		println(decl);
+		}
+		println();
+		*/
+
+	}
+
+	var methodCallChain = Query.searchFromInclusive($class).search("method").search("vardecl").get();
+
+	/*
+	for (var $vardecl of methodCallChain){
+		println("name: " + $vardecl.name);
+		println("type: " + $vardecl.type.builtinKind);
+	}
+	*/
+
+	
+
+	
+	println();
+	return $classesCoupled.size;
 }
