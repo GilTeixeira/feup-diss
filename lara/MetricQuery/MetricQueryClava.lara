@@ -12,8 +12,10 @@ MetricQuery.getMethodSignature = function($method) {
 	return $method.signature;
 }
 
-
-MetricQuery.getMethodsCalled = function($method) {
+// memberCall.definition does not give method, gives FunctionProtoType
+// how to get method?
+// Possible solution: memberCall.signature
+MetricQuery.getMethodsCalledv0 = function($method) {
 	//var $calls = Query.searchFrom($method).search("method", $method.name).search('call').get();
 
 	// Methods called by the methods of $class
@@ -21,7 +23,47 @@ MetricQuery.getMethodsCalled = function($method) {
 	//var methodsCalled = Query.search("method", {"signature": s => s === $method.signature}).search("memberCall").get();
 	var $memberCalls = Query.searchFrom($method.definitionJp).search("memberCall").get();
 
+	/*
+	println("-----MetricQuery.getMethodsCalled");	
+	println("Method: " + $method.name);
+	$memberCalls.forEach($memberCall => {
+		println("$memberCall: " + $memberCall.code);
+		println("definition.name: " + $memberCall.function.name);
+		println("definition.type.kind: " + $memberCall.function.type.kind);
+		println("	parent.name: " + $memberCall.function.parent.name);
+		println("AST: ");
+		//println($memberCall.ast);
+		println($memberCall.attributes);
+		println($memberCall.decl.type.kind);
+		println($memberCall.declaration);
+		println($memberCall.definition.type.kind);
+		println($memberCall.definition.type.unwrap);
+		println($memberCall.function.type.kind);
+		println($memberCall.isMemberAccess);
+		println($memberCall.signature);
+		println($memberCall.vardecl);
+		println();
+		
+
+		///println("	base: " + $memberCall.base.type.kind);
+		//if($memberCall.base.type.kind !== 'RecordType' && $memberCall.base.type.kind !== 'PointerType')
+			//throw $memberCall.base.type.kind;
+
+		
+	
+	});
+	
+	println("+++++MetricQuery.getMethodsCalled");
+	*/
+
 	return $memberCalls.map($memberCall => $memberCall.definition);
+
+}
+
+MetricQuery.getMethodsCalled = function($method) {
+	var $memberCalls = Query.searchFrom($method.definitionJp).search("memberCall").get();
+	return $memberCalls.map($memberCall =>  Query.search('method', {"signature": s => s === $memberCall.signature}).first());
+
 
 }
 
@@ -262,8 +304,12 @@ MetricQuery.usedClasses = function($type) {
 	if($type.kind === 'TemplateTypeParmType')
 		return [];
 
-	if($type.kind === 'RecordType')
-		return [$type.decl];
+	if($type.kind === 'RecordType'){
+		if($type.decl.kind === 'class') // could also be struct
+			return [$type.decl];
+		else 
+			return [];
+	}
 
 	if($type.isArray)
 		return MetricQuery.usedClasses($type.unwrap);
@@ -280,8 +326,7 @@ MetricQuery.usedClasses = function($type) {
 			$classesUsed = $classesUsed.concat(MetricQuery.usedClasses($typeArg));
 
 		return $classesUsed;
-	}
-		
+	}		
 
 	throw new Error('MetricQuery.usedClasses not implemented when type is ' + $type.kind); 
 }
