@@ -1,4 +1,19 @@
 
+function testClassMetrics(metrics, language){
+
+	for(metric of metrics) {
+		if(language === "c++")
+			 testClassMetricCpp(metric);
+
+		if(language === "java")
+			 testClassMetricJava(metric);	 
+
+		if(language === "ind")
+			 testClassMetricInd(metric);	 
+		
+	}
+}
+
 
 function testClassMetricCpp(metric){
 

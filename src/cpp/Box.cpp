@@ -6,11 +6,16 @@ class Box {
       double breadth;        // Breadth of a box
       double height;         // Height of a box
 
+      Dog dog;
+
       // Member functions declaration
       double getVolume(void);
       void setLength( double len );
       void setBreadth( double bre );
       void setHeight( double hei );
+
+       Cat returnTest();
+       void returnTest2();
 };
 
 // Member functions definitions
@@ -40,12 +45,20 @@ void Box::setLength( double len ) {
 void Box::setBreadth( double bre ) {
    Pig myAnimal;
 
-   myAnimal.animalSound();
    breadth = bre;
 }
 void Box::setHeight( double hei ) {
    height = hei;
    int z;
   z = addition (5,3);
+}
+
+Cat Box::returnTest() {
+	Cat(); 
+	return Cat();
+}
+
+void Box::returnTest2() {
+	Tiger();
 }
 

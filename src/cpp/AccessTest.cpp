@@ -41,8 +41,8 @@ class AccessTestAux {
 		return age;	
 	}
 
-	int getAge(int plus){
-		return age + plus;	
+	int getAgePlus(int plus){
+		return getAge() + plus;	
 	}
 
 };
@@ -56,7 +56,8 @@ class AccessTest {
 	AccessTest ** atts;
 	Employee e;
 
-	std::pair <int, char> PAIR1 ; 
+	// Number of methods increase with this uncommented
+	//std::pair <int, char> pair1; 
 
 	char * buffer = (char*) malloc (5);
 
@@ -71,7 +72,8 @@ class AccessTest {
   	int age = 0;
     int accessTest() {
     		AccessTestAux atal;
-    		return age + ata.age + at->age + atal.age + atal.getAge();
+    		return age + ata.age + at->age + atal.age + atal.getAge() + atal.age +  atal.age;
     
   }
+
 };

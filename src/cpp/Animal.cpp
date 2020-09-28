@@ -28,3 +28,21 @@ class Dog : public Animal {
     std::cout << "The dog says: bow wow "<< ancestor->age << std::endl;
   }
 };
+
+
+// Derived class
+class Cat : public Animal {
+	Animal* ancestor;
+  public:
+    void animalSound() {
+    std::cout << "The cat says: miau "<< ancestor->age << std::endl;
+  }
+};
+
+// Derived class
+class Tiger : public Animal {
+  public:
+    void animalSound() {
+    std::cout << "The cat says: miau " << std::endl;
+  }
+};

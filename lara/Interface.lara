@@ -12,8 +12,11 @@ aspectdef Interface
 	
 	printNumberOfClasses();
 
-	var classMetrics = [];
+	var classMetrics = [new NOC(),new DIT(), new RFC(), new WMC(), new LCOM94()];
 	var functionMetrics = [];
+
+	testClassMetrics(classMetrics,"c++");
+	testClassMetrics(classMetrics,"ind");
 
 
 	// Add metrics
@@ -104,6 +107,9 @@ aspectdef Interface
 
 	var classAcessTest =  Query.search('class','AccessTest').first();
 	MetricQuery.getFieldsAccessed(classAcessTest.methods[0]);
+
+	//var cbometric = new CBO();
+	//var metricResult = cbometric.calculateForClassInd(classAcessTest);
 	
 
 end

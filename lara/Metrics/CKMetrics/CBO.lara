@@ -230,7 +230,7 @@ CBO.prototype.calculateForClassJava = function($class) {
 
 // Override
 CBO.prototype.calculateForClassInd = function($class) {
-	println("Class: " + $class.name);
+	//println("Class: " + $class.name);
 
    // The Coupling Between Object classes metric represents the number of classes coupled to a given class. This coupling can happen throuhg:
     // x / method call (TODO check call of constructors)
@@ -277,8 +277,8 @@ CBO.prototype.calculateForClassInd = function($class) {
 	}
 
 	for (var $field of Query.searchFrom($class).search("vardecl").get()){
-		println("vardecl : " + $field.code);
-		println("$type : " + $field.type);
+		//println("vardecl : " + $field.code);
+		//println("$type : " + $field.type);
 		var $classesUsed = MetricQuery.usedClasses($field.type);
 		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
 
@@ -367,7 +367,7 @@ CBO.prototype.calculateForClassInd = function($class) {
 	
 
 	
-	println("classesCoupled: " + Array.from(classesCoupled));
-	println();
+	//println("classesCoupled: " + Array.from(classesCoupled));
+	//println();
 	return classesCoupled.size;
 }
