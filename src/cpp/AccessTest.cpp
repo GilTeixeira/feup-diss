@@ -17,7 +17,7 @@ class MyPair {
   public:
     MyPair (T first, T second)
     {
-      values[0]=first; values[1]=second;
+      //values[0]=first; values[1]=second;
     }
 };
 

@@ -354,6 +354,29 @@ aspectdef Questions
 
 		*/
 
+	////// TEST member access 
+	/*
+	var memberAccess = Query.search('class','Animal').search("method",'getAge').search("memberAccess").first();
+	println("memberAccess:");
+	println(memberAccess.base.joinPointType );
+	var fieldAccessed = memberAccess;
+	if(fieldAccessed.base.joinPointType === 'this'){
+		println("Code:       " + fieldAccessed.code);	
+		println("BaseJPType: " + fieldAccessed.base.joinPointType);	
+		println("Class Base: " + fieldAccessed.base.decl.name);	
+		println("Class Methods: " + fieldAccessed.base.decl.methods);
+
+	}
+
+
+	if(fieldAccessed.base.joinPointType === 'varref'){
+		println("Code:       " + fieldAccessed.code);	
+		println("BaseJPType: " + fieldAccessed.base.joinPointType);	
+		println("Class Base: " + fieldAccessed.base.decl.type.decl.name);	
+		println("Class Methods: " + fieldAccessed.base.decl.type.decl.methods);
+	}
+	*/
+	
 	// Questions 
 
 	// Kadabra keeps copying test java files to base folder directory (Clava does not do this).
@@ -386,6 +409,37 @@ aspectdef Questions
 	// jp.getNode().signature
 
 
+
+		/////////////////////////////////
+
+	//for (var $method of Query.search('class','My_Calculation').search("method",'main').get())
+	//	methodsSignatures.add($class.name + '::' + $method.name); // TODO change to signature
+
+	//methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
+
+	// Methods called by the methods of $class
+	//var $methods = Query.search('class','My_Calculation').search("method").get();
+	//var $calls = Query.search('class').search("method").search("call").get();
+
+	//$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name ));
+
+	/*
+	println("Calls:");
+	$methods.forEach($method => {
+		MetricQuery.getMethodsCalled($method);
+		
+	});
+	*/
+
+
+
+
+	//var classAcessTest =  Query.search('class','AccessTest').first();
+	//MetricQuery.getFieldsAccessed(classAcessTest.methods[0]);
+
+	//var cbometric = new CBO();
+	//var metricResult = cbometric.calculateForClassInd(classAcessTest);
+	
 
 	
 end

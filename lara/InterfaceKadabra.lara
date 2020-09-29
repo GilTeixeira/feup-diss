@@ -1,0 +1,29 @@
+import weaver.Query;
+
+import InterfaceUtils;
+import Metrics.Metrics;
+
+import MetricQuery.MetricQueryKadabra;
+
+/**
+ * Aspect used to test the metrics.
+ */
+aspectdef Interface
+	
+	printNumberOfClasses();
+
+	var classMetrics = [
+		//new NOC(), 
+		//new DIT(), 
+		//new RFC(),    // RFC ind different from Java because it does not count System, Math calls
+		//new WMC(), 
+		new LCOM94(), 
+		//new CBO()
+	];
+	var functionMetrics = [];
+
+	
+	testClassMetrics(classMetrics,"java");
+	testClassMetrics(classMetrics,"ind");
+
+end

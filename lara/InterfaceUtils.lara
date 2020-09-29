@@ -67,6 +67,7 @@ function printNumberOfClasses(){
 	var numberOfClasses = $classes.length;
 
 	println('The project has ' + numberOfClasses + ' classes');
+	println();
 }
 
 function printSuperClasses(){
