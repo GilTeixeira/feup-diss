@@ -3,18 +3,20 @@ import weaver.Query;
 import weaver.Selector;
 
 /**
- *  LARA Questions
+ *  Difference between compilers
  */
 aspectdef Diffs
 
 	// CLAVA --- KADABRA
 
-	// Function/Methods --- Methods
+	// Function/Methods --- Methods   
 
-	// Class.bases --- Class.superClass
+	// Class.bases --- Class.superClass // bases -> array of classes, superClass -> name of classe
 
-	// method.record --- method.parent (kadabra does not have record, but clava has parent)
+	// vardecl -- localVariable
 
-	// Set.size --- Set.size()
+
+	
+
 
 end

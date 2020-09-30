@@ -17,7 +17,7 @@ aspectdef Interface
 		//new DIT(), 
 		//new RFC(),    // RFC ind different from Java because it does not count System, Math calls
 		//new WMC(), 
-		new LCOM94(), 
+		//new LCOM94(), 
 		//new CBO()
 	];
 	var functionMetrics = [];
@@ -25,5 +25,84 @@ aspectdef Interface
 	
 	testClassMetrics(classMetrics,"java");
 	testClassMetrics(classMetrics,"ind");
+
+	// Random Tests
+
+	/*
+	var method = Query.search('class','Farm').search('method','getPair2').first();
+	println(method.returnRef);
+	println("decl: " + method.returnRef.declaration.joinPointType);
+	println(method.returnRef.ast);
+
+	for (child of method.returnRef.children)
+		println(child);
+
+	println('descendant');
+	for (descendant of method.returnRef.descendants)
+		println(descendant);
+
+	var vars = Query.search('class','Farm').search('method','getPair2').search('localVariable').get();
+	println();	
+	println('vars');	
+	for (svars of vars)
+		println(svars.code);
+
+	*/
+
+	/*
+	var farmClass = Query.search('class','Farm').first();
+
+	var farmClassMet = Query.search('class','Farm').search('method','getPuppyArr').first();
+	println(farmClassMet.returnRef.isArray);
+	println(farmClassMet.returnRef.ast);
+
+	*/
+
+
+	//var metric = new CBO();
+	//metric.calculateForClassInd(farmClass);
+
+	//println("final");
+	//var uc = MetricQuery.usedClasses(farmClassMet.returnRef);
+	//println("used classes:" +  uc.length);
+
+	/// debugging used classes
+	//println(farmClassMet.returnRef.isArray);
+	//println(farmClassMet.returnRef.ast);
+	//println(farmClassMet.returnRef.descendants[0].declaration);
+
+/*
+	$typeReference.isPrimitive){
+		
+			var $classDeclaration = $typeReference.decl;
+	println("decl: " + $classDeclaration);
+	println(2);
+			if($classDeclaration !== undefined && $classDeclaration.joinPointType === 'class'){
+				$classesUsed.push($classDeclaration);
+println(3);
+	
+
+	var printlnCall = Query.search('class','Puppy').search('method','getAge').search('call').get()[0];
+	println(printlnCall.ast);
+	println("className: " + printlnCall.declarator);
+	println("methodName: " + printlnCall.name);
+	//println("method :" + calls.child(1).declaration);
+
+
+	var sqrtCall = Query.search('class','Puppy').search('method','getAge').search('call').get()[1];
+	print(sqrtCall.ast);
+
+	//print(sqrtCall.child(1).decl);
+
+	for(calls of Query.search('class','Puppy').search('method','main').search('call').get()){
+		println("code :" + calls.code);
+		//println("method :" + calls.child(1).declaration);
+		println("class: " + calls.declarator);
+		println("method: " + calls.name);
+		println();
+	}
+		
+	*/
+
 
 end

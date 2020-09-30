@@ -26,4 +26,15 @@ aspectdef Interface
 	testClassMetrics(classMetrics,"c++");
 	testClassMetrics(classMetrics,"ind");
 
+	// Random Tests
+
+	/*
+	var vars = Query.search('class','AccessTest').search('method','accessTest').search('vardecl').get();
+	println();	
+	println('vars');	
+	for (svars of vars)
+		println(svars.code);
+
+	*/
+
 end

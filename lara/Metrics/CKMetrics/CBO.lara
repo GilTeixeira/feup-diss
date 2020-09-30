@@ -262,7 +262,7 @@ CBO.prototype.calculateForClassInd = function($class) {
 		for (var $methodCalled of $methodsCalled)
 			classesCoupled.add($methodCalled.parent.name);
 
-		var $classesUsed = MetricQuery.usedClasses($method.returnType);  // TODO : This is gonna explode in Java
+		var $classesUsed = MetricQuery.usedClasses($method.returnRef);  // TODO : This is gonna explode in Java //TODO:
 		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
 
 
@@ -271,15 +271,19 @@ CBO.prototype.calculateForClassInd = function($class) {
 
 
 	for (var $field of Query.searchFromInclusive($class).search("field").get()){
-		var $classesUsed = MetricQuery.usedClasses($field.type);
+		//println("$field: " + $field);
+		//println("$class: " + $class);
+		var $classesUsed = MetricQuery.usedClasses($field.typeReference);                      //TODO:
 		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
 
 	}
 
-	for (var $field of Query.searchFrom($class).search("vardecl").get()){
-		//println("vardecl : " + $field.code);
-		//println("$type : " + $field.type);
-		var $classesUsed = MetricQuery.usedClasses($field.type);
+	for (var $field of Query.searchFrom($class).search("localVariable").get()){         //TODO:
+		println("vardecl : " + $field.code);
+		println("type : " + $field.typeReference);
+		//println("$type : " + $field.type); 
+		var $classesUsed = MetricQuery.usedClasses($field.typeReference);       //TODO:
+		println("$classesUsed : " + $classesUsed);
 		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
 
 	}

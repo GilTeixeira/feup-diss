@@ -94,3 +94,63 @@ MetricQuery.getMethodSignature = function($method) {
 	//Signature in format Class::Method(paramType...)
 	return $method.parent.name + "::" + $method.getNode().signature;
 }
+
+MetricQuery.usedClasses = function($typeReference) {
+
+	var $classesUsed = [];
+
+	$typeReferencesUsed = $typeReference.descendants.concat($typeReference);
+	//print($typeReferencesUsed);
+
+	/*
+	println(1);
+	if($typeReference.isPrimitive){
+		
+			var $classDeclaration = $typeReference.decl;
+	println("decl: " + $classDeclaration);
+	println(2);
+			if($classDeclaration !== undefined && $classDeclaration.joinPointType === 'class'){
+				$classesUsed.push($classDeclaration);
+println(3);
+}
+println(4);
+				
+	}
+	*/
+		
+	
+	for ($typeReferenceUsed of $typeReferencesUsed){
+	
+		if(!$typeReferenceUsed.isPrimitive && !$typeReferenceUsed.isArray){
+			println(1);
+			println($typeReferenceUsed.ast);
+			println($typeReferenceUsed.isArray);
+			var $classDeclaration = $typeReferenceUsed.declaration;
+			println(2);
+
+			if($classDeclaration !== undefined && $classDeclaration.joinPointType === 'class')
+				$classesUsed.push($classDeclaration);
+			/*
+			println("b4 try");
+			println($typeReferenceUsed.decl);
+			try {
+				println("in1 try");
+				$classDeclaration = $typeReferenceUsed.decl;
+				println("in2 try");
+			}
+			catch(err) {
+				println("in3 try");
+			 	continue; // is System class
+			 	println("in4 try");
+			}
+			println("in5 try");
+
+			if($classDeclaration.joinPointType === 'class')
+				$classesUsed.push($classDeclaration);
+
+			*/
+		}
+	}
+
+	return $classesUsed;
+}

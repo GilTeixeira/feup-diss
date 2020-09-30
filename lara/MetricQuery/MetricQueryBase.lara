@@ -36,3 +36,7 @@ MetricQuery.getFieldsAccessed = function($method) {
 MetricQuery.getMethodSignature = function($method) {
 	notImplemented('MetricQuery.getMethodSignature');
 }
+
+MetricQuery.usedClasses = function($type) {
+	notImplemented('MetricQuery.usedClasses');
+}

@@ -16,6 +16,7 @@ public class Puppy {
 
     public int getAge() {
         System.out.println("Puppy's age is :" + puppyAge);
+        double a = Math.sqrt(23);
         return puppyAge;
     }
 

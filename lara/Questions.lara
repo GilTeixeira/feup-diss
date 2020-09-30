@@ -8,25 +8,45 @@ import weaver.Selector;
 aspectdef Questions
 
 
-
 	/// Kadabra
+
+	// Q1 : Cant get System method/classes?
 	// $call.child(0) -> bases var Ex: (Math) (System.out)
 	// $call.child(1) -> method reference Ex:  (sqrt) (println)
 	// $call.child(2..) -> params var Ex: (a) (b)
 
 	// call.child(1).decl throws exception when system call (System.out, Math.sqrt)
 
+	// possible Solution: getMethodsCalled {classname, methodname, reftomethod}
+
 	
+	var printlnCall = Query.search('class','Puppy').search('method','getAge').search('call').first();
+	println(printlnCall.ast);
+	println("className: " + printlnCall.declarator);
+	println("methodName: " + printlnCall.name);
+	//println("method :" + calls.child(1).declaration); // when it tries to get declaration of method throws exception
+
+	
+
+	// Q2 : Why is the returnRef not an Array?
+	var farmClassMet = Query.search('class','Farm').search('method','getPuppyArr').first();
+	println(farmClassMet.returnRef.isArray);
+	println(farmClassMet.returnRef.ast);
+
+	// Q3: kadabra keeps copying files outside folder
+
 
 
 	/// Clava
 	// Q1 : MyPair values memberAccess throws exception
+	// MyPair in file AccessTest.cpp
 	var values = Query.search('class','MyPair').search("method").search('memberAccess').first();
 	println("field: " + values.name); // 
 	println("basetype: " + values.base.joinPointType); // 
 	//println("decl: " + values.base.decl); // 
 	println();
 
+	// Example of field age working
 	var age = Query.search('class','AccessTestAux').search("method",'getAge').search('memberAccess').first();
 	println("field: " + age.name); // 
 	println("basetype: " + age.base.joinPointType); // 
@@ -35,7 +55,7 @@ aspectdef Questions
  	println();
  	println();
 
-	/*
+	
  	
 	// Q2 : print repeated memberCall
 	var method = Query.search('class','AccessTestAux').search("method",'getAgePlus').first();
@@ -78,367 +98,8 @@ aspectdef Questions
 	println();
 
 
-	*/
-
-
-
-
-	//---------------__///
-
-	// Sonarqube Community version does not support C++
-
-	// Kadabra (Java) does not have memberCall, memberAccess, Bases?
-	
-	// Jackdaw (JS) does not have the  weaver.Query API?
-
-
-	// memberAccess get base class
-	//var fieldsAccessed = Query.search('method', 'accessTest').search('memberAccess').get(); // TODO; memberAccess must belong to class
-
-	/*
-	for(var fieldAccessed of fieldsAccessed) {
-		println("Code: " + fieldAccessed.code);
-		//println("Type: " + fieldAccessed.base.type.name); // works for 2 and 4
-		println("BASE joinPointType: " + fieldAccessed.base.joinPointType); //  atal.age
-		if(fieldAccessed.base.decl !== undefined)
-					println("BASE1: " + fieldAccessed.base.decl.name); // this.age
-				else
-					if (fieldAccessed.base.vardecl !== undefined)
-						println("BASE2: " + fieldAccessed.base.vardecl.type.name); //  atal.age
-					else if (fieldAccessed.base.type.pointee !== undefined)
-						println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->at)->age
-					else println("BASE4: " + fieldAccessed.base.type.methods); //  (this->ata).age
-		println();
-	
-	}
-	*/
-
-
-	//for(var fieldAccessed of fieldsAccessed) {
-
-		//varref
-		//memberAccess
-		
-		/*
-		if(fieldAccessed.base.joinPointType === 'this'){
-			println("Code:       " + fieldAccessed.code);	
-			println("BaseJPType: " + fieldAccessed.base.joinPointType);	
-			println("Class Base: " + fieldAccessed.base.decl.name);	
-			println("Class Methods: " + fieldAccessed.base.decl.methods);
-
-		}
-	
-
-		if(fieldAccessed.base.joinPointType === 'varref'){
-			println("Code:       " + fieldAccessed.code);	
-			println("BaseJPType: " + fieldAccessed.base.joinPointType);	
-			println("Class Base: " + fieldAccessed.base.decl.type.decl.name);	
-			println("Class Methods: " + fieldAccessed.base.decl.type.decl.methods);
-		}	*/
-			
-		/*
-		if(fieldAccessed.base.joinPointType === 'memberAccess'){
-			println("Code:       " + fieldAccessed.code);	
-			println("BaseJPType: " + fieldAccessed.base.joinPointType);	
-			println("Kind: " + fieldAccessed.base.type.kind);	
-			//println("Class Base: " + fieldAccessed.base.type.decl);
-
-			if(fieldAccessed.base.type.isPointer){
-				println("Class Base: " + fieldAccessed.base.type.pointee.decl.name);	
-			 	println("Class Methods: " + fieldAccessed.base.type.pointee.decl.methods);
-
-			 }
-				
-				
-			else  {				
-				println("Class Base: " + fieldAccessed.base.type.decl.name);	
-			 	println("Class Methods: " + fieldAccessed.base.type.decl.methods);
-			}
-			
-			println("Class BaseOri: " + fieldAccessed.base.decl.name);	
-			println("Class MethodsOri: " + fieldAccessed.base.decl.methods);
-
-		}
-*/
-	
-/*
-		if(fieldAccessed.base.decl !== undefined){
-					println("Code: " + fieldAccessed.code);		
-					println("BASE joinPointType: " + fieldAccessed.base.joinPointType); //  atal.age
-					println("BASE1: " + fieldAccessed.base.decl.name); // this.age
-					println("BASE1: " + fieldAccessed.base.decl.type.decl.methods); // this.age
-
-					}
-				else
-					if (fieldAccessed.base.vardecl !== undefined)
-						println("BASE2: " + fieldAccessed.base.vardecl.type.name); //  atal.age
-					else if (fieldAccessed.base.type.pointee !== undefined)
-						println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->at)->age
-					else println("BASE4: " + fieldAccessed.base.type.methods); //  (this->ata).age*/
-		//println();
-	
-	//}
-
-
-	// Wierd search vars
-		/*
-	var methodFieldsMap = new Map();
-	println($class.name);
-
-	for ($method of Query.searchFromInclusive($class).search("method").get()){
-		println("	" + $method.name);
-		var fieldsAccessed = []; // TODO : Maybe change to Set
-		for ($var of Query.searchFromInclusive($method).search("var").get()){
-			println("		" + $var.name);
-			
-				if($var.isField && $var.declaration)  // check if var.decl is  not undefined Ex: (PrintStream)
-					if($var.declaration.parent.name === $class.name)
-						fieldsAccessed.push($var.declaration.name);
-		
-		}
-		println();
-
-		methodFieldsMap.set($method.name, fieldsAccessed);
-
-	}
-	*/ 
-
-	/*
-	var methodFieldsMap = new Map();
-	println($class.name);
-
-	for (query of Query.searchFromInclusive($class).search("method").search("var").chain()){
-		println("	" + query["method"].name);
-		println("	" + query["var"].name);
-		//println("	" + query["var"].parent.srcCode);
-		println();
-		//println("	" + query["method"].name);
-		
-
-	}
-
-	*/
 	/**/
 
-	/*
-
-	println("MemberAccess decl");
-	for(var $memberAccess of Query.search('method', 'accessTest').search('memberAccess').get()) {
-		if($memberAccess.base.joinPointType === 'memberAccess'){
-			println($memberAccess.base.type.isPointer);
-			println($memberAccess.code);
-			println($memberAccess.base.decl.name);}
-	}
-	for(var $memberAccess of Query.search('method', 'accessPointerTest').search('memberAccess').get()) {
-		if($memberAccess.base.joinPointType === 'memberAccess'){
-			println($memberAccess.base.type.isPointer);
-			println($memberAccess.code);
-			println($memberAccess.base.decl.name);}
-	}
-	*/
-
-
-     
-
-/*
-     	var fieldsAccessesByMethod = Query.searchFrom($method.definitionJp,"memberAccess").get(); // TODO; memberAccess must belong to class
-
-
-		for(fieldAccessesByMethod of fieldsAccessesByMethod){
-			if(fieldAccessesByMethod.base.decl !== undefined)
-				continue;				
-			println("METHOD: " + $method.signature);
-			println("BASE: " + fieldAccessesByMethod.getCode());
-
-			// GET CLASS
-			if(fieldAccessesByMethod.base.decl !== undefined)
-				println("BASE: " + fieldAccessesByMethod.base.decl.name); // this.bar1()
-			else
-				println("BASE: " + fieldAccessesByMethod.base.vardecl.type); // myAnimal.animalSound
-
-				memberAccess.base.type.pointee.decl
-
-		//throw statements, switch, case, default, 
-	// ? ternary operator, 
-	//catch, break, continue, goto.
-
-				*/
-
-
-	/* How to get field accesses
-	for (c of Query.search("class").search("method").search("var").chain()){
-		println("class: " + c["class"].name);
-		println("method: " + c["method"].name);
-		println("var: " + c["var"].name);
-		if(c["var"].isField){
-			println("declaration: " + c["var"].declaration); // FIELD
-			if(c["var"].declaration){
-				println("parent: " + c["var"].declaration.parent); // CLASS
-			}
-
-
-		}
-	*/
-
-					/*
-	//println(Query.searchFrom($classes[0]).search('method').get().length);
-	for(c of $classes)
-		println('	'+c.name);
-
-	println("CLASS HERE--: ");
-	println($classes[5].name);
-	println(Query.searchFromInclusive($classes[5]).search('method').get().length);
-	println(Query.search('class',{'name':'Box'}).search('method').get().length);
-	println(Query.search("method", {"record": r => r.name === 'Box'}).get().length);
-
-	println($classes[5].methods.length);
-	println("CLASS HERE--: ");
-
-
-	*/
-
-		/*
-	for (c of Query.search("class").search("method").search("var").chain()){
-		println("class: " + c["class"].name);
-		println("method: " + c["method"].name);
-		println("var: " + c["var"].name);
-		if(c["var"].isField){
-			println("declaration: " + c["var"].declaration); // FIELD
-			if(c["var"].declaration){
-				println("parent: " + c["var"].declaration.parent); // CLASS
-			}
-
-
-		}
-		
-		
-		//if(c["var"].declaration !== undefined)
-			//println("declaration: " + c["var"].declaration.typeReference);
-		//else println("declaration: " + c["var"].declaration);
-		//println("type: " + c["var"].type);
-		
-		//println("typeref: " + c["var"].typeReference);
-
-		//println("referenceChain: " + c["var"].referenceChain);
-		//println("referenceChain: " + c["var"].isField);
-
-		
-		
-
-		
-		println();
-		//println("METHOD: " + c.name);
-	
-	
-		}
-
-
-		
-		var fieldsAccessesByMethod = Query.search("function").search("memberAccess").chain(); // TODO; memberAccess must belong to class
-
-		for(query of fieldsAccessesByMethod){
-			println("METHOD: " + query["function"].signature);
-			println("MEMBER: " + query["memberAccess"].getCode());
-			println("BASE: " + query["memberAccess"].base.getCode());
-			if(query["memberAccess"].base.getCode() === "this")			
-				println("Class Name: " + query["memberAccess"].base.type.pointee.decl.name);
-			else println("Class Name: " + query["memberAccess"].base.vardecl.name);
-			//else println("Class Name: " + query["memberAccess"].base.decl);
-			//println("VARDECL: " + query["memberAccess"].vardecl);
-			println("memberChain: " + query["memberAccess"].memberChain);
-			println("memberChainNames: " + query["memberAccess"].memberChainNames);
-			//println("memberChain: " + fieldAccessesByMethod.memberChain.getCode());
-			println();
-
-		}
-
-		*/
-
-	////// TEST member access 
-	/*
-	var memberAccess = Query.search('class','Animal').search("method",'getAge').search("memberAccess").first();
-	println("memberAccess:");
-	println(memberAccess.base.joinPointType );
-	var fieldAccessed = memberAccess;
-	if(fieldAccessed.base.joinPointType === 'this'){
-		println("Code:       " + fieldAccessed.code);	
-		println("BaseJPType: " + fieldAccessed.base.joinPointType);	
-		println("Class Base: " + fieldAccessed.base.decl.name);	
-		println("Class Methods: " + fieldAccessed.base.decl.methods);
-
-	}
-
-
-	if(fieldAccessed.base.joinPointType === 'varref'){
-		println("Code:       " + fieldAccessed.code);	
-		println("BaseJPType: " + fieldAccessed.base.joinPointType);	
-		println("Class Base: " + fieldAccessed.base.decl.type.decl.name);	
-		println("Class Methods: " + fieldAccessed.base.decl.type.decl.methods);
-	}
-	*/
-	
-	// Questions 
-
-	// Kadabra keeps copying test java files to base folder directory (Clava does not do this).
-
-	// Jackdaw (JS) does not have the  weaver.Query API?
-
-	// MATISSE (MATLAB) was made to transform MATLAB code to C? Does not support joinpoints Class, method...? Does not have the  weaver.Query API?
-
-		//var methodsCalled = Query.search("method", {"signature": s => s === $method.signature}).search("memberCall").get(); // works
-	//var methodsCalled = Query.searchFrom($method).search("memberCall").get(); // does not
-
-
-
-	// How to get from memberAcess, the field or Method accessed?
-	// I can get from the base the class, but then i have to search the class again
-	// why memberaccess also gets methods, and how to get method (i only get the method name, so i cannot know if there is a method overload)
-	// memberaccess.vardecl always undefined?
-	// How to know if memberacess is field or method? C++ does not allow this
-
-		
-	// memberCall.definition does not give method, gives FunctionProtoType
-	// how to get method?
-	// Possible solution: memberCall.signature
-
-		
-	// Better way to MetricQuery.usesClass = function($type) {
-
-	//(Solved)
-	// Implement signature in Kadabra
-	// jp.getNode().signature
-
-
-
-		/////////////////////////////////
-
-	//for (var $method of Query.search('class','My_Calculation').search("method",'main').get())
-	//	methodsSignatures.add($class.name + '::' + $method.name); // TODO change to signature
-
-	//methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
-
-	// Methods called by the methods of $class
-	//var $methods = Query.search('class','My_Calculation').search("method").get();
-	//var $calls = Query.search('class').search("method").search("call").get();
-
-	//$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name ));
-
-	/*
-	println("Calls:");
-	$methods.forEach($method => {
-		MetricQuery.getMethodsCalled($method);
-		
-	});
-	*/
-
-
-
-
-	//var classAcessTest =  Query.search('class','AccessTest').first();
-	//MetricQuery.getFieldsAccessed(classAcessTest.methods[0]);
-
-	//var cbometric = new CBO();
-	//var metricResult = cbometric.calculateForClassInd(classAcessTest);
 	
 
 	
