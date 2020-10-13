@@ -1,0 +1,15 @@
+
+/*
+var foo = {};
+Object.defineProperty(foo, "bar", {
+    // only returns odd die sides
+    get: function () { return (Math.random() * 6) | 1; },
+});
+
+*/
+var foo = {};
+_lara_dummy_ = Object.defineProperty(foo, "bar", {
+    // only returns odd die sides
+    get: function () { return (Math.random() * 6) | 1; }
+});
+

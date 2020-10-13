@@ -2,12 +2,53 @@
 import weaver.Query;
 import weaver.Selector;
 
+import weaver.Ast;
+//import weaver.jp.JoinPoints;
+//import weaver.jp.JoinPointIndex;
+
+
 /**
  *  LARA Questions
  */
 aspectdef Questions
 
+	//var jp = new JoinPoint();
+	var a = new classesMapping["FileJp"]();
+	a.code();
+	//jp.code();
+	/*
+	var app = Ast.root();
 
+	println(app);
+	println();
+
+	var file1 = Ast.getChildren(app)[0];
+
+	var class1 = Ast.getChildren(file1)[3];
+
+	//println(Ast.descendants2(app,[],0).length);
+	//println(class1.getClass().getSimpleName());
+	//println(class1.line);
+
+	printAst(app, '');
+
+	//println(Ast.root45);
+
+	var fds = [3];
+	println(fds);
+	a(fds);
+	println(fds);
+	*/
+
+	//println(Object.keys(app));
+	
+
+	//for( child of Ast.getChildren(Ast.root()))	
+	//	println(child + "\n");
+	
+	//println(Ast.getChildren(Ast.root()));
+
+	/*
 	/// Kadabra
 
 	// Q1 : Cant get System method/classes?
@@ -97,10 +138,32 @@ aspectdef Questions
 	println();
 	println();
 
+	*/
 
 	/**/
 
 	
-
+	
 	
 end
+
+function c(b){
+	b.push(199);
+}
+
+function a(b){
+	println(b);
+	c(b);
+	println(b);
+	return b;
+}
+
+function printAst(root, tab) {
+
+	var children = Ast.getChildren(root);
+	println(tab+root.getClass().getSimpleName());
+	for (child of children)
+		printAst(child,'	'+tab);
+
+}
+
