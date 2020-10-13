@@ -1,5 +1,29 @@
 
-function testClassMetrics(metrics, language){
+function testClassMetrics(metrics){
+
+	for(metric of metrics) {
+		testClassMetric(metric);
+	}
+
+
+
+}
+
+function testClassMetric(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $class of Query.search("class")) {
+		var metricResult = metric.calculateForClass($class);
+		//println($class);
+		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+	}
+
+	println();	
+
+}
+
+function testClassMetricsOld(metrics, language){
 
 	for(metric of metrics) {
 		if(language === "c++")
@@ -15,12 +39,14 @@ function testClassMetrics(metrics, language){
 }
 
 
+
+
 function testClassMetricCpp(metric){
 
 	println('Testing '+ metric.sigla + '\n');
 		
 	for(var $class of Query.search("class")) {
-		var metricResult = metric.calculateForClass($class);
+		var metricResult = metric.calculateForClassCpp($class);
 		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
 	}
 

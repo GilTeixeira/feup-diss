@@ -1,9 +1,10 @@
 import weaver.Query;
+import weaver.jp.ClavaJoinPoints;
 
 import InterfaceUtils;
 import Metrics.Metrics;
 
-import MetricQuery.MetricQueryClava;
+// import MetricQuery.MetricQueryClava;
 
 /**
  * Aspect used to test the metrics.
@@ -15,7 +16,7 @@ aspectdef Interface
 	var classMetrics = [
 		new NOC(), 
 		new DIT(), 
-		new RFC(), 
+		//new RFC(), 
 		//new WMC(), 
 		//new LCOM94(), 
 		//new CBO()      // CBO only corrected implemented in a independent way
@@ -23,8 +24,7 @@ aspectdef Interface
 	var functionMetrics = [];
 
 
-	testClassMetrics(classMetrics,"c++");
-	testClassMetrics(classMetrics,"ind");
+	testClassMetrics(classMetrics);
 
 	// Random Tests
 

@@ -1,4 +1,5 @@
 import weaver.Query;
+import weaver.jp.KadabraJoinPoints;
 
 import InterfaceUtils;
 import Metrics.Metrics;
@@ -13,8 +14,8 @@ aspectdef Interface
 	printNumberOfClasses();
 
 	var classMetrics = [
-		//new NOC(), 
-		//new DIT(), 
+		new NOC(), 
+		new DIT(), 
 		//new RFC(),    // RFC ind different from Java because it does not count System, Math calls
 		//new WMC(), 
 		//new LCOM94(), 
@@ -23,8 +24,9 @@ aspectdef Interface
 	var functionMetrics = [];
 
 	
-	testClassMetrics(classMetrics,"java");
-	testClassMetrics(classMetrics,"ind");
+	testClassMetrics(classMetrics);
+	
+	//testClassMetrics(classMetrics,"ind");
 
 	// Random Tests
 

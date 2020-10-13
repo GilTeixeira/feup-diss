@@ -19,9 +19,30 @@ function DIT() {
 // Inheritance
 DIT.prototype = Object.create(Metric.prototype);
 
-
 // Override
 DIT.prototype.calculateForClass = function($class) {
+	var depth = 0;
+	
+	for($classSuper of $class.superClasses){
+		depthSuperClass = this.calculateForClass($classSuper) + 1;
+		depth =  Math.max(depthSuperClass,depth);
+	}
+	return depth;
+}
+
+
+
+
+
+
+
+
+
+
+
+//==============================================//
+// Override
+DIT.prototype.calculateForClassCpp = function($class) {
 	if($class === null)
 		return 0;
 

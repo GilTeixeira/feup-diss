@@ -1,0 +1,13 @@
+//import weaver.Ast;
+import weaver.Query;
+//import weaver.jp.KadabraJoinPoints;
+//import weaver.jp.JoinPointsCommonPath;
+
+aspectdef Test
+	classes = Query.search("classDeclaration").get();
+	println("num : " + classes.length);
+	println(classes[0].id.name);
+	//printObject(classes[1].superClasses[0]);
+
+
+end

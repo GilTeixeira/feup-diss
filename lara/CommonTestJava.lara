@@ -1,0 +1,170 @@
+//import weaver.jp.ClavaJoinPoints;
+//import weaver.jp.FileJp;
+//import weaver.Query;
+
+
+//import weaver.Ast;
+import weaver.Query;
+import weaver.jp.KadabraJoinPoints;
+//import weaver.jp.JoinPointsCommonPath;
+
+aspectdef Test
+	classes = Query.search("class").get();
+	println(classes.length);
+	println(classes[1].name);
+	println(classes[1].superClasses[0].name);
+/*
+
+	printAst();	
+
+
+
+
+	
+
+	println("Root:");
+	printObject(Ast.root());
+	println("---");
+	
+	print("root:");
+	var root = Weaver.getWeaverEngine().getRootNode();
+	print(Ast.getDescendants(root));
+	print(":");
+	*/
+
+	/*   
+	println("Root:");
+	printObject(Ast.root());
+	println("---");
+	var root = (new JoinPoints()).root();
+	println("---");
+
+	*/ 
+	//println(root);
+
+	//printAst();
+
+	//println(Weaver.AST_METHODS.toJavaJoinPoint(Query.root().astNode).ast);
+	//println(Query.root().ast);
+
+
+
+	
+	//println(Ast.root());
+	//println("call:");
+
+	//printAst();
+
+	//println(Query.search("file").get().length);
+	//println(Query.search("class").get().length);
+	//printAst();
+		
+	//var classes = Query.search("class",'Triple').get();
+	//println(classes[0].name);
+	//printObject(classes[2].superClasses[0].name);
+
+	//println(classes[2].astNode.getMethods());
+	//println(classes[2].astNode.getMethods().map(met =>met.record));
+	///println(classes[2].astNode.getMethods().map(met =>met.record));
+	//var tags = classes[2].superClasses.map(sc => sc.tagKind);
+/*
+	println(Query.search("function").first().instanceOf("file"));
+
+	var call1 = Query.search("file").first();
+	
+	printObject(call1);
+	
+	
+	var calls = Query.search("call").get();
+	
+
+	//printObject(calls);
+	println(calls.length);
+	//println(Query.search("call").get());
+
+	//Query.search("call").get()
+	println("---------FROM HERE------------");
+	var pjp = new FunctionJp({});
+	println("type:");
+	println(pjp instanceof CallJp);
+	/*
+	
+	*/
+
+	/*
+	var b = new B("fd2");
+	println(b.name3);
+	var a = new A("fd");
+	
+	println(a.name3);
+	println(b.name3);
+	println(a.name3);
+	*/
+
+
+end
+
+/**
+ *
+ * @return {$jp[]} the descendants of the given node
+ */
+
+ /*
+JoinPoints.prototype._all_descendants = function($jp) {
+	var newJp = {};
+	newJp.instanceOf = function(joinPointType) {
+	    return true;
+	};
+	
+	newJp.toString = function() {
+	    return "Hello";
+	};
+	
+	return [newJp];
+}*/
+
+
+
+
+
+function A(name2) {
+	this.name2 = name2;
+	this.name3 = 232;
+
+
+}
+
+function B(name2) {	
+	A.call(this, name2);
+	this.name3 = 111;
+
+}
+
+B.prototype = Object.create(A.prototype);
+
+function printAst() {
+	var root = (new JoinPoints()).root();
+	printAstAux(root, "");
+
+}
+
+function printAstAux(root, tab) {
+
+	var children = (new JoinPoints())._all_children(root);
+	//println(tab+root.astNode);
+	println(tab+root.joinPointType);
+	//println(tab+root.astNode.getClass().getSimpleName());
+	/*
+	if(root.astNode.getClass().getSimpleName() === 'CtTypeReferenceImpl'){
+		var astNode = root.astNode;
+		println(tab+astNode.getDeclaration());
+	}
+	*/
+		
+	//println(tab+root.astNode.getValue("tagKind"));
+	for (child of children)
+		printAstAux(child,'	'+tab);
+
+}
+
+
