@@ -26,6 +26,7 @@ WMC.prototype.calculateForClass = function($class) {
 	return $class.methods.length;
 }
 
+/*
 WMC.prototype.calculateForClassJava = function($class) {
 	
 	return  Query.searchFromInclusive($class).search("method").get().length;
@@ -35,4 +36,4 @@ WMC.prototype.calculateForClassInd = function($class) {
 	
 	return  Query.searchFromInclusive($class).search("method").get().length;
 }
-
+*/

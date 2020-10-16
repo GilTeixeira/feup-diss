@@ -1,0 +1,72 @@
+import weaver.Query;
+import weaver.jp.CommonJoinPoints;
+
+import InterfaceUtils;
+import Metrics.Metrics;
+
+
+/**
+ * Aspect used to test the metrics.
+ */
+aspectdef Interface
+	
+	printNumberOfClasses();
+
+	var classMetrics = [
+		new NOC(), 
+		new DIT(), 
+		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
+		new WMC(), 
+		//new LCOM94(), 
+		//new CBO()
+	];
+	var functionMetrics = [];
+
+	testClassMetrics(classMetrics);
+
+	//Tests 
+	// Test class.methods
+	var cl = Query.search("class").first();
+	var mets = cl.methods;
+	println(cl.methods[0].class.name===cl.name);
+	//
+	// Test memberCall
+	var mc = Query.search("memberCall").first();
+	println(mc.method.name);
+	println(mc.class.name);
+	println(mc.function.name);
+	//printObject(mc.astNode.getBase());
+	//println(Weaver.AST_METHODS.toJavaJoinPoint(mc.astNode).decl);
+	
+	
+	
+	/*
+	println(Query.search("function").get().length);
+
+	var dc = new FunctionJpx("");
+	dc.test();
+	*/
+
+end
+/*
+function DeclJpx(astNode) {
+    // Parent constructor
+    this.astNode=astNode;
+    
+}
+DeclJpx.prototype.test = function(joinPointType) {
+	throw this.constructor.name + '.test not implementedre'; 
+}
+
+function FunctionJpx(astNode) {
+    // Parent constructor
+    DeclJpx.call(this,astNode);
+    
+}
+// Inheritance
+FunctionJpx.prototype = Object.create(DeclJpx.prototype);
+
+FunctionJpx.prototype.constructor = FunctionJpx;
+
+*/
+

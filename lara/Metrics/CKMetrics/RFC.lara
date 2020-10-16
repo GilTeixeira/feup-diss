@@ -19,8 +19,28 @@ function RFC() {
 RFC.prototype = Object.create(Metric.prototype);
 
 
-// Override
 RFC.prototype.calculateForClass = function($class) {
+
+	// Given a class, its RFC is the addition of:
+	// Method elements
+	// References to any Method
+
+	var methodsSignatures = new Set();
+
+	for (var $method of $class.methods){
+		methodsSignatures.add($method.signature);
+	
+		var $memberCalls = Query.searchFrom($method).search("memberCall").get();
+		for($memberCall of $memberCalls)
+			methodsSignatures.add($memberCall.method.signature);
+
+	}
+
+	return methodsSignatures.size;
+}
+
+// Override
+RFC.prototype.calculateForClassCpp = function($class) {
 
 	// Given a class, its RFC is the addition of:
 	// Method elements
