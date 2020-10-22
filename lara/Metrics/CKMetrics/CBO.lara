@@ -20,7 +20,208 @@ CBO.prototype = Object.create(Metric.prototype);
 
 
 // Override
+
 CBO.prototype.calculateForClass = function($class) {
+	//The Coupling Between Object classes metric represents the number of classes coupled to a given class. This coupling can happen throuhg:
+
+    //(DONE) method call, field accesses
+    //(DONE) class extends
+    //field or parameters
+    //method arguments, or return types
+    //variables in methods
+
+
+
+	var classesCoupled = new Set();
+
+
+	//$class.allSuperClasses.forEach($classSuper => classesCoupled.add($classSuper.id));
+
+
+	var $fieldRefs = Query.searchFrom($class).search("fieldRef").get();
+	//println($fieldRefs.length);
+	$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.id !== $class.id);
+	//println($fieldRefs.length);
+	//$fieldRefs.forEach($fieldRef => classesCoupled.add($fieldRef.class.id));
+
+
+	var $memberCalls = Query.searchFrom($class).search("memberCall").get();
+	$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class.id !== $class.id);
+	//$memberCalls.forEach($memberCall => classesCoupled.add($memberCall.class.id));
+
+
+	var $params = Query.searchFrom($class).search("param").get();	
+	var $paramsTypes = $params.reduce(($types, $param) => {
+		return $types.concat($param.type.usedTypes);
+	},[]);	
+	//var $paramsTypes = $params.reduce(($types, $param) => {return $types.concat($param.type.usedTypes);},[]);
+	$paramsTypes = $paramsTypes.filter($type => $type.isClass && $type.decl.id !== $class.id);
+	//$paramsTypes.forEach($type => classesCoupled.add($type.decl.id));
+
+
+	var $fields = Query.searchFromInclusive($class).search("field").get();
+	var $fieldsTypes = $fields.reduce(($types, $field) => {
+		return $types.concat($field.type.usedTypes);
+	},[]);	
+	$fieldsTypes = $fieldsTypes.filter($type => $type.isClass && $type.decl.id !== $class.id);
+	$fieldsTypes.forEach($type => classesCoupled.add($type.decl.id));
+
+	return classesCoupled.size;
+
+
+}
+
+
+CBO.prototype.calculateForClassInd2 = function($class) {
+	//println("Class: " + $class.name);
+
+   // The Coupling Between Object classes metric represents the number of classes coupled to a given class. This coupling can happen throuhg:
+    // x / method call (TODO check call of constructors)
+    // x/ class extends (TODO only checking the superClass)
+    // x / properties or parameters
+    // x/ method arguments, or return types
+    // x / variables in methods
+
+    // Call of constructors
+
+
+	// CPP TYPES
+	//// adjustedType
+	//// arrayType
+	//// 
+	//// 
+	//// 
+    
+
+    
+	var classesCoupled = new Set();
+	
+    	for (var $method of Query.searchFromInclusive($class).search("method").get()){
+    		//println($method.signature);
+    		//println($class.methods.length);
+		
+		var $methodsCalled = MetricQuery.getMethodsCalled($method);
+		$methodsCalled = $methodsCalled.filter($methodCalled=> $methodCalled.parent.name !== $class.name);
+		for (var $methodCalled of $methodsCalled)
+			classesCoupled.add($methodCalled.parent.name);
+
+		var $classesUsed = MetricQuery.usedClasses($method.returnRef);  // TODO : This is gonna explode in Java //TODO:
+		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
+
+
+	}
+	
+
+
+	for (var $field of Query.searchFromInclusive($class).search("field").get()){
+		//println("$field: " + $field);
+		//println("$class: " + $class);
+		var $classesUsed = MetricQuery.usedClasses($field.typeReference);                      //TODO:
+		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
+
+	}
+
+	for (var $field of Query.searchFrom($class).search("localVariable").get()){         //TODO:
+		println("vardecl : " + $field.code);
+		println("type : " + $field.typeReference);
+		//println("$type : " + $field.type); 
+		var $classesUsed = MetricQuery.usedClasses($field.typeReference);       //TODO:
+		println("$classesUsed : " + $classesUsed);
+		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
+
+	}
+
+	var $classesInherited = MetricQuery.getSuperClasses($class);
+	for ($classInherited of $classesInherited)
+		classesCoupled.add($classInherited.name); 
+		
+	/*
+	for (var $field of Query.searchFromInclusive($class).search("vardecl").get()){
+		var $classesUsed = MetricQuery.usedClasses($field.type);
+		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
+
+	}
+	*/
+		
+
+
+
+	
+	for (var $field of Query.searchFromInclusive($class).search("field", "myobject4").get()){
+
+		/*
+		if($field.type.isBuiltin)
+			continue;
+
+		if($field.type.kind === 'RecordType')
+			continue;
+
+		
+		if($field.type.isArray)
+			continue;
+
+		if($field.type.kind === 'TemplateTypeParmType')
+			continue;
+
+		if($field.type.isPointer)
+			continue;	
+		*/
+		//println("Field: " + $field.name);
+		//var usedClasses = MetricQuery.usedClasses($field.type);
+		//for (usedClass of usedClasses)
+			//println('used: ' + usedClass.name);
+		/*
+		for(var $class2 of Query.search("class").get()) {
+			if(MetricQuery.usesClass($field.type, $class2))
+				println('used: ' + $class2.name);
+			
+		}
+		*/
+		//println();
+		}
+		
+
+		/*
+		println("Field: " + $field.name);
+		println("typeReference: " + $field.typeReference);
+		try{
+		// Java
+		//var decl = $field.typeReference.declaration;
+
+		// C
+		println("decl: " + $field.decl);
+		println("type: " + $field.type.kind);
+		var decl = $field.type.decl;
+		println(decl);
+		}
+		catch(err) {
+		println(decl);
+		}
+		println();
+		*/
+
+	
+
+	var methodCallChain = Query.searchFromInclusive($class).search("method").search("vardecl").get();
+
+	/*
+	for (var $vardecl of methodCallChain){
+		println("name: " + $vardecl.name);
+		println("type: " + $vardecl.type.builtinKind);
+	}
+	*/
+
+	
+
+	
+	//println("classesCoupled: " + Array.from(classesCoupled));
+	//println();
+	return classesCoupled.size;
+}
+
+
+// Override
+CBO.prototype.calculateForClassCpp = function($class) {
 
 	var classesCoupled = new Set();
 
