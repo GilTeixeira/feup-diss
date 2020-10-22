@@ -21,8 +21,75 @@ function LCOM94() {
 LCOM94.prototype = Object.create(Metric.prototype);
 
 
-// Override
 LCOM94.prototype.calculateForClass = function($class) {
+
+	var methodFieldRefsMap = new Map();
+
+	for ($method of $class.methods){
+		var $fieldRefs = Query.searchFrom($method).search("fieldRef").get();
+		$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.name == $class.name);
+		var fieldRefsNames = $fieldRefs.map($fieldRef => $fieldRef.name);
+		methodFieldRefsMap.set($method.signature,new Set(fieldRefsNames));
+
+	}
+
+
+	/*
+	for ([key, value] of methodFieldsMap.entries()) {
+	  println(key + "  " + Array.from(value));
+	}
+	*/
+
+
+	var numPairMethodCommomFieldAccess = 0; // Q
+	var numPairMethodNoCommomFieldAccess = 0; // P
+
+	for (i = 0; i < $class.methods.length; i++)
+		for (j = i + 1; j < $class.methods.length; j++){
+			var method1Signature = $class.methods[i].signature;
+			var method2Signature = $class.methods[j].signature;
+
+			var commomFieldsSet = intersectionSets(methodFieldRefsMap.get(method1Signature), methodFieldRefsMap.get(method2Signature));
+
+			if(commomFieldsSet.size === 0)
+	      		numPairMethodNoCommomFieldAccess++;
+	      	else numPairMethodCommomFieldAccess++;
+
+		}
+
+	// LCOM = |P| - |Q|, if |P| > |Q|
+	// LCOM = 0, if |P| <= |Q|
+	
+	var lcom = Math.max((numPairMethodNoCommomFieldAccess - 
+			numPairMethodCommomFieldAccess), 0);
+	
+	return lcom; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Override
+LCOM94.prototype.calculateForClassCpp = function($class) {
 	// Required
 	// class.methods : Array of methods
 
