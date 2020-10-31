@@ -3,17 +3,128 @@
 //import weaver.Query;
 
 
-//import weaver.Ast;
+import weaver.Ast;
 import weaver.Query;
-import weaver.jp.KadabraJoinPoints;
+import weaver.jp.CommonJoinPoints;
 //import weaver.jp.JoinPointsCommonPath;
 
+import Property;
+
 aspectdef Test
+	printAst();
+
+	var field = Query.search("field").first();
+	var fieldarr = Query.search("field","arr").first();
+	var map = Query.search("field","map").first();
+	var obj = Query.search("field","obj").first();
+
+	
+	println(field.type.astNode);
+	println(field.type.isClass);
+	println(field.type.isPrimitive);
+	println();
+	
+	println(fieldarr.type.astNode);
+	println(fieldarr.type.isClass);
+	println(fieldarr.type.isPrimitive);
+	println();
+	
+	println(map.type.astNode);
+	println(map.type.isClass);
+	println(map.type.isPrimitive);
+	println();
+	
+	println(obj.type.astNode);
+	println(obj.type.isClass);
+	println(obj.type.isPrimitive);
+	println();
+	
+	println(fieldarr.type.astNode);
+	println(fieldarr.type.isClass);
+	println(fieldarr.type.isPrimitive);
+	//println(map.type.astNode.getClass());
+	
+
+	
+	/*
+	var fieldRef = Query.search("fieldRef").first();
+	println(fieldRef.astNode);
+	println(fieldRef.astNode.getClass().getSimpleName());
+	println(fieldRef.field.class.name);
+	println(fieldRef.class);
+
+	*/
+
+	
+	/*
+	var met = Query.search("field").first();
+	println(met.astNode.getType().getComponentType());
+
+	var mapField = Query.search("field", "map").first();
+	println(mapField.astNode.getType());
+	println(mapField.type.children[0].astNode);
+	println(mapField.type.children[1].astNode);
+	println(mapField.type.usedTypes);
+	*/
+
+/*
+	println();
+	var param = Query.search("param").first();
+	printObject(param.function);
+
+	println();
+	var varDecl = Query.search("varDecl").first();
+	printObject(varDecl.name);
+	printObject(varDecl.type);
+
+	println();
+	var varRef = Query.search("varRef").first();
+	printObject(varRef.name);
+	printObject(varRef.decl.name);
+
+
+	println();
+	printAst();
+
+	*/
+
+	/*
+	var field = Query.search("field").first();
+	println(field.name);
+	println(field.class.name);
+
+	var fieldRef = Query.search("fieldRef").first();
+	println(fieldRef.field.name);
+	println(fieldRef.class.name);
+	*/
+	
+	//classes = Query.search("class",'Calculation').get();
+	//println(classes[0].name);
+/*
+	var root = Ast.root();
+	println("root:");
+	printObject(root);
+	childRoot = Ast.getChildren(root);
+	println("childRoot:");
+	printObject(childRoot);
+
+
+	var jp = new JoinPointJps("astNode");
+	var cl = new CallJps("astNode2");
+	println(jp.code);
+	println(cl.code);
+	//println(test.bar());
+
+
 	classes = Query.search("class").get();
+	for(cl of classes)
+		for(scl of cl.superClasses)
+		println(scl.name);
+		
 	println(classes.length);
 	println(classes[1].name);
 	println(classes[1].superClasses[0].name);
-/*
+
 
 	printAst();	
 
@@ -153,7 +264,7 @@ function printAstAux(root, tab) {
 	var children = (new JoinPoints())._all_children(root);
 	//println(tab+root.astNode);
 	println(tab+root.joinPointType);
-	//println(tab+root.astNode.getClass().getSimpleName());
+	println(tab+root.astNode.getClass().getSimpleName());
 	/*
 	if(root.astNode.getClass().getSimpleName() === 'CtTypeReferenceImpl'){
 		var astNode = root.astNode;
@@ -166,5 +277,9 @@ function printAstAux(root, tab) {
 		printAstAux(child,'	'+tab);
 
 }
+
+
+
+
 
 

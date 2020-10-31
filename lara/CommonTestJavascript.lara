@@ -1,13 +1,119 @@
-//import weaver.Ast;
+import weaver.Ast;
 import weaver.Query;
-//import weaver.jp.KadabraJoinPoints;
+import weaver.jp.CommonJoinPoints;
+import weaver.Weaver;
 //import weaver.jp.JoinPointsCommonPath;
 
 aspectdef Test
-	classes = Query.search("classDeclaration").get();
+	printAst();
+	 
+	//println(Ast.root());
+	var model = Query.search("class","Model").first();
+	var car = Query.search("class","Car").first();
+	var test = Query.search("class","Test").first();
+	println(model.line);
+	println(model.name);
+
+	printObject(model.superClasses[0]);
+	printObject(car.superClasses);
+	println();
+	println();
+	var a = [];
+	println(Array.isArray(a));
+	println(test.methods);
+	//printObject(car.methods[0].parent);
+	println(car.methods[0].astNode);
+	println(a = 3);
+
+	var func = Query.search("function","func").first();
+	println(func.astNode);
+	println(func.signature);
+	//println(Weaver.toJs(test.astNode.get("body").getClass()));
+	//println(test.astNode.get("body").get("body").getClass().isArray());
+	//println(car.astNode.get("body"));
+	var method = Query.search("method","present").first();
+	println(method.signature);
+	//println(func.signature);
+
+	
+	
+	//println(animal.astNode);
+	//println();
+	//printObject(animal.superClasses);
+
+	/*
+	var calls = Query.search("call").first();
+	println("");
+	//println(calls.astNode);
+	println("");
+	//println(calls.children[0].astNode);
+	println("");
+	//println(calls.children[0].parent.astNode);
+	*/
+	
+
+	
+	//animal = Query.search("class","Rabbit").first();
+	//printObject(animal.superClasses[0].joinPointType);
+
+
+
+
+	// Só ainda não consegui implementar o scope de um nó
+	//var root = Ast.root();
+	//printObject(root.get("type").toString());
+
+	/*
+	childRoot = Ast.getChildren(root);
+	printObject(childRoot);
+	*/
+
+	/*
+	classes = Query.search("class",{"name":"Rabbit"}).get();
+	classes = Query.search("class","Rabbit").get();
 	println("num : " + classes.length);
-	println(classes[0].id.name);
+	//println("num : " + classes.length);
+
+	var rabbit = Query.search("class").get()[1];
+	println(rabbit.name);
+	println(rabbit.superClasses);
+	//println(JSON.parse(rabbit.astNode).type);
+	//println(rabbit.astNode);
+	//println(typeof rabbit.astNode);
+	//printObject(Object.keys(rabbit.astNode));
+
+	*/
+	//println(classes[0].id.name);
 	//printObject(classes[1].superClasses[0]);
 
 
 end
+
+
+function printAst() {
+	var root = (new JoinPoints()).root();
+	printAstAux(root, "");
+
+}
+
+function printAstAux(root, tab) {
+
+	var children = (new JoinPoints())._all_children(root);
+	//println(tab+root.astNode);
+	//println(tab+root.joinPointType);
+	print(tab+root.joinPointType + " - ");
+	println(root.astNode.get("type").getAsString());
+	//println(tab+root.joinPointType);
+	/*
+	if(root.astNode.getClass().getSimpleName() === 'CtTypeReferenceImpl'){
+		var astNode = root.astNode;
+		println(tab+astNode.getDeclaration());
+	}
+	*/
+		
+	//println(tab+root.astNode.getValue("tagKind"));
+	for (child of children)
+		printAstAux(child,'	'+tab);
+
+}
+

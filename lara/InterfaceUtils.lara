@@ -23,6 +23,30 @@ function testClassMetric(metric){
 
 }
 
+function testFunctionMetrics(metrics){
+
+	for(metric of metrics) {
+		testFunctionMetric(metric);
+	}
+
+
+
+}
+
+function testFunctionMetric(metric){
+
+	println('Testing '+ metric.sigla + '\n');
+		
+	for(var $function of Query.search("function")) {
+		var metricResult = metric.calculateForFunction($function);
+		//println($class);
+		println('	' + metric.sigla + ' for function '+ $function.signature + ' = ' + metricResult);
+	}
+
+	println();	
+
+}
+
 function testClassMetricsOld(metrics, language){
 
 	for(metric of metrics) {
@@ -104,3 +128,32 @@ function printSuperClasses(){
 	}
 
 }
+
+function printAst() {
+	var root = (new JoinPoints()).root();
+	printAstAux(root, "");
+
+}
+
+function printAstAux(root, tab) {
+
+	var children = (new JoinPoints())._all_children(root);
+	//println(tab+root.astNode);
+	println(tab+root.joinPointType);
+	println(tab+root.astNode.getClass().getSimpleName());
+
+	if(root.instanceOf('expr')  ){
+		//var astNode = root.astNode;
+		//println(tab+"isfieldRef");
+		//println(tab+root.code);
+		//println(tab+Weaver.AST_METHODS.toJavaJoinPoint(root.astNode).code);
+		//println(tab+root.getCode());
+		//println(tab+astNode.getValue("memberDecl"));
+		
+	}
+
+	for (child of children)
+		printAstAux(child,'	'+tab);
+
+}
+
