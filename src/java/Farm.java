@@ -17,8 +17,7 @@ public class Farm {
     Puppy getPuppy() {
         return p;
     }
-
-	    
+  
     
     OrderedPair<Puppy, Integer>  getPair() {
         return new OrderedPair<Puppy, Integer>(p, 8);
