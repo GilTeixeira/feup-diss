@@ -1,0 +1,42 @@
+import weaver.Query;
+import weaver.jp.CommonJoinPoints;
+
+import InterfaceUtils;
+import Metrics.MetricsIndex;
+
+
+/**
+ * Aspect used to test the metrics.
+ */
+aspectdef Interface
+	printAst();
+	printNumberOfClasses();
+
+	var classMetrics = [
+		//new NOC(), 
+		//new DIT(), 
+		//new RFC(),    // RFC ind different from Java because it does not count System, Math calls
+		///new WMC(), 
+		//new LCOM94(), 
+		//new CBO()
+		//new MPC(),
+		//new DAC(),
+		//new NOM(),
+		//new SIZE1(),
+		//new SIZE2(),
+
+		new LOC()
+	];
+	var functionMetrics = [
+		new CC()
+	];
+
+	testClassMetrics(classMetrics);
+	testFunctionMetrics(functionMetrics);
+
+	
+
+
+	
+end
+

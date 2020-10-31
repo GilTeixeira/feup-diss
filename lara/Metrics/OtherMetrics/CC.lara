@@ -36,7 +36,6 @@ CC.prototype.calculateForFunction = function($function) {
 
     	if(stmt.instanceOf('if') || stmt.instanceOf('loop') || stmt.instanceOf('ternary') || stmt.instanceOf('switch')){
     		nesting++;
-    		println(nesting);
     		complexityCounter += nesting;
     		
     		

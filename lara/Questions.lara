@@ -1,169 +1,211 @@
-
 import weaver.Query;
-import weaver.Selector;
-
-import weaver.Ast;
-//import weaver.jp.JoinPoints;
-//import weaver.jp.JoinPointIndex;
-
+import weaver.jp.CommonJoinPoints;
+import InterfaceUtils;
 
 /**
  *  LARA Questions
  */
 aspectdef Questions
 
-	//var jp = new JoinPoint();
-	var a = new classesMapping["FileJp"]();
-	a.code();
-	//jp.code();
-	/*
-	var app = Ast.root();
-
-	println(app);
-	println();
-
-	var file1 = Ast.getChildren(app)[0];
-
-	var class1 = Ast.getChildren(file1)[3];
-
-	//println(Ast.descendants2(app,[],0).length);
-	//println(class1.getClass().getSimpleName());
-	//println(class1.line);
-
-	printAst(app, '');
-
-	//println(Ast.root45);
-
-	var fds = [3];
-	println(fds);
-	a(fds);
-	println(fds);
-	*/
-
-	//println(Object.keys(app));
+	//printAst();
 	
 
-	//for( child of Ast.getChildren(Ast.root()))	
-	//	println(child + "\n");
-	
-	//println(Ast.getChildren(Ast.root()));
-
-	/*
-	/// Kadabra
-
-	// Q1 : Cant get System method/classes?
-	// $call.child(0) -> bases var Ex: (Math) (System.out)
-	// $call.child(1) -> method reference Ex:  (sqrt) (println)
-	// $call.child(2..) -> params var Ex: (a) (b)
-
-	// call.child(1).decl throws exception when system call (System.out, Math.sqrt)
-
-	// possible Solution: getMethodsCalled {classname, methodname, reftomethod}
-
-	
-	var printlnCall = Query.search('class','Puppy').search('method','getAge').search('call').first();
-	println(printlnCall.ast);
-	println("className: " + printlnCall.declarator);
-	println("methodName: " + printlnCall.name);
-	//println("method :" + calls.child(1).declaration); // when it tries to get declaration of method throws exception
-
-	
-
-	// Q2 : Why is the returnRef not an Array?
-	var farmClassMet = Query.search('class','Farm').search('method','getPuppyArr').first();
-	println(farmClassMet.returnRef.isArray);
-	println(farmClassMet.returnRef.ast);
-
-	// Q3: kadabra keeps copying files outside folder
-
-
-
-	/// Clava
-	// Q1 : MyPair values memberAccess throws exception
-	// MyPair in file AccessTest.cpp
-	var values = Query.search('class','MyPair').search("method").search('memberAccess').first();
-	println("field: " + values.name); // 
-	println("basetype: " + values.base.joinPointType); // 
-	//println("decl: " + values.base.decl); // 
-	println();
-
-	// Example of field age working
-	var age = Query.search('class','AccessTestAux').search("method",'getAge').search('memberAccess').first();
-	println("field: " + age.name); // 
-	println("basetype: " + age.base.joinPointType); // 
-	println("decl: " + age.base.decl); // 
-	
- 	println();
- 	println();
-
-	
- 	
-	// Q2 : print repeated memberCall
-	var method = Query.search('class','AccessTestAux').search("method",'getAgePlus').first();
-
-	var methodsCalled = Query.search("method", {"signature": s => s === method.signature}).search("memberCall").get();
-	println("methods called: " + methodsCalled.length);
-
-	var methodsCalled = Query.searchFrom(method).search("memberCall").get();
-	for (methodCalled of methodsCalled)
-		println(methodCalled.name);
-	println("methods called: " + methodsCalled.length);
-
-	// Q2.1 : AccessTestAux atal of class AccessTest is duplicated
-	var $class =  Query.search('class', 'AccessTest').first();
-	var vardecls = Query.search('class', 'AccessTest').search("vardecl").get();
-
-	var vardecls = Query.searchFrom($class).search("vardecl").get();
-
-	for (var vardecl of vardecls){
-		println("vardecl : " + vardecl.code);
-		println("parent : " + vardecl.parent.code);
-	}
-
-
-	// Q3 : From memberAcess is it possible to get the field or method accessed?
-	// i only get method name, if there is method overload how to know which one is?
-
-
-	// Q4 :  memberCall.definition does not give method, gives FunctionProtoType, how to get method?
-	// only through signature?
-
-	println();
-	println();
-	// Q5 : number of methods increases when pair1 is not commented
+	// Q1 : number of methods increases when pair1 is not commented
 	var $class = Query.search('class','AccessTest').first();
-	for (method of $class.methods)
+	for (method of $class.allMethods)
 		println("method: " + method.signature);
 
 	println();
 	println();
 
-	*/
 
-	/**/
+
+
+	// Q2: kadabra/Jackdaw keeps copying files outside folder
+
+
+
+
+
+	/////////////////////////
+	/////    Random   ///////
+	/////    Tests    ///////
+	/////////////////////////
+
+
+		/*
+	//Tests 
+	// Test class.methods
+	println("Test class.methods");
+	var cl = Query.search("class", "Box").first();
+	//var mets = cl.methods;
+	println(cl.name);
+	println(cl.methods);
+	println(cl.methods[0].class.name == cl.name);
+	println(cl.methods[0].signature);
+	println(cl.methods[0].returnType.isClass);
+	println();
+	println(cl.methods[1].returnType.isClass);
+	//
+	// Test memberCall
+	println("Test memberCall");
+	var mc = Query.search("memberCall").first();	
+	//println(CommonJoinPoints.toJoinPoint(mc.astNode.getExecutable().getDeclaringType()).joinPointType);
+	//println("astnode: " + mc.astNode.getExecutable().getDeclaration());
+	println(mc.method.name);
+	println(mc.class.name);
+	println(mc.function.name);
+	// Test field
+	var field = Query.search("field").first();
+	println(field.name);
+	println(field.class.name);
+	// Test fieldRef
+	var fieldRef = Query.search("fieldRef").first();
+	println(fieldRef.field.name);
+	println(fieldRef.class.name);
+	
 
 	
+	//printObject(mc.astNode.getBase());
+	//println(Weaver.AST_METHODS.toJavaJoinPoint(mc.astNode).decl);
+	
+
+	// test equals
+	println("Test Equals");
+	var field = Query.search("field").first();
+	var field2 = Query.search("field").first();
+	println(field === field2);
+	println(field.joinPointType === field.joinPointType);
+	println({} === {});
+
+	// test allSuperClasses
+	println(cl.name);
+	println(cl.allSuperClasses.length);
+
+	*/
+	/*
+	var fieldmyobject4 = Query.search("field", "myobject4").first();
+	var fieldage = Query.search("field", "age").first();
+	println(fieldmyobject4.name);
+	println(fieldmyobject4.type.kind);
+	println(fieldmyobject4.type.astNode.desugar().hasSugar());
+	println(fieldmyobject4.type.astNode.desugarAll());
+	var fieldmyobject4type = Weaver.AST_METHODS.toJavaJoinPoint(fieldmyobject4.astNode.type);
+	println(fieldmyobject4type.templateArgsTypes);
+	println();
+	println(fieldmyobject4.type.usedClasses);
+	println("usedTypes");
+	println(fieldmyobject4.type.usedTypes);
+	println(fieldmyobject4.type.usedTypes.filter(type=>type.isClass));
+	println();
+	//printObject(fieldmyobject4.type.astNode.getTypeDescendantsAndSelf()[0]);
+	//println(fieldmyobject4.type.astNode.getDesugaredNodeFields[1].getCode());
+	//MyPair2<AccessTestAux,int> myobject4;
+
+	
+	println();
+	println(fieldage.name);
+	println(fieldage.type.kind);
+	println(fieldage.type.astNode.desugarAll().desugar().desugar());
+
+	var cl = Query.search("class", "Animal").first();
+	println(cl.name);
+	println(cl.astNode.getType());
+	
+	*/
+	/*
+	println(Query.search("function").get().length);
+
+	var dc = new FunctionJpx("");
+	dc.test();
+	*/
+	/*
+	var fieldmyobject4 = Query.search("field", "myobject4").first();
+	var fieldage = Query.search("field", "atass").first();
+	println(fieldmyobject4.type.astNode.getTypeDescendants()[0]);
+	println();
+	println(fieldage.type.astNode.getTypeDescendants()[0]);
+	println(fieldage.type.astNode.getTypeDescendants()[1]);
+	println(fieldage.type.astNode.getTypeDescendants()[2]);
+	println();
+	printObject(fieldage.type.usedTypes);
+	println();
+	println();
+	println();
+	printObject(fieldage.type.typeDescendantsAndSelf);
+	println();
+	println();
+	println();
+	printObject(fieldmyobject4.type.usedTypes);
+	*/
+
+	/*
+	var cl = Query.search("class", "Tiger").first();
+	printObject(cl.allSuperClasses);
+	*/
+
+	/*
+	var cl = Query.search("class", "Foo3").first();
+	//printObject(cl.allSuperClasses);
+
+	var $fieldRefs = Query.searchFrom(cl).search("fieldRef").get();
+	println($fieldRefs.length);
+	printObject($fieldRefs);
+	*/
+	/*
+	var cl = Query.search("class", "Dog").first();
+	println((new CBO()).calculateForClass(cl));
+
+	println(Query.searchFromInclusive(cl).search("field").get().length);
+	*/
+	//printObject(cl.allSuperClasses);
+
+	//var cl = Query.search("class", "Box").first();
+	//println(cl.astNode.getSuperclass().getTypeDeclaration());
+
+	/*
+	var a2 = Query.search("field","a2").first();
+	var $fieldsTypes = a2.type.usedTypes;
+	printObject($fieldsTypes);
+	println();
+	println();
+	println($fieldsTypes[0].astNode.getClass().getSimpleName());
+	println($fieldsTypes[0].astNode.isArray());
+	println($fieldsTypes[1].astNode.getClass().getSimpleName());
+	//$fieldsTypes = $fieldsTypes.filter($type => $type.isClass && $type.decl.id !== $class.id);
+	//$fieldsTypes.forEach($type => classesCoupled.add($type.decl.id));
+	*/
+	/**/
+
+	/*
+	var a2 = Query.search("constructorCall").get()[1];
+	//var $fieldsTypes = a2.type.usedTypes;
+	//println(a2.type.isClass);
+	//println(a2.astNode.getValue("constructorDecl"));
+	//println(a2.astNode.line);
+	printObject(a2.function);
+
+
+	//printObject(cl.astNode.getConstructors()[0].getType());
+
+	var a2 = Query.search("binary").get()[0];
+	//var $fieldsTypes = a2.type.usedTypes;
+	println(a2.astNode.getOp());
+	println(a2.kind==="&&");
+
+	var loop = Query.search("loop").get()[0];
+	println(loop.hasCondition);
+	//println(loop.condition.kind);
+
+	var bar2 = Query.search("function","bar2").first();
+	var bar2body = bar2.stmts;
+	println(bar2body);
+
+	var binary = Query.search("binary").get()[0];
+	println(binary.kind === '&&');
+	*/
+
 	
 	
 end
-
-function c(b){
-	b.push(199);
-}
-
-function a(b){
-	println(b);
-	c(b);
-	println(b);
-	return b;
-}
-
-function printAst(root, tab) {
-
-	var children = Ast.getChildren(root);
-	println(tab+root.getClass().getSimpleName());
-	for (child of children)
-		printAst(child,'	'+tab);
-
-}
 

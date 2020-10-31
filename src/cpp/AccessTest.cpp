@@ -57,7 +57,7 @@ class AccessTest {
 	Employee e;
 
 	// Number of methods increase with this uncommented
-	//std::pair <int, char> pair1; 
+	std::pair <int, char> pair1; 
 
 	char * buffer = (char*) malloc (5);
 

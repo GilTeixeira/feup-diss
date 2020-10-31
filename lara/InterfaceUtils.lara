@@ -128,6 +128,10 @@ function printSuperClasses(){
 	}
 
 }
+function printAstFrom(node) {
+	printAstAux(node, "");
+
+}
 
 function printAst() {
 	var root = (new JoinPoints()).root();
@@ -141,6 +145,9 @@ function printAstAux(root, tab) {
 	//println(tab+root.astNode);
 	println(tab+root.joinPointType);
 	println(tab+root.astNode.getClass().getSimpleName());
+
+	//Javascript
+	//println(tab+root.astNode.get("type"));
 
 	if(root.instanceOf('expr')  ){
 		//var astNode = root.astNode;
