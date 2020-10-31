@@ -25,11 +25,11 @@ LCOM94.prototype.calculateForClass = function($class) {
 
 	var methodFieldRefsMap = new Map();
 
-	for ($method of $class.methods){
-		var $fieldRefs = Query.searchFrom($method).search("fieldRef").get();
-		$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.name == $class.name);
-		var fieldRefsNames = $fieldRefs.map($fieldRef => $fieldRef.name);
-		methodFieldRefsMap.set($method.signature,new Set(fieldRefsNames));
+	for ($method of $class.allMethods){
+		var $fieldRefs = Query.searchFrom($method,"fieldRef").get();
+		$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.id === $class.id);
+		var fieldRefsIds = $fieldRefs.map($fieldRef => $fieldRef.id);
+		methodFieldRefsMap.set($method.id,new Set(fieldRefsIds));
 
 	}
 
@@ -44,12 +44,12 @@ LCOM94.prototype.calculateForClass = function($class) {
 	var numPairMethodCommomFieldAccess = 0; // Q
 	var numPairMethodNoCommomFieldAccess = 0; // P
 
-	for (i = 0; i < $class.methods.length; i++)
-		for (j = i + 1; j < $class.methods.length; j++){
-			var method1Signature = $class.methods[i].signature;
-			var method2Signature = $class.methods[j].signature;
+	for (i = 0; i < $class.allMethods.length; i++)
+		for (j = i + 1; j < $class.allMethods.length; j++){
+			var method1Id = $class.allMethods[i].id;
+			var method2Id = $class.allMethods[j].id;
 
-			var commomFieldsSet = intersectionSets(methodFieldRefsMap.get(method1Signature), methodFieldRefsMap.get(method2Signature));
+			var commomFieldsSet = intersectionSets(methodFieldRefsMap.get(method1Id), methodFieldRefsMap.get(method2Id));
 
 			if(commomFieldsSet.size === 0)
 	      		numPairMethodNoCommomFieldAccess++;

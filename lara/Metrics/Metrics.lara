@@ -1,7 +1,4 @@
-import Metrics.CKMetrics.WMC;
-import Metrics.CKMetrics.DIT;
-import Metrics.CKMetrics.LCOM;
-import Metrics.CKMetrics.CBO;
-import Metrics.CKMetrics.RFC;
-import Metrics.CKMetrics.NOC;
-import Metrics.CC;
+import Metrics.CKMetrics.CKMetricsIndex;
+import Metrics.LHMetrics.LHMetricsIndex;
+import Metrics.OtherMetrics.CC;
+import Metrics.OtherMetrics.LOC;

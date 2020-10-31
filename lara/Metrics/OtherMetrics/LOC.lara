@@ -1,0 +1,30 @@
+import Metrics.Metric;
+
+/**
+ * Measures the Lines of Code
+ * @constructor
+ */
+function LOC() {
+	var name = "Lines of Code";
+	var sigla = "LOC";
+	var author = "Unknown";
+	var year = 1960;
+	var description = "Lines of code (LOC) counts the number of lines of the source code.";
+	
+    // Parent constructor    
+    Metric.call(this, name, sigla, author, year, description);
+}
+
+// Inheritance
+LOC.prototype = Object.create(Metric.prototype);
+
+
+
+LOC.prototype.calculateForClass = function($class) {
+	return $class.endLine-$class.line+1;
+
+}
+
+LOC.prototype.calculateForFunction = function($function) {
+
+}

@@ -26,7 +26,7 @@ NOC.prototype.calculateForClass = function($class) {
 	var noc = 0;
 	var $classes = Query.search('class').get();
 	for($classSub of $classes){
-		if($classSub.superClasses.some($classSuper => $classSuper.name === $class.name))
+		if($classSub.superClasses.some($classSuper => $classSuper.id === $class.id))
 			noc++;
 	}
 	return noc;

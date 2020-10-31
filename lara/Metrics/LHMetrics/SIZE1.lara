@@ -1,0 +1,33 @@
+import Metrics.Metric;
+
+
+/**
+ * Measures the Size of procedures or functions
+ * @constructor
+ */
+function SIZE1() {
+	var name = "Size of procedures or functions";
+	var sigla = "SIZE1";
+	var author = "Li and Henry";
+	var year = 1993;
+	var description = "Size of procedures or functions (SIZE1) counts the number of semicolons in a class.";
+
+    // Parent constructor    
+    Metric.call(this, name, sigla, author, year, description);
+}
+
+// Inheritance
+SIZE1.prototype = Object.create(Metric.prototype);
+
+// Override
+SIZE1.prototype.calculateForClass = function($class) {
+	// TODO: Regex could be improved to exclude semicolons:
+	// - Inside strings "" / '' / ``(js)
+	// - Inside comments //  /**/
+
+	// Or get comments and strings and subtract the total number
+	
+	var regexp = RegExp(';','g');
+	return $class.code.match(regexp).length;
+}
+
