@@ -13,30 +13,93 @@ aspectdef Interface
 	printNumberOfClasses();
 
 	var classMetrics = [
-		//new NOC(), 
-		//new DIT(), 
-		//new RFC(),    // RFC ind different from Java because it does not count System, Math calls
-		///new WMC(), 
-		//new LCOM94(), 
-		//new CBO()
-		//new MPC(),
-		//new DAC(),
-		//new NOM(),
-		//new SIZE1(),
-		//new SIZE2(),
+		/*
+		new NOC(), 
+		new DIT(), 
+		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
+		new WMC(), 
+		new LCOM94(), 
+		new CBO(),
+		new MPC(),
+		new DAC(),
+	
+		new NOM(),
+		new SIZE1(),
+		new SIZE2(),
 
 		new LOC()
+		*/
+			/**/
+			
 	];
 	var functionMetrics = [
-		new CC()
+		//new CC()
 	];
 
-	testClassMetrics(classMetrics);
-	testFunctionMetrics(functionMetrics);
+	//testClassMetrics(classMetrics);
+	//testFunctionMetrics(functionMetrics);
+	testMetrics(metrics);
 
+	////////////////////////////
+
+	//var expr = Query.search("binary").first();
+	//printObject(expr.astNode.get("operator").getAsString()==="+");
+	//println(expr.kind.toString() === "PLUS");
 	
+	//var calls = Query.search("call").first();
+	//println(calls.name);
+	//println(calls.function);
+	/*
+	var constructorCall = Query.search("constructorCall").first();
+	println(constructorCall.name);
+	println(constructorCall.function);
 
+	var constructor = Query.search("constructor").first();
+	println(constructor.name);
+	//println(constructorCall.function);
+	
+	//println(calls.function);
 
+	var func = Query.search("function").first();
+	println(func.hasBody);
+	println(func.stmts);
+	//println(constructorCall.function);
+
+	var ifs = Query.search("if").first();
+	println(ifs.condition);
+	println(ifs.code);
+	println();
+
+	var loop = Query.search("loop").first();
+	println(loop.condition);
+	//println(loop.astNode.get("test").isJsonNull());
+	println(loop.code);
+
+	var varDecl = Query.search("varDecl").first();
+	println(varDecl.astNode);
+	println(varDecl.astNode.get("id").get("name").getAsString());
+	println(varDecl.name);
+	//println(loop.astNode.get("test").isJsonNull());
+	//println(loop.code);
+
+	var varRef = Query.search("varRef").first();
+	println(varRef.astNode);
+	//println(varDecl.astNode.get("id").get("name").getAsString());
+	println(varRef.endLine);
+
+	var fieldRef = Query.search("fieldRef").first();
+	println(fieldRef.name);
+	//println(varDecl.astNode.get("id").get("name").getAsString());
+	//println(varRef.endLine);
+	*/
+	/*
+	fcase = search("case").first();
+	//println(search("case").get().length);
+	println(fcase.code);
+	println(fcase.astNode.getLabel());
+	println(fcase.astNode.getCaseExpressions());
+	*/
 	
 end
+
 

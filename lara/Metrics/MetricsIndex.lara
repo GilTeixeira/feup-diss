@@ -1,4 +1,34 @@
 import Metrics.CKMetrics.CKMetricsIndex;
 import Metrics.LHMetrics.LHMetricsIndex;
-import Metrics.OtherMetrics.CC;
-import Metrics.OtherMetrics.LOC;
+import Metrics.OtherMetrics.OtherMetricsIndex;
+
+
+var metrics = [
+/*
+		//CK metrics
+		new NOC(), 
+		new DIT(), 
+		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
+		new WMC(), 
+		new LCOM94(), 
+		new CBO(),
+
+		//LH metrics
+		new MPC(),
+		new DAC(),	
+		new NOM(),
+		new SIZE1(),
+		new SIZE2(),
+
+		//LOC
+		new LOC(),
+*/
+		//CC
+		new CycloComplex(),
+		new CogniComplex(),
+
+		//HH
+		new HH(),
+	
+	
+	];

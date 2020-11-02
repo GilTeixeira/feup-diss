@@ -4,9 +4,9 @@ import Metrics.Metric;
  * Measures the Cyclomatic complexity
  * @constructor
  */
-function CC() {
+function CycloComplex() {
 	var name = "Cyclomatic complexity";
-	var sigla = "CC";
+	var sigla = "CycloComplex";
 	var author = "Thomas J. McCabe";
 	var year = 1976;
 	var description = "Cyclomatic complexity (CC) measures the number of linearly independent paths through a program's source code.";
@@ -17,59 +17,33 @@ function CC() {
 }
 
 // Inheritance
-CC.prototype = Object.create(Metric.prototype);
+CycloComplex.prototype = Object.create(Metric.prototype);
 
-CC.prototype.calculateForFunction = function($function) {
-	var complexityCounter = 0;
-	
-	var stmtStack = [];
-	$function.stmts.forEach(stmt => stmtStack.push({'stmt':stmt,'nesting':0}));
-
-    while (stmtStack.length !== 0) 
-    { 
-    	var stmtTop =  stmtStack.shift();
-    	var stmt = stmtTop.stmt;
-    	var nesting = stmtTop.nesting;
-
-    	//if(!stmt.instanceOf('stmt'))
-		//		continue;
-
-    	if(stmt.instanceOf('if') || stmt.instanceOf('loop') || stmt.instanceOf('ternary') || stmt.instanceOf('switch')){
-    		nesting++;
-    		complexityCounter += nesting;
-    		
-    		
-    	}
-		// depth first search
-    	stmt.children.slice().reverse().forEach(stmtChild => stmtStack.unshift({'stmt':stmtChild,'nesting':nesting}));
-
-    } 
-
-	return complexityCounter;
+CycloComplex.prototype.calculateForClass = function($function) {
+	// function definitions
+	return 0;
 }
 
-
-CC.prototype.calculateForFunctionv0 = function($function) {
+CycloComplex.prototype.calculateForFunction = function($function) {
 	var complexityCounter = 0;
 	//println("Counters:");
 	
 	complexityCounter += Query.searchFrom($function, 'if').get().length;
 	complexityCounter += Query.searchFrom($function, 'loop').get().length;
 	complexityCounter += Query.searchFrom($function, 'ternary').get().length;
-	complexityCounter += Query.searchFrom($function, 'case').get().length;
+	complexityCounter += Query.searchFrom($function, 'case').get().length; // already includes defaults
 	complexityCounter += Query.searchFrom($function, 'switch').get().length;
 	complexityCounter += Query.searchFrom($function, 'binary',{"kind": kind => kind === '&&' || kind === '||'}).get().length;
+	complexityCounter += Query.searchFrom($function, 'try').get().length; // try catch are 1
+	complexityCounter += Query.searchFrom($function, 'throw').get().length;
+	complexityCounter += Query.searchFrom($function, 'break').get().length;
+	complexityCounter += Query.searchFrom($function, 'continue').get().length;
+	complexityCounter += Query.searchFrom($function, 'goto').get().length;
 
-	// catch
-	// break
-	// continue
-	// goto
-	// default
-	// throw
 	return complexityCounter;
 }
 
-CC.prototype.calculateForFunctionOld = function($function) {
+CycloComplex.prototype.calculateForFunctionOld = function($function) {
 	var complexityCounter = 0;
 
 	complexityCounter += Query.searchFrom($function, 'if').get().length;

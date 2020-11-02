@@ -1,0 +1,49 @@
+import Metrics.Metric;
+
+/**
+ * Measures the Cognitive Complexity
+ * @constructor
+ */
+function CogniComplex() {
+	var name = "Cognitive Complexity";
+	var sigla = "CogniComplex";
+	var author = "G. Ann Campbell";
+	var year = 2018;
+	var description = "CogniComplex (CC) measure the relative understandability of methods.";
+
+    // Parent constructor    
+    Metric.call(this, name, sigla, author, year, description);
+
+}
+
+// Inheritance
+CogniComplex.prototype = Object.create(Metric.prototype);
+
+CogniComplex.prototype.calculateForFunction = function($function) {
+	var complexityCounter = 0;
+	
+	var stmtStack = [];
+	$function.stmts.forEach(stmt => stmtStack.push({'stmt':stmt,'nesting':0}));
+
+    while (stmtStack.length !== 0) 
+    { 
+    	var stmtTop =  stmtStack.shift();
+    	var stmt = stmtTop.stmt;
+    	var nesting = stmtTop.nesting;
+
+    	//if(!stmt.instanceOf('stmt'))
+		//		continue;
+
+    	if(stmt.instanceOf('if') || stmt.instanceOf('loop') || stmt.instanceOf('ternary') || stmt.instanceOf('switch')){
+    		nesting++;
+    		complexityCounter += nesting;
+    		
+    		
+    	}
+		// depth first search
+    	stmt.children.slice().reverse().forEach(stmtChild => stmtStack.unshift({'stmt':stmtChild,'nesting':nesting}));
+
+    } 
+
+	return complexityCounter;
+}

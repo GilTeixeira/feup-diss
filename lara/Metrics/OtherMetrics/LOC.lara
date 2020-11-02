@@ -26,5 +26,6 @@ LOC.prototype.calculateForClass = function($class) {
 }
 
 LOC.prototype.calculateForFunction = function($function) {
+	return $function.endLine-$function.line+1;
 
 }

@@ -59,9 +59,11 @@ Metric.prototype.getDescription = function() {
  * @param {joinpoint} $joinpoint - join point where the metric is gonna be calculated
  * @return {number} metric's value
  */
+/*
 Metric.prototype.calculate = function($joinpoint) {
 	throw new Error('Calculation not implemented');
 }
+*/
 
 /**
  * Calculate metric for a class.
@@ -69,7 +71,9 @@ Metric.prototype.calculate = function($joinpoint) {
  * @param {class} $class - class where the metric is gonna be calculated
  * @return {number} metric's value
  */
+ /*
 Metric.prototype.calculateForClass = function($class) {
 	throw new Error('Calculation not implemented');
 }
+*/
 

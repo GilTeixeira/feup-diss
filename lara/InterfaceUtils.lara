@@ -1,4 +1,28 @@
 
+function testMetrics(metrics){
+	println("//////////////////////////////");
+	println("/// Testing Class Metrics ////");
+	println("//////////////////////////////");
+	println();
+
+	for(metric of metrics) {
+		if (typeof metric.calculateForClass == 'function')
+    		testClassMetric(metric);
+	}
+
+	println("/////////////////////////////////");
+	println("/// Testing Function Metrics ////");
+	println("/////////////////////////////////");
+	println();
+
+	for(metric of metrics) {
+		if (typeof metric.calculateForFunction == 'function')
+    		testFunctionMetric(metric);
+	}
+
+}
+
+
 function testClassMetrics(metrics){
 
 	for(metric of metrics) {
@@ -11,7 +35,7 @@ function testClassMetrics(metrics){
 
 function testClassMetric(metric){
 
-	println('Testing '+ metric.sigla + '\n');
+	println('Testing '+ metric.name + '\n');
 		
 	for(var $class of Query.search("class")) {
 		var metricResult = metric.calculateForClass($class);
@@ -35,7 +59,7 @@ function testFunctionMetrics(metrics){
 
 function testFunctionMetric(metric){
 
-	println('Testing '+ metric.sigla + '\n');
+	println('Testing '+ metric.name + '\n');
 		
 	for(var $function of Query.search("function")) {
 		var metricResult = metric.calculateForFunction($function);
@@ -67,7 +91,7 @@ function testClassMetricsOld(metrics, language){
 
 function testClassMetricCpp(metric){
 
-	println('Testing '+ metric.sigla + '\n');
+	println('Testing '+ metric.name + '\n');
 		
 	for(var $class of Query.search("class")) {
 		var metricResult = metric.calculateForClassCpp($class);
@@ -80,7 +104,7 @@ function testClassMetricCpp(metric){
 
 function testClassMetricJava(metric){
 
-	println('Testing '+ metric.sigla + '\n');
+	println('Testing '+ metric.name + '\n');
 		
 	for(var $class of Query.search("class")) {
 		var metricResult = metric.calculateForClassJava($class);
@@ -93,7 +117,7 @@ function testClassMetricJava(metric){
 
 function testClassMetricInd(metric){
 
-	println('Testing '+ metric.sigla + '\n');
+	println('Testing '+ metric.name + '\n');
 		
 	for(var $class of Query.search("class")) {
 		var metricResult = metric.calculateForClassInd($class);
@@ -144,7 +168,7 @@ function printAstAux(root, tab) {
 	var children = (new JoinPoints())._all_children(root);
 	//println(tab+root.astNode);
 	println(tab+root.joinPointType);
-	println(tab+root.astNode.getClass().getSimpleName());
+	//println(tab+root.astNode.getClass().getSimpleName());
 
 	//Javascript
 	//println(tab+root.astNode.get("type"));
