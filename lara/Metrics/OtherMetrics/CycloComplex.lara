@@ -19,9 +19,14 @@ function CycloComplex() {
 // Inheritance
 CycloComplex.prototype = Object.create(Metric.prototype);
 
-CycloComplex.prototype.calculateForClass = function($function) {
-	// function definitions
-	return 0;
+CycloComplex.prototype.calculateForClass = function($class) {
+	var complexityCounter = 0;
+	for ($method of $class.allMethods){
+		complexityCounter += this.calculateForFunction($method);
+		complexityCounter++;
+	}
+
+	return complexityCounter;
 }
 
 CycloComplex.prototype.calculateForFunction = function($function) {

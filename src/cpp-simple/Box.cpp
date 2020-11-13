@@ -1,17 +1,46 @@
-class Box {
-   public:
-      double getVolume(void);
-      double getVolume2(void);
-  
+#include<iostream>
+#include <vector>
+using namespace std;
+
+
+using namespace std;
+
+// Base class
+class Shape {
+	public:
+  Shape(int a){
+  	
+  }
 };
 
-// Member functions definitions
-double Box::getVolume(void) {
-	Box box;
-	box.getVolume();
-   return getVolume2();
-}
+// Derived class
+class Rectangle: public Shape {
+	public:
+  Rectangle(int a):Shape(a){
+  	
+  }
+};
 
-double Box::getVolume2(void) {
-   return 2.3;
-}
+/*
+class Transaction {
+
+  vector<string> products;
+
+  int a(){
+  	int a = 0;
+
+  	if(true){
+  		a++;
+  	}
+  	else if(true){
+  		a++;
+  	}
+  	else {
+  		if(true)
+  		a++;
+  	}
+  	
+  }
+
+};
+*/

@@ -9,11 +9,11 @@ import Metrics.MetricsIndex;
  * Aspect used to test the metrics.
  */
 aspectdef Interface
-	printAst();
+	//printAst();
 	printNumberOfClasses();
 
 	var classMetrics = [
-		/*
+		
 		new NOC(), 
 		new DIT(), 
 		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
@@ -28,7 +28,7 @@ aspectdef Interface
 		new SIZE2(),
 
 		new LOC()
-		*/
+		/**/
 			/**/
 			
 	];
@@ -99,7 +99,47 @@ aspectdef Interface
 	println(fcase.astNode.getLabel());
 	println(fcase.astNode.getCaseExpressions());
 	*/
+	////////////////////
 	
+	//var store = Query.search("class","Store").first();
+
+	//var mc = Query.searchFrom(store,"method","listProducts").first();
+	/*
+	for(m of mc){
+		println(m.method.signature);
+		println(m.code);
+		println();
+
+		}
+		*/
+	//println(Weaver.AST_METHODS.toJavaJoinPoint(mc.astNode).ast);
+	//var loop = Query.searchFrom(store,"method","listProducts").search("loop").first();
+	//printAstFrom(mc);
+	//println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+	//println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+	//printAstFrom(loop.body);
+
+	//printAst();
+	/*
+	var ifs = Query.search("if").get();
+
+	println(ifs.length);
+	println(ifs[0].astNode);
+	println(ifs[1].astNode);
+
+	printAstFrom(ifs[0].then);
+	printAstFrom(ifs[1].then);
+	*/
+
+	//var box = Query.search("class", "Transaction").first();
+
+	//println(box.allMethods.length);
+	//println(box.allMethods[0].astNode.getDefinition().isPresent() === false);
+	/*
+	printAst();
+	var Rectangle = Query.search("method","Rectangle").first();
+	print(Rectangle.astNode.getInitializers()[0].getValue("initExpr").getValue("constructorDecl"));
+	*/
 end
 
 

@@ -27,15 +27,25 @@ RFC.prototype.calculateForClass = function($class) {
 
 	var methodsSignatures = new Set();
 
-	for (var $method of $class.methods){
+	for (var $method of $class.allMethods){
 		methodsSignatures.add($method.signature);
+		 //println($method.code);
 	
-		var $memberCalls = Query.searchFrom($method).search("memberCall").get();
+		var $memberCalls = Query.searchFrom($method,"memberCall").get();
 		for($memberCall of $memberCalls)
-			methodsSignatures.add($memberCall.method.signature);
+			if($memberCall.method.isCustom){
+				methodsSignatures.add($memberCall.method.signature);
+				//println($memberCall.method.signature);
+				//println($memberCall.code);
+				//println($memberCall.parent.code);
+				//println($memberCall.method.stmts);
+				 //println($memberCall.astNode);
+				//println();
+
+			}
 
 	}
-
+	//Array.from(methodsSignatures).forEach(methodSignature => println(methodSignature));
 	return methodsSignatures.size;
 }
 
@@ -58,6 +68,7 @@ RFC.prototype.calculateForClassCpp = function($class) {
 	
 	var rfc = methodsSignatures.size;
 
+	
 	return methodsSignatures.size;
 }
 

@@ -4,15 +4,22 @@ import Metrics.OtherMetrics.OtherMetricsIndex;
 
 
 var metrics = [
-/*
+/**/
 		//CK metrics
+		/**/
 		new NOC(), 
 		new DIT(), 
+		
 		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
+		
+		
 		new WMC(), 
+		
 		new LCOM94(), 
+		
 		new CBO(),
-
+		
+/*
 		//LH metrics
 		new MPC(),
 		new DAC(),	
@@ -28,7 +35,7 @@ var metrics = [
 		new CogniComplex(),
 
 		//HH
-		new HH(),
-	
+		//new HH(),
+		
 	
 	];

@@ -69,12 +69,14 @@ class Test {
 
 	
 }
-test = new Test();
+//test = new Test();
 
 class Car {
   constructor(brand) {
     this.carname = brand;
+    
     var a = 3;
+    a;
         	if(a)
     	a= 5;
   }
@@ -89,6 +91,8 @@ class Model extends Car {
     this.model = mod;
   }
   show() {
-    return this.present() + ', it is a ' + this.model;
+  	var c =   	new Car();
+  	
+    return this.present() + ', it is a ' + this.model + c.model;
   }
 }

@@ -38,9 +38,12 @@ function testClassMetric(metric){
 	println('Testing '+ metric.name + '\n');
 		
 	for(var $class of Query.search("class")) {
+		var timeBefore = performance.now();	
 		var metricResult = metric.calculateForClass($class);
+		var timeAfter = performance.now();
 		//println($class);
 		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+		println('	Time: ' + (timeAfter - timeBefore) + ' ms.');
 	}
 
 	println();	
@@ -167,8 +170,9 @@ function printAstAux(root, tab) {
 
 	var children = (new JoinPoints())._all_children(root);
 	//println(tab+root.astNode);
-	println(tab+root.joinPointType);
-	//println(tab+root.astNode.getClass().getSimpleName());
+	//println(tab+root.joinPointType);
+	//println(tab+root.code);
+	println(tab+root.astNode.getClass().getSimpleName());
 
 	//Javascript
 	//println(tab+root.astNode.get("type"));

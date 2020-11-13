@@ -45,50 +45,59 @@ CBO.prototype.calculateForClass = function($class) {
 	//(DONE) method call, field accesses
 	var $fieldRefs = Query.searchFrom($class).search("fieldRef").get();
 	//println($fieldRefs.length);
-	$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.id !== $class.id);
+	$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.id !== $class.id && $fieldRef.class.isCustom);
 	//println($fieldRefs.length);
 	$fieldRefs.forEach($fieldRef => classesCoupled.add($fieldRef.class.id));
 
 
 	var $memberCalls = Query.searchFrom($class).search("memberCall").get();
-	$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class.id !== $class.id);
-	//$memberCalls.forEach($memberCall => classesCoupled.add($memberCall.class.id));
+	$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class.id !== $class.id && $memberCall.class.isCustom);
+	$memberCalls.forEach($memberCall => classesCoupled.add($memberCall.class.id));
+
+
+	var typesUsed = [];
+
+	var $params = Query.searchFrom($class).search("param").get();
+	$params.forEach($param => {
+		typesUsed.push($param.type.usedTypes);
+	});		
+
+	
+	
 
 
 
-	//(DONE) field or parameters
-	var $params = Query.searchFrom($class).search("param").get();	
-	var $paramsTypes = $params.reduce(($types, $param) => {
-		return $types.concat($param.type.usedTypes);
-	},[]);	
-	//var $paramsTypes = $params.reduce(($types, $param) => {return $types.concat($param.type.usedTypes);},[]);
-	$paramsTypes = $paramsTypes.filter($type => $type.isClass && $type.decl.id !== $class.id);
-	//$paramsTypes.forEach($type => classesCoupled.add($type.decl.id));
+
 
 
 	var $fields = Query.searchFromInclusive($class).search("field").get();
-	var $fieldsTypes = $fields.reduce(($types, $field) => {
-		return $types.concat($field.type.usedTypes);
-	},[]);	
-	$fieldsTypes = $fieldsTypes.filter($type => $type.isClass && $type.decl.id !== $class.id);
-	$fieldsTypes.forEach($type => classesCoupled.add($type.decl.id));
+	$fields.forEach($field => {
+		typesUsed.push($field.type.usedTypes);
+	});	
+
 
 
 	//(DONE)return types
 	
-	var methodsReturnTypes = $class.methods.reduce(($types, method) => {
-		return $types.concat(method.returnType.usedTypes);
-	},[]);	
-	methodsReturnTypes = methodsReturnTypes.filter($type => $type.isClass && $type.decl.id !== $class.id);
-	methodsReturnTypes.forEach($type => classesCoupled.add($type.decl.id));
+	$class.methods.forEach($method => {
+		typesUsed.push($method.returnType.usedTypes);
+	});		
 
+	
 	//(DONE) variables in methods
 	var $varDecls = Query.searchFrom($class).search("varDecl").get();
-	var $varDeclTypes = $varDecls.reduce(($types, $varDecl) => {
-		return $types.concat($varDecl.type.usedTypes);
-	},[]);	
-	$varDeclTypes = $varDeclTypes.filter($type => $type.isClass && $type.decl.id !== $class.id);
-	$varDeclTypes.forEach($type => classesCoupled.add($type.decl.id));
+	$varDecls.forEach($varDecl => {
+		typesUsed.push($varDecl.type.usedTypes);
+	});	
+	
+
+
+	
+	
+	
+	typesUsed = typesUsed.filter($type => $type.isClass && $type.decl.id !== $class.id && $type.class.isCustom);
+	typesUsed.forEach($type => classesCoupled.add($type.decl.id));
+
 	
 	classesCoupled.forEach(classesCoupled => println(classesCoupled));
 	return classesCoupled.size;

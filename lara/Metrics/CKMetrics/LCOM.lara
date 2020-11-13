@@ -25,31 +25,38 @@ LCOM94.prototype.calculateForClass = function($class) {
 
 	var methodFieldRefsMap = new Map();
 
-	for ($method of $class.allMethods){
+	for ($method of $class.methods){
 		var $fieldRefs = Query.searchFrom($method,"fieldRef").get();
 		$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.id === $class.id);
-		var fieldRefsIds = $fieldRefs.map($fieldRef => $fieldRef.id);
+		var fieldRefsIds = $fieldRefs.map($fieldRef => $fieldRef.field.id);
 		methodFieldRefsMap.set($method.id,new Set(fieldRefsIds));
 
 	}
 
 
 	/*
-	for ([key, value] of methodFieldsMap.entries()) {
+	for ([key, value] of methodFieldRefsMap.entries()) {
 	  println(key + "  " + Array.from(value));
 	}
 	*/
+	
 
 
 	var numPairMethodCommomFieldAccess = 0; // Q
 	var numPairMethodNoCommomFieldAccess = 0; // P
 
-	for (i = 0; i < $class.allMethods.length; i++)
-		for (j = i + 1; j < $class.allMethods.length; j++){
-			var method1Id = $class.allMethods[i].id;
-			var method2Id = $class.allMethods[j].id;
+	for (i = 0; i < $class.methods.length; i++)
+		for (j = i + 1; j < $class.methods.length; j++){
+			var method1Id = $class.methods[i].id;
+			var method2Id = $class.methods[j].id;
 
 			var commomFieldsSet = intersectionSets(methodFieldRefsMap.get(method1Id), methodFieldRefsMap.get(method2Id));
+
+			//println();
+			//println(method1Id);
+			//println(method2Id);
+			//println(Array.from(commomFieldsSet));
+			//println();
 
 			if(commomFieldsSet.size === 0)
 	      		numPairMethodNoCommomFieldAccess++;
@@ -62,6 +69,11 @@ LCOM94.prototype.calculateForClass = function($class) {
 	
 	var lcom = Math.max((numPairMethodNoCommomFieldAccess - 
 			numPairMethodCommomFieldAccess), 0);
+
+	//print("numPairMethodNoCommomFieldAccess:");
+	//println(numPairMethodNoCommomFieldAccess);
+	//print("numPairMethodCommomFieldAccess:");
+	//println(numPairMethodCommomFieldAccess);
 	
 	return lcom; 
 }
