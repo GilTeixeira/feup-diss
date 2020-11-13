@@ -1,0 +1,36 @@
+## Analizo
+analizo metrics test/cpp
+analizo metrics test/java/src/main/java
+
+
+## Sonarqube (C++ not in community edition, have to setup gradle or maven)
+sudo docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
+docker container start sonarqube
+http://localhost:9000 
+
+./gradlew sonarqube   -Dsonar.projectKey=met   -Dsonar.host.url=http://localhost:9000   -Dsonar.login=5a8f76029ecf66d48635b4b42ed033b948cf5b46
+
+
+## ckjm (WMC, DIT, NOC, CBO, RFC, LCOM, Ce, and NPM. ) (https://github.com/mjureczko/CKJM-extended)
+java -jar ./ckjm/ckjm-1.9/build/ckjm-1.9.jar ./test/java/build/classes/java/main/hello/*.class
+java -jar ./ckjm/ckjm_ext.jar ./test/java/build/classes/java/main/hello/*.class
+
+java -jar ./ckjm/ckjm-1.9/build/ckjm-1.9.jar ./test/java/build/classes/java/main/store/*.class
+java -jar ./ckjm/ckjm_ext.jar ./test/java/build/classes/java/main/store/*.class
+
+
+## mauricioaniche/ck
+
+java -jar ck-ck-0.6.2/ck-0.6.2-jar-with-dependencies.jar test/java/src/main/java/store/
+
+
+
+
+
+
+## Java Gradler
+gradle build
+gradle wrapper
+./gradlew build
+
+

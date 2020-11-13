@@ -1,0 +1,77 @@
+
+Class: store::Store
+Metric: Coupling Between Objects
+Time: 29.0870666503906
+Value: 1
+
+Class: store::Store
+Metric: Lack of Cohesion of Methods
+Time: 838.041305541992
+Value: 1
+
+Class: store::Store
+Metric: Response for a 
+Class
+Time: 7.86781311035156
+Value: 32
+
+Class: store::Store
+Metric: Number of Attributes
+Time: 3.09944152832031
+Value: 5
+
+Class: store::Store
+Metric: Number of Children
+Time: 8.82148742675781
+Value: 0
+
+Class: store::Store
+Metric: Number of Methods
+Time: 3.09944152832031
+Value: 10
+
+Class: store::Store
+Metric: Average Number of Parameters per Method
+Time: 113.010406494141
+Value: 1.2
+
+Class: store::Store
+Metric: Lines of Code
+Time: 91.0758972167969
+Value: 158
+
+Class: store::Store
+Metric: Depth of Inheritance Tree
+Time: 1.9073486328125
+Value: 0
+
+Class: store::Store
+Metric: Max Method LOC
+Time: 90.1222229003906
+Value: 31
+
+Class: store::Store
+Metric: Average Cyclomatic Complexity per Method
+Time: 86.0691070556641
+Value: 4.5
+
+Class: store::Store
+Metric: Number of Public Methods
+Time: 8.82148742675781
+Value: 10
+
+Class: store::Store
+Metric: Afferent Connections per 
+Class (used to calculate COF - Coupling Factor)
+Time: 10.0135803222656
+Value: 0
+
+Class: store::Store
+Metric: Number of Public Attributes
+Time: 5.00679016113281
+Value: 0
+
+Class: store::Store
+Metric: Average Method Lines of Code
+Time: 94.1753387451172
+Value: 15.8
