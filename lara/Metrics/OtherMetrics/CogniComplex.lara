@@ -19,7 +19,73 @@ function CogniComplex() {
 // Inheritance
 CogniComplex.prototype = Object.create(Metric.prototype);
 
+CogniComplex.prototype.calculateForClass = function($class) {
+	var complexityCounter = 0;
+	for ($method of $class.allMethods){
+		complexityCounter += this.calculateForFunction($method);
+	}
+
+	return complexityCounter;
+}
+
 CogniComplex.prototype.calculateForFunction = function($function) {
+	var complexityCounter = 0;
+	
+	var stmtStack = [];
+	$function.stmts.forEach(stmt => stmtStack.push({'stmt':stmt,'nesting':0}));
+
+    while (stmtStack.length !== 0) 
+    { 
+    	var stmtTop =  stmtStack.shift();
+    	var stmt = stmtTop.stmt;
+    	var nesting = stmtTop.nesting;
+
+    	//if(!stmt.instanceOf('stmt'))
+		//		continue;
+
+
+	//B1
+	//missing sequence of logical ops
+    	if(stmt.instanceOf('if') || (stmt.instanceOf('else') && !stmt.isElseIf) || 
+    		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
+    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto')){
+    		complexityCounter++;
+    		println("complexityCounter: " + 1);
+    		
+    	}
+
+		//B3
+    	if((stmt.instanceOf('if') && !stmt.isElseIf) ||
+    		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
+    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')){
+    		complexityCounter+=nesting;
+    		println("nesting: "  + nesting);
+    	}
+
+		//B2
+    	if(stmt.instanceOf('if') || (stmt.instanceOf('else') && !stmt.isElseIf) || 
+    		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
+    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')){
+    		nesting++;
+    		println("nesting: " + nesting);
+    	}
+
+    	
+		
+    	
+    	println();
+    	/*
+		*/
+    	
+		// depth first search
+    	stmt.children.slice().reverse().forEach(stmtChild => stmtStack.unshift({'stmt':stmtChild,'nesting':nesting}));
+
+    } 
+
+	return complexityCounter;
+}
+
+CogniComplex.prototype.calculateForFunctionv1 = function($function) {
 	var complexityCounter = 0;
 	
 	var stmtStack = [];
