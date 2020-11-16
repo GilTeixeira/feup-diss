@@ -6,7 +6,7 @@ import Metrics.OtherMetrics.OtherMetricsIndex;
 var metrics = [
 /**/
 		//CK metrics
-		/**/
+		/*	*/
 		new NOC(), 
 		new DIT(), 
 		
@@ -18,21 +18,25 @@ var metrics = [
 		new LCOM94(), 
 		
 		new CBO(),
+	
 		
-/*
+/**/
 		//LH metrics
+		new NOM(),
+		//new SIZE1(),
+		new SIZE2(),
 		new MPC(),
 		new DAC(),	
-		new NOM(),
-		new SIZE1(),
-		new SIZE2(),
 
-		//LOC
-		new LOC(),
-*/
+
+		
+
 		//CC
 		new CycloComplex(),
 		new CogniComplex(),
+
+		//LOC
+		new LOC(),
 
 		//HH
 		//new HH(),

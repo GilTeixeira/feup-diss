@@ -46,34 +46,48 @@ CogniComplex.prototype.calculateForFunction = function($function) {
 
 	//B1
 	//missing sequence of logical ops
+
+		if(stmt.instanceOf('else')){
+			nesting--;
+			//println("HERE IS AN ELSE");
+		}
+	
+	
+	    if(stmt.instanceOf('if') || stmt.instanceOf('else') || 
+    		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
+    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto'))
+		//println("code: " + stmt.code);
+		
     	if(stmt.instanceOf('if') || (stmt.instanceOf('else') && !stmt.isElseIf) || 
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
     		 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto')){
     		complexityCounter++;
-    		println("complexityCounter: " + 1);
+    		//println("complexityCounter: " + 1);
     		
     	}
 
 		//B3
-    	if((stmt.instanceOf('if') && !stmt.isElseIf) ||
+    	if((stmt.instanceOf('if') ) ||
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
     		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')){
     		complexityCounter+=nesting;
-    		println("nesting: "  + nesting);
+    		//println("nestingInc: "  + nesting);
     	}
 
 		//B2
-    	if(stmt.instanceOf('if') || (stmt.instanceOf('else') && !stmt.isElseIf) || 
+    	if(stmt.instanceOf('if')  || 
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
     		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')){
     		nesting++;
-    		println("nesting: " + nesting);
+    		//println("CurrNesting: " + nesting);
     	}
 
     	
 		
     	
-    	println();
+    	//println();
+    	//println();
+    	//println();
     	/*
 		*/
     	

@@ -7,17 +7,36 @@ import InterfaceUtils;
  */
 aspectdef Questions
 
-	//printAst();
+	printAst();
+
+	var ifs = Query.search('else').first();
+	var ifs = Query.search('if').first();
+
+	//println(ifs.children[1].astNode.getShortRepresentation());
+	//println(ifs.children[2].astNode.getShortRepresentation());
+	//println(ifs.children[1].astNode.getShortRepresentation()===ifs.children[2].astNode.getShortRepresentation());
+
+	//println(ifs.isElseIf);
+
+	//println(ifs.code);
+
+
+	
+	//var $class1 = Query.search('class','Box').first();
+	//var $class2 = Query.search('class','Shape').first();
+
 	
 
 	// Q1 : number of methods increases when pair1 is not commented
+
+	/*
 	var $class = Query.search('class','AccessTest').first();
 	for (method of $class.allMethods)
 		println("method: " + method.signature);
 
 	println();
 	println();
-
+	*/
 
 
 

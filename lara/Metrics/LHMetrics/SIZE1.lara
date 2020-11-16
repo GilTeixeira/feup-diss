@@ -24,10 +24,30 @@ SIZE1.prototype.calculateForClass = function($class) {
 	// TODO: Regex could be improved to exclude semicolons:
 	// - Inside strings "" / '' / ``(js)
 	// - Inside comments //  /**/
-
 	// Or get comments and strings and subtract the total number
-	
+
 	var regexp = RegExp(';','g');
-	return $class.code.match(regexp).length;
+	var regexpCases = $class.code.match(regexp);
+	var numberSemiColonsClass = 0;
+	if(regexpCases !== null)
+		numberSemiColonsClass = regexpCases.length;
+
+	
+	for ($method of $class.methods){
+		if($class.ancestor("file").id !== $method.ancestor("file").id ||
+		($class.ancestor("file").id === $method.ancestor("file").id && ($method.line < $class.line || $method.line > $class.endLine)))
+		{
+			regexpCases = $method.code.match(regexp);
+			if(regexpCases !== null)
+				numberSemiColonsClass += regexpCases.length;
+		}
+		
+		
+
+	}
+	
+	
+	
+	return numberSemiColonsClass;
 }
 

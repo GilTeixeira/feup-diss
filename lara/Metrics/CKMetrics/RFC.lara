@@ -27,14 +27,14 @@ RFC.prototype.calculateForClass = function($class) {
 
 	var methodsSignatures = new Set();
 
-	for (var $method of $class.allMethods){
-		methodsSignatures.add($method.signature);
+	for (var $method of $class.methods){
+		methodsSignatures.add($method.id);
 		 //println($method.code);
 	
 		var $memberCalls = Query.searchFrom($method,"memberCall").get();
 		for($memberCall of $memberCalls)
 			if($memberCall.method.isCustom){
-				methodsSignatures.add($memberCall.method.signature);
+				methodsSignatures.add($memberCall.method.id);
 				//println($memberCall.method.signature);
 				//println($memberCall.code);
 				//println($memberCall.parent.code);

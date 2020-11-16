@@ -24,10 +24,12 @@ MPC.prototype.calculateForClass = function($class) {
 
 	var classesCoupled = new Set();
 
-	var $memberCalls = Query.searchFrom($class, "memberCall").get();
-	$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class.id !== $class.id);
-	$memberCalls.forEach($memberCall => classesCoupled.add($memberCall.class.id));
-	
+	for ($method of $class.methods){		
+		var $memberCalls = Query.searchFrom($method, "memberCall").get();
+		$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class.id !== $class.id && $memberCall.class.isCustom);
+		$memberCalls.forEach($memberCall => classesCoupled.add($memberCall.class.id));
+	}
+	//Array.from(classesCoupled).forEach(methodSignature => println(methodSignature));
 	return classesCoupled.size;
 }
 

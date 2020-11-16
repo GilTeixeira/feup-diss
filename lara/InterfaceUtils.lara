@@ -170,7 +170,7 @@ function printAstAux(root, tab) {
 
 	var children = (new JoinPoints())._all_children(root);
 	//println(tab+root.astNode);
-	//println(tab+root.joinPointType);
+	println(tab+root.joinPointType);
 	//println(tab+root.code);
 	println(tab+root.astNode.getClass().getSimpleName());
 

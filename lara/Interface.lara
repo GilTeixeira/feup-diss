@@ -140,6 +140,47 @@ aspectdef Interface
 	var Rectangle = Query.search("method","Rectangle").first();
 	print(Rectangle.astNode.getInitializers()[0].getValue("initExpr").getValue("constructorDecl"));
 	*/
+	//printAst()
+	
+	/*;
+	var Rectangle = Query.search("class","Shape").first();
+	
+	//println(Rectangle.ancestor("file"));
+	//printAstFrom(Rectangle);
+	//println(Rectangle.parent.parent.astNode.getClass().getSimpleName());
+
+	var file = Query.search("file").first();
+
+	println(file);
+	println(file.children[0]);
+	println(file.children[0].parent.astNode.getClass().getSimpleName());
+	*/
+	//Ast2Path();
+
+	/*
+	var $class = Query.search('class').first();
+	var noc = 0;
+	var $classes = Query.search('class').get();
+	for($classSub of $classes){
+		var superClasses = $classSub.superClasses;
+		for($classSuper of superClasses){
+			println($classSuper);
+			println($classSuper.astNode.getClass());
+			println($classSuper.id === $class.id);
+
+
+		}
+		//if($classSub.superClasses.some($classSuper => $classSuper.id === $class.id))
+			noc++;
+	}
+	return noc;
+	*/
+	
+	//var setYear = Query.search('class',"Store").search('method',"listTransationTimePeriod").first();
+	//println((new CogniComplex()).calculateForFunction(setYear));
+
+	//printAstFrom(setYear);
+	
 end
 
 

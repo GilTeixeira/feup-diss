@@ -1,0 +1,62 @@
+import weaver.Query;
+
+function Ast2Path(){
+
+	// Collect information 
+    for(var desc of Query.search("file").search()) {
+	    if (!desc.hasChildren){ //for all the leafs of the tree
+	        AST(desc.parent, [desc]);
+	    }    
+    }
+
+}
+
+function getNodeInfo(node) {
+    var type = node.joinPointType;
+    
+    if(type === undefined) {
+        type = node.toString();
+    }
+    
+    return type;
+}
+
+function AST(node, lst) {                      // return AST path context starting from a leaf
+    lst.push('(up)');
+    lst.push(node);
+    if (node.parent != undefined && !lst.includes(node.parent)) {
+        AST(node.parent, lst);
+    }    
+    goDown(node, lst);
+    lst.pop();
+    lst.pop();
+}
+
+
+function goDown(parent, node_list) { //go down in the ast to find the paths to the leafs
+    if (!parent.hasChildren){
+        for (var node of node_list){
+            print(getNodeInfo(node) + " ");
+            /*
+            if (node.code != undefined)
+                println(node.code);
+            else
+                println(node);
+            */
+        }
+        println("\n__________________________________");
+        return;
+    }
+    else {
+        for (var node of parent.children) {
+            if (node_list[node_list.length - 3].astId != node.astId ) {
+                node_list.push('(down)');
+                node_list.push(node);
+                goDown(node, node_list);
+                node_list.pop();
+                node_list.pop();
+            }
+        }
+
+    }
+}
