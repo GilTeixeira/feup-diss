@@ -34,3 +34,7 @@ gradle wrapper
 ./gradlew build
 
 
+
+
+## using cloc
+cloc ../../lara/Metrics/ --by-file --force-lang="javascript",lara
