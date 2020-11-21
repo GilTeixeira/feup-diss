@@ -1,6 +1,16 @@
 
 function testMetrics(metrics){
 	println("//////////////////////////////");
+	println("/// Testing Project Metrics ////");
+	println("//////////////////////////////");
+	println();
+
+	for(metric of metrics) {
+		if (typeof metric.calculateForProject == 'function')
+    		testProjectMetric(metric);
+	}
+
+	println("//////////////////////////////");
 	println("/// Testing Class Metrics ////");
 	println("//////////////////////////////");
 	println();
@@ -15,11 +25,12 @@ function testMetrics(metrics){
 	println("/////////////////////////////////");
 	println();
 
+	/*
 	for(metric of metrics) {
 		if (typeof metric.calculateForFunction == 'function')
     		testFunctionMetric(metric);
 	}
-
+	*/
 }
 
 
@@ -36,7 +47,9 @@ function testClassMetrics(metrics){
 function testClassMetric(metric){
 
 	println('Testing '+ metric.name + '\n');
-		
+
+	//var timeBeforeAllClasses = performance.now();	
+	
 	for(var $class of Query.search("class")) {
 		var timeBefore = performance.now();	
 		var metricResult = metric.calculateForClass($class);
@@ -45,10 +58,34 @@ function testClassMetric(metric){
 		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
 		println('	Time: ' + (timeAfter - timeBefore) + ' ms.');
 	}
+	//var timeAfterAllClasses = performance.now();
+	//println('	Time: ' + (timeAfterAllClasses - timeBeforeAllClasses) + ' ms.');
 
 	println();	
 
 }
+
+function testProjectMetric(metric){
+
+	println('Testing '+ metric.name + '\n');
+		
+
+		var timeBefore = performance.now();	
+		var metricResult = metric.calculateForProject();
+		var timeAfter = performance.now();
+
+		metricResult.forEach(function(metricResult, classId) {
+  			println('	' + metric.sigla + ' for class '+ classId + ' = ' + metricResult);
+		});
+		//println($class);
+		
+		println('	Time: ' + (timeAfter - timeBefore) + ' ms.');
+
+
+	println();	
+
+}
+
 
 function testFunctionMetrics(metrics){
 
@@ -185,6 +222,10 @@ function printAstAux(root, tab) {
 		//println(tab+root.getCode());
 		//println(tab+astNode.getValue("memberDecl"));
 		
+	}
+
+	if(root.instanceOf('binary')  ){
+		println(tab+root.kind);
 	}
 
 	for (child of children)

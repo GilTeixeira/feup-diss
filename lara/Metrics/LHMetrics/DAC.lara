@@ -30,6 +30,7 @@ DAC.prototype.calculateForClass = function($class) {
 	$fieldsTypes = $fieldsTypes.filter($type => $type.isClass && $type.decl.id !== $class.id && $type.decl.isCustom);
 	$fieldsTypes.forEach($type => classesCoupled.add($type.decl.id));
 
+	//classesCoupled.forEach(classesCoupled => println(classesCoupled));
 	return classesCoupled.size;
 }
 

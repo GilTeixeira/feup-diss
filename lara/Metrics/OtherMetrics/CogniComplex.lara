@@ -49,25 +49,33 @@ CogniComplex.prototype.calculateForFunction = function($function) {
 
 		if(stmt.instanceOf('else')){
 			nesting--;
-			//println("HERE IS AN ELSE");
+			//println("ELSE:            " + stmt.isElseIf);
 		}
 	
 	
-	    if(stmt.instanceOf('if') || stmt.instanceOf('else') || 
-    		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
-    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto'))
+	    //if(stmt.instanceOf('if') || stmt.instanceOf('else') || 
+    	//	stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
+    	//	 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto'))
 		//println("code: " + stmt.code);
+
+		//if((stmt.instanceOf('binary') && stmt.isLogicOp && stmt.isInnerExpr && stmt.kind !== stmt.outerExpr.kind )
+    		// || (stmt.instanceOf('binary') && stmt.isLogicOp && !stmt.isInnerExpr))
+			//println(stmt.kind);
 		
     	if(stmt.instanceOf('if') || (stmt.instanceOf('else') && !stmt.isElseIf) || 
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
-    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto')){
+    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto')
+    		 || (stmt.instanceOf('binary') && stmt.isLogicOp && stmt.isInnerExpr && stmt.kind !== stmt.outerExpr.kind )
+    		 || (stmt.instanceOf('binary') && stmt.isLogicOp && !stmt.isInnerExpr)
+    		 ){
     		complexityCounter++;
     		//println("complexityCounter: " + 1);
+    		//println(stmt.joinPointType);
     		
     	}
 
 		//B3
-    	if((stmt.instanceOf('if') ) ||
+    	if((stmt.instanceOf('if') && !stmt.isElseIf ) ||
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
     		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')){
     		complexityCounter+=nesting;
@@ -83,6 +91,7 @@ CogniComplex.prototype.calculateForFunction = function($function) {
     	}
 
     	
+
 		
     	
     	//println();
@@ -98,7 +107,7 @@ CogniComplex.prototype.calculateForFunction = function($function) {
 
 	return complexityCounter;
 }
-
+/*
 CogniComplex.prototype.calculateForFunctionv1 = function($function) {
 	var complexityCounter = 0;
 	
@@ -127,3 +136,4 @@ CogniComplex.prototype.calculateForFunctionv1 = function($function) {
 
 	return complexityCounter;
 }
+*/

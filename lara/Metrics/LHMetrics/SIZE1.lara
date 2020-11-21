@@ -19,12 +19,14 @@ function SIZE1() {
 // Inheritance
 SIZE1.prototype = Object.create(Metric.prototype);
 
+
 // Override
 SIZE1.prototype.calculateForClass = function($class) {
 	// TODO: Regex could be improved to exclude semicolons:
 	// - Inside strings "" / '' / ``(js)
 	// - Inside comments //  /**/
 	// Or get comments and strings and subtract the total number
+	
 
 	var regexp = RegExp(';','g');
 	var regexpCases = $class.code.match(regexp);
@@ -32,7 +34,7 @@ SIZE1.prototype.calculateForClass = function($class) {
 	if(regexpCases !== null)
 		numberSemiColonsClass = regexpCases.length;
 
-	
+
 	for ($method of $class.methods){
 		if($class.ancestor("file").id !== $method.ancestor("file").id ||
 		($class.ancestor("file").id === $method.ancestor("file").id && ($method.line < $class.line || $method.line > $class.endLine)))

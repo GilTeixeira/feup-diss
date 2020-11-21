@@ -7,10 +7,56 @@ import InterfaceUtils;
  */
 aspectdef Questions
 
-	printAst();
+	//Q1
 
-	var ifs = Query.search('else').first();
-	var ifs = Query.search('if').first();
+	/*
+	var file = Query.search('file').first();
+	
+	println("File: " + file);
+	println("Class : " + file.children[0]);
+	println("File: " + file.children[0].parent + "   " + file.children[0].parent.astNode);
+	*/
+	
+	var client = Query.search('method', "Client").first();
+
+	/*
+	for(init of client.astNode.getInitializers()){
+		if(init.getValue("initKind").getString()==="BaseInitializer")
+			println(init.getValue("initExpr").getSubExpr());
+
+	}
+*/
+	var superNode = Query.searchFrom(client, "memberCall").first();
+
+	println(superNode.astNode.prettyprint());
+	println(client.astNode);
+
+	printAstFrom(client);
+	 
+	
+	
+
+	//println(client.astNode.getInitializers()[0]);
+	//println(client.astNode.getInitializers()[0].getValue("initKind").getString()==="BaseInitializer");
+	//println(client.astNode.getInitializers()[0].getValue("initExpr").getSubExpr());
+	//println(client.astNode.getInitializers()[1]);
+	//println(client.astNode.getInitializers()[1].getValue("initExpr").getCode());
+
+
+
+
+
+
+
+
+
+
+	///////////////////////////////////////
+
+	//printAst();
+
+	//var ifs = Query.search('else').first();
+	//var ifs = Query.search('if').first();
 
 	//println(ifs.children[1].astNode.getShortRepresentation());
 	//println(ifs.children[2].astNode.getShortRepresentation());

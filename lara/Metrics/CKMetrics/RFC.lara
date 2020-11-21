@@ -22,14 +22,18 @@ RFC.prototype = Object.create(Metric.prototype);
 RFC.prototype.calculateForClass = function($class) {
 
 	// Given a class, its RFC is the addition of:
-	// Method elements
+	// Method elements, including inherited
 	// References to any Method
 
 	var methodsSignatures = new Set();
 
-	for (var $method of $class.methods){
+	for (var $method of $class.allMethods){
 		methodsSignatures.add($method.id);
 		 //println($method.code);
+
+		 if($method.instanceOf('constructor'))
+		 	for(constructorCall of $method.superCalls)
+		 		methodsSignatures.add(constructorCall.constructor.id);
 	
 		var $memberCalls = Query.searchFrom($method,"memberCall").get();
 		for($memberCall of $memberCalls)
@@ -48,7 +52,7 @@ RFC.prototype.calculateForClass = function($class) {
 	//Array.from(methodsSignatures).forEach(methodSignature => println(methodSignature));
 	return methodsSignatures.size;
 }
-
+/*
 // Override
 RFC.prototype.calculateForClassCpp = function($class) {
 
@@ -98,28 +102,28 @@ RFC.prototype.calculateForClassJava = function($class) {
 
 	$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name )); // TODO: does not handle method overload
 
-	/*
-	println("Calls:");
-	$calls.forEach($call => {
-		println("attributes: " + $call.attributes);
-		println("qualifiedDecl: " + $call.arguments);
-		println("name: " + $call.name);
-		println("Class:  " + $call.targetType.name);
-		println();
+	
+	//println("Calls:");
+	//$calls.forEach($call => {
+//		println("attributes: " + $call.attributes);
+		//println("qualifiedDecl: " + $call.arguments);
+		//println("name: " + $call.name);
+		//println("Class:  " + $call.targetType.name);
+		//println();
 		
-	});
-	*/
+	//});
+	
 
 
 	
-/*
+
 	// Methods called by the methods of $class
-	var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
+	//var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
 
-	methodsCalled.forEach(methodCalled => methodsSignatures.add(methodCalled.signature));
+	//methodsCalled.forEach(methodCalled => methodsSignatures.add(methodCalled.signature));
 	
-	var rfc = methodsSignatures.size;
-	*/
+	//var rfc = methodsSignatures.size;
+	
 
 	//println(Array.from(methodsSignatures));
 	//methodsSignatures.forEach(methodSignature => println(methodSignature));
@@ -154,3 +158,6 @@ RFC.prototype.calculateForClassInd = function($class) {
 	//println(Array.from(methodsSignatures));
 	return methodsSignatures.size;
 }
+
+*/
+

@@ -19,13 +19,53 @@ function NOC() {
 // Inheritance
 NOC.prototype = Object.create(Metric.prototype);
 
+NOC.prototype.calculateForProject = function() {
+	var noc = 0;
+	var superClassesMap =  new Map();
+
+	var classes = Query.search('class').get();
+	
+
+	for($classSuper of classes){
+		superClassesMap.set($classSuper.id,0);
+		for($classSub of classes)
+			if($classSub.superClasses.some($superClass => $superClass.id === $classSuper.id))
+				superClassesMap.set($classSuper.id,superClassesMap.get($classSuper.id)+1);
+
+	}
+	
+		
+	//println($classSub.astNode);
+
+	//superClassesMap.forEach(function(value, key) {
+  	//	console.log(key + ' = ' + value + '\n');
+	//});
+
+	//for (var [key, value] of superClassesMap)
+  		//println(key + ' = ' + value);
+
+	//return Query.search("class",{'superClass':$class.name}).get().length;
+	return superClassesMap;	
+}
+
 
 
 // Override
+
+/*
 NOC.prototype.calculateForClass = function($class) {	
 	var noc = 0;
 	var $classes = Query.search('class').get();
+
 	for($classSub of $classes){
+		//println("Class:");
+		//println($classSub.astNode);
+		//println("SuperClass:");
+		//println($classSub.astNode.getSuperclass());
+		//println($classSub.astNode.getSuperclass().getTypeDeclaration());
+		//println($classSub.astNode.getSuperclass()===null);
+		//println($classSub.astNode.getSuperclass().getClass());
+		//println($classSub.superClasses);
 		if($classSub.superClasses.some($classSuper => $classSuper.id === $class.id))
 			noc++;
 	}
@@ -73,4 +113,4 @@ NOC.prototype.calculateForClassInd = function($class) {
 	return noc;
 
 }
-
+*/

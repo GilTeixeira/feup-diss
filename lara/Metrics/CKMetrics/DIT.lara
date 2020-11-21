@@ -21,6 +21,7 @@ DIT.prototype = Object.create(Metric.prototype);
 
 // Override
 DIT.prototype.calculateForClass = function($class) {
+
 	var depth = 0;
 	
 	for($classSuper of $class.superClasses){
@@ -30,7 +31,7 @@ DIT.prototype.calculateForClass = function($class) {
 	return depth;
 }
 
-
+/*
 
 
 
@@ -89,3 +90,4 @@ DIT.prototype.calculateForClassInd = function($class) {
 			
 }
 
+*/

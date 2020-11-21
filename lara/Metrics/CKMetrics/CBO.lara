@@ -21,10 +21,55 @@ CBO.prototype = Object.create(Metric.prototype);
 
 // Override
 
-// TODO: MISSING Constructor calls
-// TODO: join all types
-// TODO: field: Object obj = new HashMap<Integer,String>();   ;
 CBO.prototype.calculateForClass = function($class) {
+
+	var classesCoupled = new Set();
+
+	var memberAccesses = [];
+	var $varDecls = [];
+
+	var typesUsed = [];
+
+	for(jp of $class.descendants){
+		if(jp.instanceOf("fieldRef") || jp.instanceOf("memberCall"))
+			memberAccesses.push(jp);
+
+		if(jp.instanceOf("varDecl"))
+			$varDecls.push(jp);
+
+	}
+
+	//println(memberAccesses.length);
+	//println($varDecls.length);
+
+
+	memberAccesses = memberAccesses.filter(memberAccess=> memberAccess.class.id !== $class.id && memberAccess.class.isCustom);	
+	memberAccesses.forEach(memberAccess => classesCoupled.add(memberAccess.class.id));
+
+	//var $varDecls = Query.searchFrom($class).search("varDecl").get();
+	$varDecls.forEach($varDecl => typesUsed.push($varDecl.type.usedTypes));
+
+
+	$class.methods.forEach($method => {
+		typesUsed.push($method.returnType.usedTypes);
+	});		
+
+		
+	typesUsed = typesUsed.filter($type => $type.isClass && $type.decl.id !== $class.id && $type.class.isCustom);
+	typesUsed.forEach($type => classesCoupled.add($type.decl.id));
+
+	
+	//classesCoupled.forEach(classesCoupled => println(classesCoupled));
+	return classesCoupled.size;
+
+	
+
+
+
+}
+
+/*
+CBO.prototype.calculateForClassv0 = function($class) {
 	//The Coupling Between Object classes metric represents the number of classes coupled to a given class. This coupling can happen throuhg:
 
 
@@ -99,7 +144,7 @@ CBO.prototype.calculateForClass = function($class) {
 	typesUsed.forEach($type => classesCoupled.add($type.decl.id));
 
 	
-	classesCoupled.forEach(classesCoupled => println(classesCoupled));
+	//classesCoupled.forEach(classesCoupled => println(classesCoupled));
 	return classesCoupled.size;
 
 
@@ -169,13 +214,13 @@ CBO.prototype.calculateForClassInd2 = function($class) {
 	for ($classInherited of $classesInherited)
 		classesCoupled.add($classInherited.name); 
 		
-	/*
-	for (var $field of Query.searchFromInclusive($class).search("vardecl").get()){
-		var $classesUsed = MetricQuery.usedClasses($field.type);
-		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
+	
+	//for (var $field of Query.searchFromInclusive($class).search("vardecl").get()){
+//		var $classesUsed = MetricQuery.usedClasses($field.type);
+		//$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
 
-	}
-	*/
+	//}
+	
 		
 
 
@@ -183,67 +228,67 @@ CBO.prototype.calculateForClassInd2 = function($class) {
 	
 	for (var $field of Query.searchFromInclusive($class).search("field", "myobject4").get()){
 
-		/*
-		if($field.type.isBuiltin)
-			continue;
+		
+		// if($field.type.isBuiltin)
+		// 	continue;
 
-		if($field.type.kind === 'RecordType')
-			continue;
+		// if($field.type.kind === 'RecordType')
+		// 	continue;
 
 		
-		if($field.type.isArray)
-			continue;
+		// if($field.type.isArray)
+		// 	continue;
 
-		if($field.type.kind === 'TemplateTypeParmType')
-			continue;
+		// if($field.type.kind === 'TemplateTypeParmType')
+		// 	continue;
 
-		if($field.type.isPointer)
-			continue;	
-		*/
+		// if($field.type.isPointer)
+		// 	continue;	
+		
 		//println("Field: " + $field.name);
 		//var usedClasses = MetricQuery.usedClasses($field.type);
 		//for (usedClass of usedClasses)
 			//println('used: ' + usedClass.name);
-		/*
-		for(var $class2 of Query.search("class").get()) {
-			if(MetricQuery.usesClass($field.type, $class2))
-				println('used: ' + $class2.name);
+		
+		// for(var $class2 of Query.search("class").get()) {
+		// 	if(MetricQuery.usesClass($field.type, $class2))
+		// 		println('used: ' + $class2.name);
 			
-		}
-		*/
+		// }
+		
 		//println();
 		}
 		
 
-		/*
-		println("Field: " + $field.name);
-		println("typeReference: " + $field.typeReference);
-		try{
-		// Java
-		//var decl = $field.typeReference.declaration;
+		
+		// println("Field: " + $field.name);
+		// println("typeReference: " + $field.typeReference);
+		// try{
+		// // Java
+		// //var decl = $field.typeReference.declaration;
 
-		// C
-		println("decl: " + $field.decl);
-		println("type: " + $field.type.kind);
-		var decl = $field.type.decl;
-		println(decl);
-		}
-		catch(err) {
-		println(decl);
-		}
-		println();
-		*/
+		// // C
+		// println("decl: " + $field.decl);
+		// println("type: " + $field.type.kind);
+		// var decl = $field.type.decl;
+		// println(decl);
+		// }
+		// catch(err) {
+		// println(decl);
+		// }
+		// println();
+		
 
 	
 
 	var methodCallChain = Query.searchFromInclusive($class).search("method").search("vardecl").get();
 
-	/*
-	for (var $vardecl of methodCallChain){
-		println("name: " + $vardecl.name);
-		println("type: " + $vardecl.type.builtinKind);
-	}
-	*/
+	
+	// for (var $vardecl of methodCallChain){
+	// 	println("name: " + $vardecl.name);
+	// 	println("type: " + $vardecl.type.builtinKind);
+	// }
+	
 
 	
 
@@ -252,7 +297,6 @@ CBO.prototype.calculateForClassInd2 = function($class) {
 	//println();
 	return classesCoupled.size;
 }
-
 
 // Override
 CBO.prototype.calculateForClassCpp = function($class) {
@@ -299,23 +343,23 @@ CBO.prototype.calculateForClassCpp = function($class) {
 	// Fields Accessed by the methods of $class
 	var fieldsAccessed = Query.search("method", {"record": r => r.name === $class.name}).search("memberAccess").get();
 
-	/*
-	for(var fieldAccessed of fieldsAccessed) {
-	println("Code: " + fieldAccessed.code);
-	println("Type: " + fieldAccessed.base.type.name);
-	if(fieldAccessed.base.decl !== undefined)
-				println("BASE1: " + fieldAccessed.base.decl.name); // this.bar1()
-			else
-				if (fieldAccessed.base.vardecl !== undefined)
-					println("BASE2: " + fieldAccessed.base.vardecl.type.name); // myAnimal.animalSound
-				else if (fieldAccessed.base.type.pointee !== undefined)
-					println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->ancestor)->age
-				else println("BASE4: " + fieldAccessed.base.type.name); // (this->ancestor).age
 	
-	}
+	// for(var fieldAccessed of fieldsAccessed) {
+	// println("Code: " + fieldAccessed.code);
+	// println("Type: " + fieldAccessed.base.type.name);
+	// if(fieldAccessed.base.decl !== undefined)
+	// 			println("BASE1: " + fieldAccessed.base.decl.name); // this.bar1()
+	// 		else
+	// 			if (fieldAccessed.base.vardecl !== undefined)
+	// 				println("BASE2: " + fieldAccessed.base.vardecl.type.name); // myAnimal.animalSound
+	// 			else if (fieldAccessed.base.type.pointee !== undefined)
+	// 				println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->ancestor)->age
+	// 			else println("BASE4: " + fieldAccessed.base.type.name); // (this->ancestor).age
+	
+	// }
 
-	println();
-	*/
+	// println();
+	
 	
 
 
@@ -392,69 +436,69 @@ CBO.prototype.calculateForClassJava = function($class) {
 		if(query["method"].parent.name !== $class.name)
 			classesCoupled.add(query["method"].parent.name);
 
-		/*
-		println();
-		println("Class: "+$class.name );
-		println("Classmethod: "+query["method"].parent.name );
-		println("method: "+query["method"].name );
-		println("Sig: "+query["call"].targetType.name+ '::' + query["call"].name );
-		println();
-		*/
+		
+		// println();
+		// println("Class: "+$class.name );
+		// println("Classmethod: "+query["method"].parent.name );
+		// println("method: "+query["method"].name );
+		// println("Sig: "+query["call"].targetType.name+ '::' + query["call"].name );
+		// println();
+		
 
 		//println(query["method"].record.name);
 		//println();
 	}
 
 	
-/*
-	// TODO: fields accesses
 
-	// Fields Accessed by the methods of $class
-	var fieldsAccessed = Query.search("method", {"record": r => r.name === $class.name}).search("memberAccess").get();
+	// // TODO: fields accesses
 
-	for(var fieldAccessed of fieldsAccessed) {
-	println("Code: " + fieldAccessed.code);
-	println("Type: " + fieldAccessed.base.type.name);
-	if(fieldAccessed.base.decl !== undefined)
-				println("BASE1: " + fieldAccessed.base.decl.name); // this.bar1()
-			else
-				if (fieldAccessed.base.vardecl !== undefined)
-					println("BASE2: " + fieldAccessed.base.vardecl.type.name); // myAnimal.animalSound
-				else if (fieldAccessed.base.type.pointee !== undefined)
-					println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->ancestor)->age
-				else println("BASE4: " + fieldAccessed.base.type.name); // (this->ancestor).age
+	// // Fields Accessed by the methods of $class
+	// var fieldsAccessed = Query.search("method", {"record": r => r.name === $class.name}).search("memberAccess").get();
+
+	// for(var fieldAccessed of fieldsAccessed) {
+	// println("Code: " + fieldAccessed.code);
+	// println("Type: " + fieldAccessed.base.type.name);
+	// if(fieldAccessed.base.decl !== undefined)
+	// 			println("BASE1: " + fieldAccessed.base.decl.name); // this.bar1()
+	// 		else
+	// 			if (fieldAccessed.base.vardecl !== undefined)
+	// 				println("BASE2: " + fieldAccessed.base.vardecl.type.name); // myAnimal.animalSound
+	// 			else if (fieldAccessed.base.type.pointee !== undefined)
+	// 				println("BASE3: " + fieldAccessed.base.type.pointee.decl.name); // (this->ancestor)->age
+	// 			else println("BASE4: " + fieldAccessed.base.type.name); // (this->ancestor).age
 	
-	}
+	// }
 
-	println();
-
-	
-
-
-
-
-
-
-
-
-	///......................::///
-
-	// Methods that call the methods of $class
-	var methodsThatCall = Query.search("method").search("memberCall", 
-		{"definition": d => d.record.name === $class.name}).chain();
-
-	//println("\Methods that call method of class:");
-	for(var query of methodsThatCall) {
-		if(query["method"].record.name !== $class.name)
-			classesCoupled.add(query["method"].record.name);
-
-		//println(query["method"].record.name);
-		//println();
-	}
-
+	// println();
 
 	
-*/	
+
+
+
+
+
+
+
+
+	// ///......................::///
+
+	// // Methods that call the methods of $class
+	// var methodsThatCall = Query.search("method").search("memberCall", 
+	// 	{"definition": d => d.record.name === $class.name}).chain();
+
+	// //println("\Methods that call method of class:");
+	// for(var query of methodsThatCall) {
+	// 	if(query["method"].record.name !== $class.name)
+	// 		classesCoupled.add(query["method"].record.name);
+
+	// 	//println(query["method"].record.name);
+	// 	//println();
+	// }
+
+
+	
+
 	println("Class: " + $class.name);
 	println(Array.from(classesCoupled));
 	return classesCoupled.size;
@@ -527,13 +571,13 @@ CBO.prototype.calculateForClassInd = function($class) {
 	for ($classInherited of $classesInherited)
 		classesCoupled.add($classInherited.name); 
 		
-	/*
-	for (var $field of Query.searchFromInclusive($class).search("vardecl").get()){
-		var $classesUsed = MetricQuery.usedClasses($field.type);
-		$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
+	
+	// for (var $field of Query.searchFromInclusive($class).search("vardecl").get()){
+	// 	var $classesUsed = MetricQuery.usedClasses($field.type);
+	// 	$classesUsed.forEach($classUsed => classesCoupled.add($classUsed.name));
 
-	}
-	*/
+	// }
+	
 		
 
 
@@ -541,67 +585,67 @@ CBO.prototype.calculateForClassInd = function($class) {
 	
 	for (var $field of Query.searchFromInclusive($class).search("field", "myobject4").get()){
 
-		/*
-		if($field.type.isBuiltin)
-			continue;
+		
+		// if($field.type.isBuiltin)
+		// 	continue;
 
-		if($field.type.kind === 'RecordType')
-			continue;
+		// if($field.type.kind === 'RecordType')
+		// 	continue;
 
 		
-		if($field.type.isArray)
-			continue;
+		// if($field.type.isArray)
+		// 	continue;
 
-		if($field.type.kind === 'TemplateTypeParmType')
-			continue;
+		// if($field.type.kind === 'TemplateTypeParmType')
+		// 	continue;
 
-		if($field.type.isPointer)
-			continue;	
-		*/
+		// if($field.type.isPointer)
+		// 	continue;	
+		
 		//println("Field: " + $field.name);
 		//var usedClasses = MetricQuery.usedClasses($field.type);
 		//for (usedClass of usedClasses)
 			//println('used: ' + usedClass.name);
-		/*
-		for(var $class2 of Query.search("class").get()) {
-			if(MetricQuery.usesClass($field.type, $class2))
-				println('used: ' + $class2.name);
+		
+		// for(var $class2 of Query.search("class").get()) {
+		// 	if(MetricQuery.usesClass($field.type, $class2))
+		// 		println('used: ' + $class2.name);
 			
-		}
-		*/
+		// }
+		
 		//println();
 		}
 		
 
-		/*
-		println("Field: " + $field.name);
-		println("typeReference: " + $field.typeReference);
-		try{
-		// Java
-		//var decl = $field.typeReference.declaration;
+		
+		// println("Field: " + $field.name);
+		// println("typeReference: " + $field.typeReference);
+		// try{
+		// // Java
+		// //var decl = $field.typeReference.declaration;
 
-		// C
-		println("decl: " + $field.decl);
-		println("type: " + $field.type.kind);
-		var decl = $field.type.decl;
-		println(decl);
-		}
-		catch(err) {
-		println(decl);
-		}
-		println();
-		*/
+		// // C
+		// println("decl: " + $field.decl);
+		// println("type: " + $field.type.kind);
+		// var decl = $field.type.decl;
+		// println(decl);
+		// }
+		// catch(err) {
+		// println(decl);
+		// }
+		// println();
+		
 
 	
 
 	var methodCallChain = Query.searchFromInclusive($class).search("method").search("vardecl").get();
 
-	/*
-	for (var $vardecl of methodCallChain){
-		println("name: " + $vardecl.name);
-		println("type: " + $vardecl.type.builtinKind);
-	}
-	*/
+	
+	// for (var $vardecl of methodCallChain){
+	// 	println("name: " + $vardecl.name);
+	// 	println("type: " + $vardecl.type.builtinKind);
+	// }
+	
 
 	
 
@@ -610,3 +654,5 @@ CBO.prototype.calculateForClassInd = function($class) {
 	//println();
 	return classesCoupled.size;
 }
+
+*/

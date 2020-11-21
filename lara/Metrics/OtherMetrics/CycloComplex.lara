@@ -47,7 +47,7 @@ CycloComplex.prototype.calculateForFunction = function($function) {
 
 	return complexityCounter;
 }
-
+/*
 CycloComplex.prototype.calculateForFunctionOld = function($function) {
 	var complexityCounter = 0;
 
@@ -68,3 +68,4 @@ CycloComplex.prototype.calculateForFunctionOld = function($function) {
 
 	return complexityCounter;
 }
+*/

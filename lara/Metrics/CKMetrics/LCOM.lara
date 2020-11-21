@@ -27,18 +27,18 @@ LCOM94.prototype.calculateForClass = function($class) {
 
 	for ($method of $class.methods){
 		var $fieldRefs = Query.searchFrom($method,"fieldRef").get();
-		$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.class.id === $class.id);
+		$fieldRefs = $fieldRefs.filter($fieldRef=> $fieldRef.field!==null && $fieldRef.class.id === $class.id);
 		var fieldRefsIds = $fieldRefs.map($fieldRef => $fieldRef.field.id);
 		methodFieldRefsMap.set($method.id,new Set(fieldRefsIds));
 
 	}
 
 
-	/*
-	for ([key, value] of methodFieldRefsMap.entries()) {
-	  println(key + "  " + Array.from(value));
-	}
-	*/
+	
+	//for ([key, value] of methodFieldRefsMap.entries()) {
+	//  println(key + "  " + Array.from(value));
+	//}
+	
 	
 
 
@@ -78,7 +78,7 @@ LCOM94.prototype.calculateForClass = function($class) {
 	return lcom; 
 }
 
-
+/*
 
 
 
@@ -162,27 +162,27 @@ LCOM94.prototype.calculateForClassCpp = function($class) {
 
 // Override
 LCOM94.prototype.calculateForClassJava = function($class) {
-	/*
-	var methodFieldsMap = new Map();
-	println($class.name);
-
-	for ($method of Query.searchFromInclusive($class).search("method").get()){
-		println("	" + $method.name);
-		var fieldsAccessed = []; // TODO : Maybe change to Set
-		for ($var of Query.searchFromInclusive($method).search("var").get()){
-			println("		" + $var.name);
-			
-				if($var.isField && $var.declaration)  // check if var.decl is  not undefined Ex: (PrintStream)
-					if($var.declaration.parent.name === $class.name)
-						fieldsAccessed.push($var.declaration.name);
-		
-		}
-		println();
-
-		methodFieldsMap.set($method.name, fieldsAccessed);
-
-	}
-	*/ 
+	
+	//var methodFieldsMap = new Map();
+	//println($class.name);
+	//
+	//for ($method of Query.searchFromInclusive($class).search("method").get()){
+	//	println("	" + $method.name);
+	//	var fieldsAccessed = []; // TODO : Maybe change to Set
+	//	for ($var of Query.searchFromInclusive($method).search("var").get()){
+	//		println("		" + $var.name);
+	//		
+	//			if($var.isField && $var.declaration)  // check if var.decl is  not undefined Ex: (PrintStream)
+	//				if($var.declaration.parent.name === $class.name)
+	//					fieldsAccessed.push($var.declaration.name);
+	//	
+	//	}
+	//	println();
+    //
+	//	methodFieldsMap.set($method.name, fieldsAccessed);
+	//
+    //}
+	 
 
 	// map method name to set of fields names
 	var methodFieldsMap = new Map();
@@ -215,7 +215,7 @@ LCOM94.prototype.calculateForClassJava = function($class) {
 		
 
 	}
-	/**/
+	
 	
 
 	
@@ -280,11 +280,11 @@ LCOM94.prototype.calculateForClassInd = function($class) {
 
 	}
 
-	/*
-	for ([key, value] of methodFieldsMap.entries()) {
-	  println(key + "  " + Array.from(value));
-	}
-	*/
+	
+	//for ([key, value] of methodFieldsMap.entries()) {
+	// println(key + "  " + Array.from(value));
+	//}
+	
 
 
 	var numPairMethodCommomFieldAccess = 0; // Q
@@ -311,17 +311,4 @@ LCOM94.prototype.calculateForClassInd = function($class) {
 	
 	return lcom; 
 }
-
-
-/*
-How many fields Accesses?
-1
-class Foo {
-	int id; 
-	Foo * self;
-
-	int bar() {
-    		return self->id;
-   	}  
-};
 */

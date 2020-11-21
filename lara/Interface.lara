@@ -14,7 +14,7 @@ aspectdef Interface
 
 	var classMetrics = [
 		
-		new NOC(), 
+		//new NOC(), 
 		new DIT(), 
 		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
 		new WMC(), 
@@ -180,7 +180,49 @@ aspectdef Interface
 	//println((new CogniComplex()).calculateForFunction(setYear));
 
 	//printAstFrom(setYear);
-	
+
+	//var $class = Query.search('class','Shape').search('fieldRef').get()[1];
+
+	//println($class.field);
+	//printAstFrom($class.parent.parent);
+
+	//(new NOC()).calculateForProject();
+
+	//var setYear = Query.search('class',"Store").search('method',"listTransationTimePeriod").first();
+	//println((new CogniComplex()).calculateForFunction(setYear));
+
+	//printAstFrom(setYear);
+
+
+	//var Client = Query.search('class',"Client").first();
+	//println((new CBO()).calculateForClass(Client));
+	//printAstFrom(Client);
+
+	//var setYear = Query.search('class',"Store").search('method',"listTransationTimePeriod").first();
+	//printAstFrom(setYear);
+
+	//var bin =  Query.searchFrom(setYear,'binary').get()[2];
+	//println(bin.parent.astNode.getClass().getSimpleName()==="ParenExpr");
+
+	//println(bin.code);
+	//println(bin.isInnerExpr);
+	//println(bin.isInnerExpr);
+	//println(bin.parent.parent.isInnerExpr);
+
+/*
+	var Date =  Query.search('class',"Date").search("method","operator==").first();
+
+	var bin2 =  Query.search('class',"Date").search("method","operator==").search("binary").get()[0];
+	var bin2 =  Query.search('class',"Date").search("method","operator==").search("binary").get()[1];
+	//printAstFrom(Date);
+	println(bin2.code);
+	println(bin2.instanceOf('binary'));
+	println(bin2.isLogicOp);
+	println(bin2.isInnerExpr);
+	println(bin2.outerExpr);
+	println(bin2.outerExpr.kind);
+	*/
+
 end
 
 
