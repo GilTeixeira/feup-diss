@@ -152,7 +152,6 @@ void Store::listTransationTimePeriod(Date & lowerDate, Date & upperDate)
 			 << "\n";
 		return;
 	}
-	// .equals in java
 	else if (upperDate == lowerDate)
 	{
 		cout << "\n Upper limit is equal to lower limit."

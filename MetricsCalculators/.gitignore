@@ -6,3 +6,9 @@ sonarqube
 scitools
 test/pbeans-2.0.2
 test/commons-io
+sonarqube-7.9.5
+test/cpp-simple/.scannerwork
+test/cpp/.scannerwork
+test/cpp/*.und
+test/bzip2
+test/cpp/*.csv

@@ -1,3 +1,5 @@
 .vscode
-./*.java
+/*.java
 *.js
+com
+net
