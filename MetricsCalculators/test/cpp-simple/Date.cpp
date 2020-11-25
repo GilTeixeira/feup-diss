@@ -61,3 +61,23 @@ ostream& operator<<(ostream& out, const Date & date){
 		
 	return out;
 }
+
+class sampling{
+	
+	int  b1,b2;
+	
+	void m1(){b1=2;}
+	void m2(){b2=b1;}
+	void m3(){m2();}
+};
+
+
+class sampling2{
+	
+	int  a,b,c,d;
+	
+	void m(){a=d;}
+	void n(){}
+	void o(){b=d;}
+	void p(){c=0;}
+};

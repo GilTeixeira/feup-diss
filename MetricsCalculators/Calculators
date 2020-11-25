@@ -2,6 +2,12 @@
 analizo metrics test/cpp
 analizo metrics test/java/src/main/java
 
+## Analizo build
+Change version in Analizo.pm
+dzil build
+./Analizo-1.51.0/analizo metrics ../test/cpp
+command > filename
+
 
 ## Sonarqube (C++ not in community edition, have to setup gradle or maven)
 sudo docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest

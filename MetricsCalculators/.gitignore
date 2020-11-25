@@ -12,3 +12,4 @@ test/cpp/.scannerwork
 test/cpp/*.und
 test/bzip2
 test/cpp/*.csv
+test/cmake-simple-project

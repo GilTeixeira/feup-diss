@@ -21,6 +21,6 @@ NOM.prototype = Object.create(Metric.prototype);
 
 // Override
 NOM.prototype.calculateForClass = function($class) {
-	return $class.methods.length;
+	return $class.allMethods.length;
 }
 

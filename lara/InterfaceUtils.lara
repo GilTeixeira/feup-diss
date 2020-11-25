@@ -1,3 +1,4 @@
+import lara.Io;
 
 function testMetrics(metrics){
 	println("//////////////////////////////");
@@ -5,9 +6,11 @@ function testMetrics(metrics){
 	println("//////////////////////////////");
 	println();
 
+	var results = [];
+
 	for(metric of metrics) {
 		if (typeof metric.calculateForProject == 'function')
-    		testProjectMetric(metric);
+    		results = results.concat(testProjectMetric(metric));
 	}
 
 	println("//////////////////////////////");
@@ -17,7 +20,7 @@ function testMetrics(metrics){
 
 	for(metric of metrics) {
 		if (typeof metric.calculateForClass == 'function')
-    		testClassMetric(metric);
+    		results = results.concat(testClassMetric(metric));
 	}
 
 	println("/////////////////////////////////");
@@ -31,6 +34,22 @@ function testMetrics(metrics){
     		testFunctionMetric(metric);
 	}
 	*/
+	var a = Io.writeFile("./results.txt","");
+	println(a.getAbsolutePath());
+	
+	println("here"+results.length);
+	for(result of results) {
+		// class;metric;value;time
+		var classRes = result[0];
+		var metricRes = result[1];
+		var valueRes = result[2];
+		var timeRes = result[3];
+		var line = classRes+";"+metricRes+";"+valueRes+";"+timeRes+"\n";
+		print(line);
+		
+		Io.appendFile("results.txt",line);
+	
+	}
 }
 
 
@@ -49,19 +68,27 @@ function testClassMetric(metric){
 	println('Testing '+ metric.name + '\n');
 
 	//var timeBeforeAllClasses = performance.now();	
+
+	var results = [];
 	
 	for(var $class of Query.search("class")) {
 		var timeBefore = performance.now();	
 		var metricResult = metric.calculateForClass($class);
 		var timeAfter = performance.now();
 		//println($class);
+		var timeExecution = (timeAfter - timeBefore);
 		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
-		println('	Time: ' + (timeAfter - timeBefore) + ' ms.');
+		println('	Time: ' + timeExecution + ' ms.');
+
+		
+		results.push([$class.id,metric.sigla,metricResult,timeExecution]);
+		
 	}
 	//var timeAfterAllClasses = performance.now();
 	//println('	Time: ' + (timeAfterAllClasses - timeBeforeAllClasses) + ' ms.');
 
-	println();	
+	println();
+	return results;
 
 }
 
@@ -69,21 +96,23 @@ function testProjectMetric(metric){
 
 	println('Testing '+ metric.name + '\n');
 		
+	var results = [];
+	var timeBefore = performance.now();	
+	var metricResults = metric.calculateForProject();
+	var timeAfter = performance.now();
+	var timeExecution = (timeAfter - timeBefore);
 
-		var timeBefore = performance.now();	
-		var metricResult = metric.calculateForProject();
-		var timeAfter = performance.now();
-
-		metricResult.forEach(function(metricResult, classId) {
-  			println('	' + metric.sigla + ' for class '+ classId + ' = ' + metricResult);
-		});
-		//println($class);
-		
-		println('	Time: ' + (timeAfter - timeBefore) + ' ms.');
-
+	metricResults.forEach(function(metricResult, classId) {
+			println('	' + metric.sigla + ' for class '+ classId + ' = ' + metricResult);
+			results.push([classId,metric.sigla,metricResult,(timeExecution/metricResults.size)]);
+	});
+	//println($class);
+	
+	println('	Time: ' + timeExecution + ' ms.');
 
 	println();	
 
+	return results;
 }
 
 

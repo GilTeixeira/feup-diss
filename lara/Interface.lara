@@ -223,6 +223,22 @@ aspectdef Interface
 	println(bin2.outerExpr.kind);
 	*/
 
+	/*
+	var $classes = Query.search('class').get();
+		for($class of $classes)
+			println($class.name);
+	*/
+
+	/*
+	var trans = Query.search('class','Transaction').search('method',"toString").first();
+	var param = Query.searchFrom(trans,'memberCall').get()[0];
+	println(param.class);
+	println(param.class.ancestor("file")==null);
+	println(param.class.isCustom);
+	println(trans.class.isCustom);
+	*/
+	//printAstFrom(trans);
+	
 end
 
 
