@@ -22,7 +22,7 @@ RFC.prototype = Object.create(Metric.prototype);
 RFC.prototype.calculateForClass = function($class) {
 
 	// Given a class, its RFC is the addition of:
-	// Method elements, including inherited
+	// Method elements
 	// References to any Method
 
 	var methodsSignatures = new Set();
@@ -31,12 +31,12 @@ RFC.prototype.calculateForClass = function($class) {
 		methodsSignatures.add($method.id);
 		 //println($method.code);
 
+		 // Get super calls
 		 if($method.instanceOf('constructor'))
 		 	for(constructorCall of $method.superCalls)
 		 		methodsSignatures.add(constructorCall.constructor.id);
 	
-		var $memberCalls = Query.searchFrom($method,"memberCall").get();
-		for($memberCall of $memberCalls)
+		for($memberCall of Query.searchFrom($method,"memberCall"))
 			if($memberCall.method.isCustom){
 				methodsSignatures.add($memberCall.method.id);
 				//println($memberCall.method.signature);

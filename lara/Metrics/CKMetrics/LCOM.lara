@@ -67,8 +67,7 @@ LCOM94.prototype.calculateForClass = function($class) {
 	// LCOM = |P| - |Q|, if |P| > |Q|
 	// LCOM = 0, if |P| <= |Q|
 	
-	var lcom = Math.max((numPairMethodNoCommomFieldAccess - 
-			numPairMethodCommomFieldAccess), 0);
+	var lcom = Math.max((numPairMethodNoCommomFieldAccess - numPairMethodCommomFieldAccess), 0);
 
 	//print("numPairMethodNoCommomFieldAccess:");
 	//println(numPairMethodNoCommomFieldAccess);

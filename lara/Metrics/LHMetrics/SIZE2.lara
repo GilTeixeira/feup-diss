@@ -21,6 +21,6 @@ SIZE2.prototype = Object.create(Metric.prototype);
 
 // Override
 SIZE2.prototype.calculateForClass = function($class) {
-	return $class.methods.length + $class.fields.length;
+	return $class.allMethods.length + $class.fields.length;
 }
 

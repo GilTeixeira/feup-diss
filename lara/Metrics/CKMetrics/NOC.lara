@@ -20,11 +20,9 @@ function NOC() {
 NOC.prototype = Object.create(Metric.prototype);
 
 NOC.prototype.calculateForProject = function() {
-	var noc = 0;
-	var superClassesMap =  new Map();
 
-	var classes = Query.search('class').get();
-	
+	var superClassesMap =  new Map();
+	var classes = Query.search('class').get();	
 
 	for($classSuper of classes){
 		superClassesMap.set($classSuper.id,0);

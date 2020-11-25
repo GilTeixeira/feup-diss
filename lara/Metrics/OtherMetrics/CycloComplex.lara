@@ -19,6 +19,8 @@ function CycloComplex() {
 // Inheritance
 CycloComplex.prototype = Object.create(Metric.prototype);
 
+//CycloComplex.prototype.calculateForClass = function($class) {
+
 CycloComplex.prototype.calculateForClass = function($class) {
 	var complexityCounter = 0;
 	for ($method of $class.allMethods){
@@ -29,7 +31,50 @@ CycloComplex.prototype.calculateForClass = function($class) {
 	return complexityCounter;
 }
 
+
+
 CycloComplex.prototype.calculateForFunction = function($function) {
+	var complexityCounter = 0;
+	//println("Counters:");
+
+	for(jp of $function.descendants){
+		complexityCounter += jp.instanceOf('if')?1:0;
+		complexityCounter += jp.instanceOf('loop')?1:0;
+		complexityCounter += jp.instanceOf('ternary')?1:0;
+		complexityCounter += jp.instanceOf('case')?1:0;  // already includes defaults
+		complexityCounter += jp.instanceOf('switch')?1:0;
+		complexityCounter += (jp.instanceOf('binary')&& (jp.kind === '&&' || jp.kind === '||'))?1:0;
+		complexityCounter += jp.instanceOf('try')?1:0;  // try catch are 1
+		complexityCounter += jp.instanceOf('throw')?1:0;
+		complexityCounter += jp.instanceOf('break')?1:0;
+		complexityCounter += jp.instanceOf('continue')?1:0;
+		complexityCounter += jp.instanceOf('goto')?1:0;
+	
+	}
+	
+	return complexityCounter;
+}
+
+CycloComplex.prototype.calculateForFunctionv2 = function($function) {
+	var complexityCounter = 0;
+	//println("Counters:");
+
+	for(jp of $function.descendants){
+
+		if(jp.instanceOf('if') || jp.instanceOf('loop') || jp.instanceOf('ternary') ||
+		jp.instanceOf('case') || jp.instanceOf('switch') || (jp.instanceOf('binary') && (jp.kind === '&&' || jp.kind === '||')) ||
+		jp.instanceOf('try') || jp.instanceOf('throw') || jp.instanceOf('break') || jp.instanceOf('continue') || jp.instanceOf('goto'))
+			complexityCounter++;
+		
+	
+	
+	}
+	
+	return complexityCounter;
+}
+
+
+CycloComplex.prototype.calculateForFunctionv0 = function($function) {
 	var complexityCounter = 0;
 	//println("Counters:");
 	

@@ -43,10 +43,7 @@ CogniComplex.prototype.calculateForFunction = function($function) {
     	//if(!stmt.instanceOf('stmt'))
 		//		continue;
 
-
-	//B1
-	//missing sequence of logical ops
-
+		// This is needed because else are inside of ifs
 		if(stmt.instanceOf('else')){
 			nesting--;
 			//println("ELSE:            " + stmt.isElseIf);
