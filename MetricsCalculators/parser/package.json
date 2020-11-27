@@ -1,0 +1,14 @@
+{
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "parser for analizo results",
+  "main": "parse.js",
+  "scripts": {
+    "start": "node parse.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "papaparse": "^5.3.0"
+  }
+}

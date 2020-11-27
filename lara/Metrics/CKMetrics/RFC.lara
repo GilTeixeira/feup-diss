@@ -37,7 +37,7 @@ RFC.prototype.calculateForClass = function($class) {
 		 		methodsSignatures.add(constructorCall.constructor.id);
 	
 		for($memberCall of Query.searchFrom($method,"memberCall"))
-			if($memberCall.method.isCustom){
+			if($memberCall.method !== null && $memberCall.method.isCustom){
 				methodsSignatures.add($memberCall.method.id);
 				//println($memberCall.method.signature);
 				//println($memberCall.code);

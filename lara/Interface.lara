@@ -238,7 +238,12 @@ aspectdef Interface
 	println(trans.class.isCustom);
 	*/
 	//printAstFrom(trans);
-	
+
+	//var client = Query.search('class','Client').first();
+	//println(client.allMethods.length);
+	//var methodsComplexity = [];
+
+	//console.log(methodsComplexity.reduce((accumulator, currentValue) => accumulator + currentValue,0));
 end
 
 

@@ -6,14 +6,14 @@ import Metrics.OtherMetrics.OtherMetricsIndex;
 var metrics = [
 /**/
 		//CK metrics
-			/*	*/	
+			/*	*/
 		new NOC(), 
 		
 		new DIT(), 
 		
 		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
 		
-		
+			
 		new WMC(), 
 		
 		new LCOM94(), 

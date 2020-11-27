@@ -43,10 +43,11 @@ CBO.prototype.calculateForClass = function($class) {
 	//println($varDecls.length);
 
 
-	memberAccesses = memberAccesses.filter(memberAccess=> memberAccess.class.id !== $class.id && memberAccess.class.isCustom);	
+	memberAccesses = memberAccesses.filter(memberAccess=> memberAccess.class !== null && memberAccess.class.id !== $class.id && memberAccess.class.isCustom);	
 	memberAccesses.forEach(memberAccess => classesCoupled.add(memberAccess.class.id));
 
 	//var $varDecls = Query.searchFrom($class).search("varDecl").get();
+	$varDecls = $varDecls.filter($varDecl => $varDecl.type != null); // when not in classpath
 	$varDecls.forEach($varDecl => typesUsed.push($varDecl.type.usedTypes));
 
 

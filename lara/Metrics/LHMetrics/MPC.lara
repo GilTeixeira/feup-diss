@@ -26,7 +26,7 @@ MPC.prototype.calculateForClass = function($class) {
 
 	for ($method of $class.methods){		
 		var $memberCalls = Query.searchFrom($method, "memberCall").get();
-		$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class.id !== $class.id && $memberCall.class.isCustom);
+		$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class !== null && $memberCall.class.id !== $class.id && $memberCall.class.isCustom);
 		$memberCalls.forEach($memberCall => classesCoupled.add($memberCall.class.id));
 	}
 	//Array.from(classesCoupled).forEach(methodSignature => println(methodSignature));

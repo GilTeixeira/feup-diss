@@ -23,35 +23,42 @@ function testMetrics(metrics){
     		results = results.concat(testClassMetric(metric));
 	}
 
+	/*
 	println("/////////////////////////////////");
 	println("/// Testing Function Metrics ////");
 	println("/////////////////////////////////");
 	println();
 
-	/*
+	
 	for(metric of metrics) {
 		if (typeof metric.calculateForFunction == 'function')
     		testFunctionMetric(metric);
 	}
 	*/
-	var a = Io.writeFile("./results.txt","");
+	writeResultsToFile(results);
+
+}
+
+function writeResultsToFile(results){
+		
+	var a = Io.writeFile("./full_results.txt","class;metric;value;time\n");
 	println(a.getAbsolutePath());
 	
-	println("here"+results.length);
+	//println(results.length);
 	for(result of results) {
 		// class;metric;value;time
 		var classRes = result[0];
 		var metricRes = result[1];
 		var valueRes = result[2];
-		var timeRes = result[3];
+		var timeRes = result[3]*1000;
 		var line = classRes+";"+metricRes+";"+valueRes+";"+timeRes+"\n";
 		print(line);
 		
-		Io.appendFile("results.txt",line);
+		Io.appendFile("./full_results.txt",line);
 	
 	}
-}
 
+}
 
 function testClassMetrics(metrics){
 
