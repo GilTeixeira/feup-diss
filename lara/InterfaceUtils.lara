@@ -1,5 +1,35 @@
 import lara.Io;
 
+function testMetricsRepeated(metrics, numberOfRepeats){
+	 var results = testMetrics(metrics);
+
+	 for(var i = 1 ; i< numberOfRepeats ; i++){
+	 	nextResults = testMetrics(metrics);
+
+	 	for(var j = 0 ; j< results.length ; j++){
+	 	
+
+	 	
+	 		currAvg = results[j].time;
+	 		lastTime = nextResults[j].time;
+	 		results[j].time = ((currAvg * i) + lastTime) / (i+1);
+
+	 		//println("Metric:    " + results[j].metric);
+			//println("Class:     " + results[j].class);
+			//println("Curr Time: " + currAvg);			
+			//println("Avg Time:  " + results[j].time);
+			//println();
+			//result.time = ((result.time * i) + nextResults[index].time) / (i+1);			
+			//println("Avg Time:  " + result.time);
+			
+	 	}
+	
+      
+   }
+
+	writeResultsToFile(results);
+}
+
 function testMetrics(metrics){
 
 	var results = [];
@@ -37,7 +67,8 @@ function testMetrics(metrics){
     		testFunctionMetric(metric);
 	}
 	*/
-	writeResultsToFile(results);
+
+	return results;
 
 }
 
@@ -47,11 +78,8 @@ function writeResultsToFile(results){
 	println("Results File Location: " + file.getAbsolutePath());
 	
 	for(result of results) {
-		var classRes = result[0];
-		var metricRes = result[1];
-		var valueRes = result[2];
-		var timeRes = result[3]*1000;
-		var line = classRes+";"+metricRes+";"+valueRes+";"+timeRes+"\n";
+
+		var line = result.class+";"+result.metric+";"+result.result+";"+result.time*1000+"\n";
 		//print(line);
 		
 		Io.appendFile(file_path,line);
@@ -88,8 +116,8 @@ function testClassMetric(metric){
 		println('	' + metric.sigla + ' for class '+ $class.id + ' = ' + metricResult);
 		println('	Time: ' + timeExecution + ' ms.');
 
-		
-		results.push([$class.id,metric.sigla,metricResult,timeExecution]);
+		var result = {"class":$class.id,"metric":metric.sigla,"result":metricResult,"time":timeExecution};		
+		results.push(result);
 		
 	}
 	
@@ -112,7 +140,9 @@ function testProjectMetric(metric){
 
 	metricResults.forEach(function(metricResult, classId) {
 			println('	' + metric.sigla + ' for class '+ classId + ' = ' + metricResult);
-			results.push([classId,metric.sigla,metricResult,(timeExecution/metricResults.size)]);
+			
+			var result = {"class":classId,"metric":metric.sigla,"result":metricResult,"time":(timeExecution/metricResults.size)};				
+			results.push(result);
 	});
 	//println($class);
 

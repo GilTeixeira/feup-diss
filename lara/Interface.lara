@@ -13,7 +13,9 @@ aspectdef Interface
 	
 	printNumberOfClasses();
 
-	testMetrics(metrics);
+	//testMetrics(metrics);
+	NUMBER_OF_CALCULATIONS = 5;
+	testMetricsRepeated(metrics, NUMBER_OF_CALCULATIONS);
 
 	/////////////////////////////
 	//  Random Tests
@@ -222,8 +224,8 @@ aspectdef Interface
 
 	//console.log(methodsComplexity.reduce((accumulator, currentValue) => accumulator + currentValue,0));
 
-	var client = Query.search('class','Client').first();
-	println(client.id === "store.Client");
+	//var client = Query.search('class','Client').first();
+	
 
 end
 
