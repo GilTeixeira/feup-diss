@@ -35,9 +35,10 @@ SIZE1.prototype.calculateForClass = function($class) {
 		numberSemiColonsClass = regexpCases.length;
 
 
-	for ($method of $class.methods){
-		if($class.ancestor("file").id !== $method.ancestor("file").id ||
-		($class.ancestor("file").id === $method.ancestor("file").id && ($method.line < $class.line || $method.line > $class.endLine)))
+	for ($method of $class.allMethods){
+		
+		// if method not inside class
+		if($method.ancestor("class") === undefined)
 		{
 			regexpCases = $method.code.match(regexp);
 			if(regexpCases !== null)

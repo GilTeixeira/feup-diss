@@ -10,36 +10,13 @@ import Metrics.MetricsIndex;
  */
 aspectdef Interface
 	//printAst();
+	
 	printNumberOfClasses();
 
-	var classMetrics = [
-		
-		//new NOC(), 
-		new DIT(), 
-		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
-		new WMC(), 
-		new LCOM94(), 
-		new CBO(),
-		new MPC(),
-		new DAC(),
-	
-		new NOM(),
-		new SIZE1(),
-		new SIZE2(),
-
-		new LOC()
-		/**/
-			/**/
-			
-	];
-	var functionMetrics = [
-		//new CC()
-	];
-
-	//testClassMetrics(classMetrics);
-	//testFunctionMetrics(functionMetrics);
 	testMetrics(metrics);
 
+	/////////////////////////////
+	//  Random Tests
 	////////////////////////////
 
 	//var expr = Query.search("binary").first();
@@ -244,6 +221,10 @@ aspectdef Interface
 	//var methodsComplexity = [];
 
 	//console.log(methodsComplexity.reduce((accumulator, currentValue) => accumulator + currentValue,0));
+
+	var client = Query.search('class','Client').first();
+	println(client.id === "store.Client");
+
 end
 
 

@@ -1,12 +1,14 @@
 import lara.Io;
 
 function testMetrics(metrics){
+
+	var results = [];
+
+	
 	println("//////////////////////////////");
 	println("/// Testing Project Metrics ////");
 	println("//////////////////////////////");
-	println();
-
-	var results = [];
+	println();	
 
 	for(metric of metrics) {
 		if (typeof metric.calculateForProject == 'function')
@@ -40,21 +42,19 @@ function testMetrics(metrics){
 }
 
 function writeResultsToFile(results){
-		
-	var a = Io.writeFile("./full_results.txt","class;metric;value;time\n");
-	println(a.getAbsolutePath());
+	var file_path = "full_results.txt";
+	var file = Io.writeFile(file_path,"class;metric;value;time\n");
+	println("Results File Location: " + file.getAbsolutePath());
 	
-	//println(results.length);
 	for(result of results) {
-		// class;metric;value;time
 		var classRes = result[0];
 		var metricRes = result[1];
 		var valueRes = result[2];
 		var timeRes = result[3]*1000;
 		var line = classRes+";"+metricRes+";"+valueRes+";"+timeRes+"\n";
-		print(line);
+		//print(line);
 		
-		Io.appendFile("./full_results.txt",line);
+		Io.appendFile(file_path,line);
 	
 	}
 
@@ -74,7 +74,7 @@ function testClassMetric(metric){
 
 	println('Testing '+ metric.name + '\n');
 
-	//var timeBeforeAllClasses = performance.now();	
+	var totalTime = 0;	
 
 	var results = [];
 	
@@ -84,16 +84,17 @@ function testClassMetric(metric){
 		var timeAfter = performance.now();
 		//println($class);
 		var timeExecution = (timeAfter - timeBefore);
-		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
+		totalTime += timeExecution;
+		println('	' + metric.sigla + ' for class '+ $class.id + ' = ' + metricResult);
 		println('	Time: ' + timeExecution + ' ms.');
 
 		
 		results.push([$class.id,metric.sigla,metricResult,timeExecution]);
 		
 	}
-	//var timeAfterAllClasses = performance.now();
-	//println('	Time: ' + (timeAfterAllClasses - timeBeforeAllClasses) + ' ms.');
-
+	
+	println('\n	Total Time: ' + totalTime + ' ms.');
+	println();
 	println();
 	return results;
 
@@ -114,8 +115,9 @@ function testProjectMetric(metric){
 			results.push([classId,metric.sigla,metricResult,(timeExecution/metricResults.size)]);
 	});
 	//println($class);
-	
-	println('	Time: ' + timeExecution + ' ms.');
+
+	println();
+	println('	Total Time: ' + timeExecution + ' ms.');
 
 	println();	
 
