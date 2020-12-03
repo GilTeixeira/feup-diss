@@ -1,8 +1,21 @@
 //Utils.lara
 
-function intersectionSets(set1, set2){
-	var intersection = new Set();
-	for(var x of set1) if(set2.has(x)) intersection.add(x);
+function intersectionSets(setA, setB){
+    var _intersection = new Set();
+    for (var elem of setB) {
+        if (setA.has(elem)) {
+            _intersection.add(elem);
+        }
+    }
+    return _intersection;
+}
 
-	return intersection;
+function hasIntersectionSets(setA, setB){
+    var _intersection = new Set();
+    for (var elem of setB) {
+        if (setA.has(elem)) {
+            return true;
+        }
+    }
+    return false;
 }

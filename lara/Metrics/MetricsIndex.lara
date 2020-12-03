@@ -32,11 +32,11 @@ var metrics = [
 
 		
 
-		//CC
+		//CC/*	*/
 		new CycloComplex(),
-		
+	
 		new CogniComplex(),
-/**/
+
 		//LOC
 		//new LOC(),
 

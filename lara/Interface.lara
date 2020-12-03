@@ -3,6 +3,7 @@ import weaver.jp.CommonJoinPoints;
 
 import InterfaceUtils;
 import Metrics.MetricsIndex;
+import weaver.WeaverOptions;
 
 
 /**
@@ -13,9 +14,10 @@ aspectdef Interface
 	
 	printNumberOfClasses();
 
-	//testMetrics(metrics);
-	NUMBER_OF_CALCULATIONS = 5;
-	testMetricsRepeated(metrics, NUMBER_OF_CALCULATIONS);
+	testMetrics(metrics);
+	testFileMetrics(metrics);
+	///NUMBER_OF_CALCULATIONS = 5;
+	//testMetricsRepeated(metrics, NUMBER_OF_CALCULATIONS);
 
 	/////////////////////////////
 	//  Random Tests
@@ -226,7 +228,59 @@ aspectdef Interface
 
 	//var client = Query.search('class','Client').first();
 	
+	//var client = Query.search('class','String').first();
 
+	/*
+	for (file of Query.search('file')){
+		try {
+		println(file.astNode.getFile().getPath().substring(76));
+		}
+		catch(err){
+		}
+
+		}
+	*/
+
+	/**/
+
+	/**/
+	/*	
+	$file = Query.search('file').get()[0];
+
+	println("Start here");
+	println("Filename: " + $file.astNode);
+	println("descendants: " + $file.descendants.length);
+	println("children: " + $file.children.length);
+
+
+	$cl = Query.search('class').get()[0];
+	println("Filename: " + $cl.astNode);
+	println("descendants: " + $cl.descendants.length);
+	println("children: " + $cl.children.length);
+	
+	
+	
+	for(jp of $file.descendants){
+
+		println(jp.joinPointType);
+	
+	}
+	*/
+
+	//var data = WeaverOptions.getData().get("workspace").toString();
+	//println(data.length);
+
+	//cl = Query.search('class',"ElasticsearchNode").get()[0];
+
+	//println("Start here");
+	//println("class: " + cl.name);
+	//println((new LCOM94()).calculateForClass(cl));
 end
+
+
+
+
+
+
 
 

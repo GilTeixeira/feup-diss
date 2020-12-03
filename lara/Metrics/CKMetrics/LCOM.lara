@@ -34,7 +34,6 @@ LCOM94.prototype.calculateForClass = function($class) {
 
 	}
 
-
 	
 	//for ([key, value] of methodFieldRefsMap.entries()) {
 	//  println(key + "  " + Array.from(value));
@@ -46,20 +45,19 @@ LCOM94.prototype.calculateForClass = function($class) {
 	var numPairMethodCommomFieldAccess = 0; // Q
 	var numPairMethodNoCommomFieldAccess = 0; // P
 
-	for (i = 0; i < $class.methods.length; i++)
-		for (j = i + 1; j < $class.methods.length; j++){
-			var method1Id = $class.methods[i].id;
-			var method2Id = $class.methods[j].id;
+	var methods = $class.methods;
 
-			var commomFieldsSet = intersectionSets(methodFieldRefsMap.get(method1Id), methodFieldRefsMap.get(method2Id));
+	for (i = 0; i < methods.length; i++)
+		for (j = i + 1; j < methods.length; j++){
+			var method1Id = methods[i].id;
+			var method2Id = methods[j].id;
 
-			//println();
-			//println(method1Id);
-			//println(method2Id);
-			//println(Array.from(commomFieldsSet));
-			//println();
+			var setMethod1 = methodFieldRefsMap.get(method1Id);
+			var setMethod2 = methodFieldRefsMap.get(method2Id);
 
-			if(commomFieldsSet.size === 0)
+			
+
+			if(!hasIntersectionSets(setMethod1,setMethod2))
 	      		numPairMethodNoCommomFieldAccess++;
 	      	else numPairMethodCommomFieldAccess++;
 
@@ -74,7 +72,14 @@ LCOM94.prototype.calculateForClass = function($class) {
 	//println(numPairMethodNoCommomFieldAccess);
 	//print("numPairMethodCommomFieldAccess:");
 	//println(numPairMethodCommomFieldAccess);
+
+	//var timeAfter = performance.now();
+
+	//var timeExecution1 = (timeMid - timeBefore);
+	//var timeExecution2 = (timeAfter - timeMid);
 	
+	//println('\n	Total Time1: ' + timeExecution1);
+	//println('\n	Total Time2: ' + timeExecution2);
 	return lcom; 
 }
 
