@@ -27,14 +27,14 @@ function testMetricsRepeated(metrics, numberOfRepeats){
       
    }
 
-	writeResultsToFile(results);
+	writeResultsToFile(results,"full_results.txt");
 }
 
 function testMetrics(metrics){
 
 	var results = [];
 
-	
+	/**/
 	println("//////////////////////////////");
 	println("/// Testing Project Metrics ////");
 	println("//////////////////////////////");
@@ -66,25 +66,47 @@ function testMetrics(metrics){
 		if (typeof metric.calculateForFunction == 'function')
     		testFunctionMetric(metric);
 	}
-	*/
+	
 
-	return results;
+	*/
+	writeResultsToFile(results,"full_results.txt");
 
 }
 
-function writeResultsToFile(results){
-	var file_path = "full_results.txt";
-	var file = Io.writeFile(file_path,"class;metric;value;time\n");
+function writeResultsToFile(results, file_path){
+	var header = Object.keys(results[0]).join(";")+"\n";
+	
+	var file = Io.writeFile(file_path,header);
 	println("Results File Location: " + file.getAbsolutePath());
 	
 	for(result of results) {
-
-		var line = result.class+";"+result.metric+";"+result.result+";"+result.time*1000+"\n";
+		var line = Object.values(result).join(";")+"\n";
 		//print(line);
 		
 		Io.appendFile(file_path,line);
 	
 	}
+
+}
+
+function testFileMetrics(metrics){
+	println("/////////////////////////////////");
+	println("/// Testing File Metrics ////");
+	println("/////////////////////////////////");
+	println();
+
+	var results=[];
+	for(metric of metrics) {
+		if (typeof metric.calculateForFile == 'function')
+    		results = results.concat(testFileMetric(metric));
+
+	}
+	
+	writeResultsToFile(results,"file_results.txt");
+	
+	return results;
+
+
 
 }
 
@@ -97,6 +119,39 @@ function testClassMetrics(metrics){
 
 
 }
+function testFileMetric(metric){
+
+	println('Testing '+ metric.name + '\n');
+
+	var totalTime = 0;	
+
+	var results = [];
+	
+	for(var $file of Query.search("file")) {
+		var timeBefore = performance.now();	
+		var metricResult = metric.calculateForFile($file);
+		var timeAfter = performance.now();
+		//println($class);
+		var timeExecution = (timeAfter - timeBefore);
+		totalTime += timeExecution;
+		println('	' + metric.sigla + ' for file '+ $file.path + ' = ' + metricResult);
+		println('	Time: ' + timeExecution + ' ms.');
+
+		var workspacePath = WeaverOptions.getData().get("workspace").toString();
+		var relativePath = $file.path.slice(workspacePath.length + 1);
+
+		var result = {"file":relativePath,"metric":metric.id,"result":metricResult,"time":timeExecution*1000};		
+		results.push(result);
+		
+	}
+	
+	println('\n	Total Time: ' + totalTime + ' ms.');
+	println();
+	println();
+	return results;
+
+}
+
 
 function testClassMetric(metric){
 
@@ -116,7 +171,7 @@ function testClassMetric(metric){
 		println('	' + metric.sigla + ' for class '+ $class.id + ' = ' + metricResult);
 		println('	Time: ' + timeExecution + ' ms.');
 
-		var result = {"class":$class.id,"metric":metric.sigla,"result":metricResult,"time":timeExecution};		
+		var result = {"class":$class.id,"metric":metric.id,"result":metricResult,"time":timeExecution*1000};		
 		results.push(result);
 		
 	}
@@ -141,7 +196,7 @@ function testProjectMetric(metric){
 	metricResults.forEach(function(metricResult, classId) {
 			println('	' + metric.sigla + ' for class '+ classId + ' = ' + metricResult);
 			
-			var result = {"class":classId,"metric":metric.sigla,"result":metricResult,"time":(timeExecution/metricResults.size)};				
+			var result = {"class":classId,"metric":metric.id,"result":metricResult,"time":(timeExecution*1000/metricResults.size)};				
 			results.push(result);
 	});
 	//println($class);
