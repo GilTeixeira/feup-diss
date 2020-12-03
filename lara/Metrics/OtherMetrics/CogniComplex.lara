@@ -5,6 +5,7 @@ import Metrics.Metric;
  * @constructor
  */
 function CogniComplex() {
+	var id = "OO-CoC";
 	var name = "Cognitive Complexity";
 	var sigla = "CogniComplex";
 	var author = "G. Ann Campbell";
@@ -12,12 +13,16 @@ function CogniComplex() {
 	var description = "CogniComplex (CC) measure the relative understandability of methods.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 
 }
 
 // Inheritance
 CogniComplex.prototype = Object.create(Metric.prototype);
+
+CogniComplex.prototype.calculateForFile = function($file) {
+	return this.calculateForJoinPoint($file);
+}
 
 CogniComplex.prototype.calculateForClass = function($class) {
 	var complexityCounter = 0;
@@ -28,11 +33,17 @@ CogniComplex.prototype.calculateForClass = function($class) {
 	return complexityCounter;
 }
 
+
 CogniComplex.prototype.calculateForFunction = function($function) {
+	return this.calculateForJoinPoint($function);
+
+}
+
+CogniComplex.prototype.calculateForJoinPoint = function($jp) {
 	var complexityCounter = 0;
 	
 	var stmtStack = [];
-	$function.stmts.forEach(stmt => stmtStack.push({'stmt':stmt,'nesting':0}));
+	$jp.children.forEach(stmt => stmtStack.push({'stmt':stmt,'nesting':0}));
 
     while (stmtStack.length !== 0) 
     { 
@@ -82,7 +93,8 @@ CogniComplex.prototype.calculateForFunction = function($function) {
 		//B2
     	if(stmt.instanceOf('if')  || 
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
-    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')){
+    		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')
+    		 || stmt.instanceOf('lambda')){
     		nesting++;
     		//println("CurrNesting: " + nesting);
     	}

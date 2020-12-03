@@ -5,6 +5,7 @@ import Metrics.Metric;
  * @constructor
  */
 function CycloComplex() {
+	var id = "OO-CyC";
 	var name = "Cyclomatic complexity";
 	var sigla = "CycloComplex";
 	var author = "Thomas J. McCabe";
@@ -12,7 +13,7 @@ function CycloComplex() {
 	var description = "Cyclomatic complexity (CC) measures the number of linearly independent paths through a program's source code.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 
 }
 
@@ -20,6 +21,40 @@ function CycloComplex() {
 CycloComplex.prototype = Object.create(Metric.prototype);
 
 //CycloComplex.prototype.calculateForClass = function($class) {
+
+
+CycloComplex.prototype.calculateForJoinPoint = function($jp) {
+	var complexityCounter = 0;
+
+	complexityCounter += $jp.instanceOf('if')?1:0;
+	complexityCounter += $jp.instanceOf('loop')?1:0;
+	complexityCounter += $jp.instanceOf('ternary')?1:0;
+	complexityCounter += ($jp.instanceOf('case') && !$jp.instanceOf('default'))?1:0;  // already includes defaults
+	//complexityCounter += $jp.instanceOf('switch')?1:0;
+	complexityCounter += ($jp.instanceOf('binary')&& ($jp.kind === '&&' || $jp.kind === '||'))?1:0;
+	//complexityCounter += $jp.instanceOf('try')?1:0;  // try catch are 1
+	//complexityCounter += $jp.instanceOf('throw')?1:0;
+	//complexityCounter += $jp.instanceOf('break')?1:0;
+	//complexityCounter += $jp.instanceOf('continue')?1:0;
+	complexityCounter += $jp.instanceOf('goto')?1:0;
+	complexityCounter += ($jp.instanceOf('method') && $jp.hasBody)?1:0;
+	complexityCounter += $jp.instanceOf('lambda')?1:0;
+
+	return complexityCounter;
+
+}
+
+CycloComplex.prototype.calculateForFile = function($file) {
+	var complexityCounter = 0;
+	//println("Counters:");
+
+	for(jp of $file.descendants){
+		complexityCounter += this.calculateForJoinPoint(jp);	
+	
+	}
+	
+	return complexityCounter;
+}
 
 CycloComplex.prototype.calculateForClass = function($class) {
 	var complexityCounter = 0;
@@ -38,18 +73,7 @@ CycloComplex.prototype.calculateForFunction = function($function) {
 	//println("Counters:");
 
 	for(jp of $function.descendants){
-		complexityCounter += jp.instanceOf('if')?1:0;
-		complexityCounter += jp.instanceOf('loop')?1:0;
-		complexityCounter += jp.instanceOf('ternary')?1:0;
-		complexityCounter += jp.instanceOf('case')?1:0;  // already includes defaults
-		complexityCounter += jp.instanceOf('switch')?1:0;
-		complexityCounter += (jp.instanceOf('binary')&& (jp.kind === '&&' || jp.kind === '||'))?1:0;
-		complexityCounter += jp.instanceOf('try')?1:0;  // try catch are 1
-		complexityCounter += jp.instanceOf('throw')?1:0;
-		complexityCounter += jp.instanceOf('break')?1:0;
-		complexityCounter += jp.instanceOf('continue')?1:0;
-		complexityCounter += jp.instanceOf('goto')?1:0;
-	
+		complexityCounter += this.calculateForJoinPoint(jp);	
 	}
 	
 	return complexityCounter;
