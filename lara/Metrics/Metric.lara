@@ -7,7 +7,8 @@
  * @param {number} year - The year in which the metric was purposed
  * @param {string} description - The name of the metric
  */
-function Metric(name, sigla, author, year, description) {
+function Metric(id, name, sigla, author, year, description) {
+	this.id = id;
 	this.name = name;
 	this.sigla = sigla;
 	this.author = author;

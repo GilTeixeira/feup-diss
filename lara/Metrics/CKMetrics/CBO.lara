@@ -5,6 +5,7 @@ import Metrics.Metric;
  * @constructor
  */
 function CBO() {
+	var id = "CK-CBO";
 	var name = "Coupling between Object Classes";
 	var sigla = "CBO";
 	var author = "Chidamber and Kemerer";
@@ -12,7 +13,7 @@ function CBO() {
 	var description = "Coupling between Object Classes (CBO) measures the number of classes to which a class is coupled.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 }
 
 // Inheritance

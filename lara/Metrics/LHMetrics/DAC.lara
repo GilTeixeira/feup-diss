@@ -6,6 +6,7 @@ import Metrics.Metric;
  * @constructor
  */
 function DAC() {
+	var id = "LH-DAC";
 	var name = "Data Abstraction Coupling";
 	var sigla = "DAC";
 	var author = "Li and Henry";
@@ -13,7 +14,7 @@ function DAC() {
 	var description = "Data Abstraction Coupling (DAC) counts the number of attributes in a class that have another class as their type.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 }
 
 // Inheritance

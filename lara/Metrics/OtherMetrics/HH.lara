@@ -12,7 +12,7 @@ function HH() {
 	var description = "HH";
 	
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 }
 
 // Inheritance

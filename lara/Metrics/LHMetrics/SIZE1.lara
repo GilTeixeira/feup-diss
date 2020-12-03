@@ -6,6 +6,7 @@ import Metrics.Metric;
  * @constructor
  */
 function SIZE1() {
+	var id = "LH-SIZE1";
 	var name = "Size of procedures or functions";
 	var sigla = "SIZE1";
 	var author = "Li and Henry";
@@ -13,7 +14,7 @@ function SIZE1() {
 	var description = "Size of procedures or functions (SIZE1) counts the number of semicolons in a class.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 }
 
 // Inheritance

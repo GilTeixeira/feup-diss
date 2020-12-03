@@ -6,6 +6,7 @@ import Metrics.Metric;
  * @constructor
  */
 function NOM() {
+	var id = "LH-NOM";
 	var name = "Number Of Methods";
 	var sigla = "NOM";
 	var author = "Li and Henry";
@@ -13,7 +14,7 @@ function NOM() {
 	var description = "Number Of Methods (NOM) counts the number of local methods.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 }
 
 // Inheritance

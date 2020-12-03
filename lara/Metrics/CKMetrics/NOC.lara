@@ -6,6 +6,7 @@ import Metrics.Metric;
  * @constructor
  */
 function NOC() {
+	var id = "CK-NOC";
 	var name = "Number of Children";
 	var sigla = "NOC";
 	var author = "Chidamber and Kemerer";
@@ -13,7 +14,7 @@ function NOC() {
 	var description = "Number of Children (NOC) measures  number of immediate sub-classes of a class.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 }
 
 // Inheritance

@@ -5,6 +5,7 @@ import Metrics.Metric;
  * @constructor
  */
 function RFC() {
+	var id = "CK-RFC";
 	var name = "Response For Class";
 	var sigla = "RFC";
 	var author = "Chidamber and Kemerer";
@@ -12,7 +13,7 @@ function RFC() {
 	var description = "Response For Class (RFC) measures the set of methods that can potentially be executed in response to a message received by an object of that class.";
 
     // Parent constructor    
-    Metric.call(this, name, sigla, author, year, description);
+    Metric.call(this, id, name, sigla, author, year, description);
 }
 
 // Inheritance
