@@ -37,7 +37,7 @@ CycloComplex.prototype.calculateForJoinPoint = function($jp) {
 	//complexityCounter += $jp.instanceOf('break')?1:0;
 	//complexityCounter += $jp.instanceOf('continue')?1:0;
 	complexityCounter += $jp.instanceOf('goto')?1:0;
-	complexityCounter += ($jp.instanceOf('method') && $jp.hasBody)?1:0;
+	complexityCounter += ($jp.instanceOf('function') && $jp.hasBody)?1:0;
 	complexityCounter += $jp.instanceOf('lambda')?1:0;
 
 	return complexityCounter;
