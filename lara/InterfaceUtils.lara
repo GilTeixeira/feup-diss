@@ -74,6 +74,8 @@ function testMetrics(metrics){
 }
 
 function writeResultsToFile(results, file_path){
+	if(results.length === 0)
+		return;
 	var header = Object.keys(results[0]).join(";")+"\n";
 	
 	var file = Io.writeFile(file_path,header);
@@ -137,10 +139,10 @@ function testFileMetric(metric){
 		println('	' + metric.sigla + ' for file '+ $file.path + ' = ' + metricResult);
 		println('	Time: ' + timeExecution + ' ms.');
 
-		var workspacePath = WeaverOptions.getData().get("workspace").toString();
-		var relativePath = $file.path.slice(workspacePath.length + 1);
+		//var workspacePath = WeaverOptions.getData().get("workspace").toString();
+		//var relativePath = $file.path.slice(workspacePath.length + 1);
 
-		var result = {"file":relativePath,"metric":metric.id,"result":metricResult,"time":timeExecution*1000};		
+		var result = {"file":$file.path,"metric":metric.id,"result":metricResult,"time":timeExecution*1000};		
 		results.push(result);
 		
 	}
@@ -162,6 +164,7 @@ function testClassMetric(metric){
 	var results = [];
 	
 	for(var $class of Query.search("class")) {
+		//println("		Class: " + $class.id);
 		var timeBefore = performance.now();	
 		var metricResult = metric.calculateForClass($class);
 		var timeAfter = performance.now();
@@ -304,6 +307,7 @@ function printNumberOfClasses(){
 	var numberOfClasses = $classes.length;
 
 	println('The project has ' + numberOfClasses + ' classes');
+	//println('The project has ' + Query.search('class').get().length + ' classes');
 	println();
 }
 
