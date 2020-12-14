@@ -32,12 +32,23 @@ RFC.prototype.calculateForClass = function($class) {
 		methodsSignatures.add($method.id);
 		 //println($method.code);
 
+		// println("method: " + $method.astNode);
+		 //println();
+		
 		 // Get super calls
-		 if($method.instanceOf('constructor'))
+		 if($method.instanceOf('constructor')){
+		 	//println("IS Constructor");
 		 	for(constructorCall of $method.superCalls)
 		 		methodsSignatures.add(constructorCall.constructor.id);
-	
-		for($memberCall of Query.searchFrom($method,"memberCall"))
+		}
+		
+		for($memberCall of Query.searchFrom($method,"memberCall")){
+			//println("$memberCall: " + $memberCall.astNode);
+			//println("$memberCallMethod: ");
+			//println($memberCall.astNode.getFunctionDecl().get());
+			//println("$memberCallMethod: "+$memberCall.astNode.getFunctionDecl().get().getValue("declName"));
+			//println("def: ");
+			//println($memberCall.astNode.getFunctionDecl().get().getDefinition());
 			if($memberCall.method !== null && $memberCall.method.isCustom){
 				methodsSignatures.add($memberCall.method.id);
 				//println($memberCall.method.signature);
@@ -48,6 +59,7 @@ RFC.prototype.calculateForClass = function($class) {
 				//println();
 
 			}
+		}
 
 	}
 	//Array.from(methodsSignatures).forEach(methodSignature => println(methodSignature));

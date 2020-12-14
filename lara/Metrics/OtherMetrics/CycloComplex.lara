@@ -22,6 +22,13 @@ CycloComplex.prototype = Object.create(Metric.prototype);
 
 //CycloComplex.prototype.calculateForClass = function($class) {
 
+CycloComplex.prototype.calculateForProject = function() {
+	var value = 0;
+	for ($file of  Query.search("file"))
+		value += this.calculateForFile($file);
+	return value;
+}
+
 
 CycloComplex.prototype.calculateForJoinPoint = function($jp) {
 	var complexityCounter = 0;

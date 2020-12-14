@@ -6,39 +6,46 @@ import Metrics.OtherMetrics.OtherMetricsIndex;
 var metrics = [
 /**/
 		//CK metrics
-			/*	*/
+			
 		new NOC(), 
 		
 		new DIT(), 
-		
-		new RFC(),    // RFC ind different from Java because it does not count System, Math calls
+			
+		//new RFC(),    // not working in cpp
 		
 			
-		new WMC(), 
+		//new WMC(), 
 		
-		new LCOM94(), 
+		//new LCOM94(), 
 	
-		new CBO(),
+		//new CBO(),
 	
 	
 
 		//LH metrics
+		/*
 		new NOM(),
-		new SIZE1(),
+		new SIZE1(), //not working in cpp
 		new SIZE2(),
-		new MPC(),
+		new MPC(), //not working in cpp
 		new DAC(),	
-
+		*/
 
 		
 
-		//CC/*	*/
-		new CycloComplex(),
-	
+		//CC	
+		new CycloComplex(),	
 		new CogniComplex(),
 
-		//LOC
-		//new LOC(),
+		//OO
+		new LOC(),
+		new NOCl(),
+		new NOFu(),
+		new NOFi(),
+		new NOL(),
+
+
+		/**/
 
 		//HH
 		//new HH(),

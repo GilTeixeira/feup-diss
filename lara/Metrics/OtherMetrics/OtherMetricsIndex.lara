@@ -1,5 +1,9 @@
 import Metrics.OtherMetrics.CycloComplex;
 import Metrics.OtherMetrics.CogniComplex;
 import Metrics.OtherMetrics.LOC;
+import Metrics.OtherMetrics.NOCl;
+import Metrics.OtherMetrics.NOFu;
+import Metrics.OtherMetrics.NOFi;
+import Metrics.OtherMetrics.NOL;
 import Metrics.OtherMetrics.HH;
 import Metrics.OtherMetrics.Ast2Path;

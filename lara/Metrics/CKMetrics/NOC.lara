@@ -20,7 +20,7 @@ function NOC() {
 // Inheritance
 NOC.prototype = Object.create(Metric.prototype);
 
-NOC.prototype.calculateForProject = function() {
+NOC.prototype.calculateForProjectPerClass = function() {
 
 	var superClassesMap =  new Map();
 	var classes = Query.search('class').get();	

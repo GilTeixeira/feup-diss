@@ -24,8 +24,14 @@ DIT.prototype = Object.create(Metric.prototype);
 DIT.prototype.calculateForClass = function($class) {
 
 	var depth = 0;
-	
+
+	//println("astNode: " + $class.astNode);
+	//println("super: " + $class.superClasses);
+	//println("bases: " + $class.astNode.getBases());
+	//println("parse: " + Weaver.toJs($class.astNode.getBases()));
+	//println("common: " + CommonJoinPoints.toJoinPoints(Weaver.toJs($class.astNode.getBases())));
 	for($classSuper of $class.superClasses){
+		//println("Super: " + $classSuper);
 		depthSuperClass = this.calculateForClass($classSuper) + 1;
 		depth =  Math.max(depthSuperClass,depth);
 	}
