@@ -2,6 +2,7 @@ import weaver.Query;
 import weaver.jp.CommonJoinPoints;
 
 import InterfaceUtils;
+import lara.System;
 import Metrics.MetricsIndex;
 import weaver.WeaverOptions;
 
@@ -12,10 +13,28 @@ import weaver.WeaverOptions;
 aspectdef Interface
 	//printAst();
 	
+	
+	/*
+	var a = System.nanos();
 	printNumberOfClasses();
-
-	testMetrics(metrics);
-	testFileMetrics(metrics);
+	var b = System.nanos();
+	println((b-a)/1000/1000);
+	
+	
+	var timeBefore = performance.now();	
+	printNumberOfClasses();
+	var timeMid = performance.now();
+	printNumberOfClasses();
+	var timeAfter = performance.now();
+	println("First: "+ (timeMid- timeBefore));
+	println("Second: "+ (timeAfter- timeMid));
+	*/
+	NUMBER_OF_CALCULATIONS = 5;
+	//calculateMetrics();
+	calculateMetricsRepeated(NUMBER_OF_CALCULATIONS);
+	//testMetrics(metrics);
+	//testFileMetrics(metrics);
+	
 	///NUMBER_OF_CALCULATIONS = 5;
 	//testMetricsRepeated(metrics, NUMBER_OF_CALCULATIONS);
 
@@ -274,8 +293,260 @@ aspectdef Interface
 
 	//println("Start here");
 	//println("class: " + cl.name);
-	//println((new LCOM94()).calculateForClass(cl));
+	//println((new LCOM94()).calculateForClass(cl))
+
+
+	/*
+	cl = Query.search('class',"UnreleasedVersionInfo").get()[0];
+	
+	//println(cl.id);
+	//println(cl.parent.id);
+
+	var p = 'org.elasticsearch.gradle.BwcVersions$UnreleasedVersionInfo$dfggfd$gfdgfd';
+
+	var regex = /$/g;	
+
+	//p = p.replace(regex, '.');
+	println(p.split('$').join('.'));
+
+	println(cl.id);
+	println(cl.parent.id);
+
+
+	cl = Query.search('class',"String").get()[0];
+	println(cl.id);
+	*/
+
+	//cl = Query.search('file').get()[0];
+	//println(cl.astNode);
+	//println(cl.astNode.getRelativeFilepath()=== "Client.h");
+
+	//cl = Query.search('class').get()[0];
+	//println(cl.astNode);
+
+	//var root = (new JoinPoints()).root();
+	//println(root.astNode);
+
+	//cl = Query.search('file').get()[0];
+	//println(cl.name);
+/*
+	cls = Query.search('class','implementation').get();
+	for( cl of cls){
+	println("Name: " + cl.name);
+	println();
+	println();
+	println("Node: " + cl.astNode);
+	println();
+	println();
+	println("Bases: " + cl.astNode.getValue("recordBases"));
+	println();
+	println();
+	println("superClasses: " + cl.superClasses);
+	println();
+	println();
+	println();
+	println();
+	println("---------------------------------------------------");
+	}
+	*/
+	/*
+	cl = Query.search('class','implementation').get()[1];
+	
+	println("Name: " + cl.name);
+	println();
+	println();
+	println("Node: " + cl.astNode);
+	println();
+	println();
+	println("Bases: " + cl.astNode.getValue("recordBases"));
+	println();
+	println();
+	println("Type: " + cl.astNode.getValue("recordBases")[0].getValue("type"));
+	println();
+	println("superClasses: " + cl.superClasses);
+	
+	println();
+	println();
+	println();
+	println("---------------------------------------------------");
+	*/
+
+	/*
+	cl = Query.search('class','field').get()[1];
+	
+	println("Name: " + cl.name);
+	println();
+	println();
+	println("Node: " + cl.astNode);
+	println();
+	println();
+	println("Bases: " + cl.astNode.getValue("recordBases"));
+	println();
+	println();
+	println("getTagKind: " + cl.superClasses[0].astNode.getTagKind());
+	println();
+	println();
+	println("superClasses: " + cl.superClasses);
+	*/
+
+	/*
+	cl = Query.search('class',"implementation").get()[1];
+
+	//println("Start here");
+	//println("class: " + cl.name);
+	//println((new RFC()).calculateForClass(cl));
+
+	for (var $method of cl.allMethods){
+		for($memberCall of Query.searchFrom($method,"memberCall")){
+			println($memberCall);
+			println($memberCall.astNode);
+			println($memberCall.astNode.getFunctionDecl().get());
+			println($memberCall.astNode.getFunctionDecl().get().getDefinition());
+
+
+			println($memberCall.method);
+
+		}
+
+	}
+	*/
+
+	/**/
+
+	/*
+	cl = Query.search('class',"basic_string_view").get()[1];
+	println("Class id");
+	println(cl.id);
+	println("Class Code");
+	println(cl.astNode.getCode());
+		*/
+
+
+	/*
+	cls = Query.search('class',"basic_string_view").get();
+	cl = cls[1];
+
+	println(cls.length);
+
+	println("Class Name");
+	println(cl.name);
+
+	println(cl.astNode);
+
+	println("Class Code");
+	println(cl.astNode.getCode());
+	println(cl.code);
+	*/
+	
+	/*
+	cl = Query.search('class').first();
+
+	println(cl.astNode);
+	println(cl.name);
+	println(cl.astNode.getQualifiedName());
+	*/
+
+	/*
+	for(cl of Query.search("class")){
+		println(cl.id);
+		println(cl.astNode);
+		println(cl.allMethods);
+		}
+		*/
+	/*
+	for(cl of Query.search("function")){
+		println(cl.id);
+	}
+	*/
+
+	/*
+	cl = Query.search('class',"implementation").get()[1];
+
+
+	for (var $method of cl.allMethods){
+		for($memberCall of Query.searchFrom($method,"memberCall")){
+			println($memberCall);
+			println($memberCall.astNode);
+			println($memberCall.astNode.getFunctionDecl().get());
+			println($memberCall.astNode.getFunctionDecl().get().getDefinition());
+
+
+			println($memberCall.method);
+
+		}
+
+	}
+	*/
+
+	/*
+	cl = Query.search('file', 'isCancel.js').first();
+	printAstFrom(cl);
+
+	bi = Query.search('file', 'isCancel.js').search('binary').first();
+
+	
+	println(bi);
+	println(bi.kind);
+	println(bi.isInnerExpr);
+	println(bi.outerExpr);
+	*/
+
+	/*
+	for(cl of Query.search("function")){
+		if(cl.joinPointType !== "method" && cl.joinPointType !== "constructor" )
+		println(cl.id);
+	}
+
+	cl = Query.search("class").get()[0];
+	println(cl.astNode);
+	println(cl.astNode.getValue("recordDefinition").isPresent());
+	//println(cl.astNode.hasDefinition());
+	println();
+
+	cl = Query.search("class").get()[1];
+	println(cl.astNode);
+	println(cl.astNode.getValue("recordDefinition").isPresent());
+	*/
+
+	/*
+	cl = Query.search('class',"basic_string_view").get()[1];
+	println("Class id");
+	println(cl.id);
+	println("Class Code");
+	println(cl.astNode.getCode());
+	*/
+
+	//var root = (new JoinPoints()).root();
+	//println(root.astNode);
+
+
+/*
+	var bi = Query.search("if").get()[2];
+	println(bi.astNode);
+	println();
+	println(bi.parent.astNode);
+	println(bi.parent.parent.astNode);
+	//println(bi.isLogicOp);
+	//println(bi.isInnerExpr);
+	*/
+
+	/*
+	var stmt = Query.search("else").first();
+	println(stmt.astNode);
+	println(stmt.parent.astNode);
+	//println(!stmt.isAnonymous);
+	*/
+	
+	/*
+	var stmt = Query.search("file","deprecatedMethod.js").get()[0];
+	println(stmt.name);
+	println(stmt.code);
+	println(stmt.astNode.get("loc"));
+	println(stmt.loc);
+	println(stmt.code.split(/\r\n|\r|\n/));
+	*/
 end
+
 
 
 

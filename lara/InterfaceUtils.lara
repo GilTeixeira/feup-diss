@@ -1,5 +1,298 @@
 import lara.Io;
 
+
+function calculateMetricsRepeated(numberOfRepeats){
+	var results = calculateMetrics();
+
+	 for(var i = 1 ; i< numberOfRepeats ; i++){
+	 	nextResults = calculateMetrics();
+		for(var resultGranularity in results){
+		 	for(var j = 0 ; j< results[resultGranularity].length ; j++){
+		 	
+	
+		 	
+		 		currAvg = results[resultGranularity][j].time;
+		 		lastTime = nextResults[resultGranularity][j].time;
+		 		results[resultGranularity][j].time = ((currAvg * i) + lastTime) / (i+1);
+	
+		 		//println("Metric:    " + results[j].metric);
+				//println("Class:     " + results[j].class);
+				//println("Curr Time: " + currAvg);			
+				//println("Avg Time:  " + results[j].time);
+				//println();
+				//result.time = ((result.time * i) + nextResults[index].time) / (i+1);			
+				//println("Avg Time:  " + result.time);
+				
+		 	}
+	 	}
+	
+      
+   }
+	var header = "id;metric;value;time\n";
+	
+	writeResultsToFile(results["funcResults"], "function_results.csv", header);
+	writeResultsToFile(results["classResults"], "class_results.csv", header);
+	writeResultsToFile(results["fileResults"], "file_results.csv", header);
+	writeResultsToFile(results["projectResults"], "project_results.csv", "metric;value;time\n");
+}
+
+function calculateMetrics(){
+	var funcResults = calculateFunctionMetrics();
+	var classResults = calculateClassMetrics();
+	var fileResults = calculateFileMetrics();
+	var projectResults = calculateProjectMetrics();
+
+	var header = "id;metric;value;time\n";
+
+	writeResultsToFile(funcResults, "function_results.csv", header);
+	writeResultsToFile(classResults, "class_results.csv", header);
+	writeResultsToFile(fileResults, "file_results.csv", header);
+	writeResultsToFile(projectResults, "project_results.csv", "metric;value;time\n");
+
+	return {"funcResults":funcResults,"classResults":classResults,
+		"fileResults":fileResults,"projectResults":projectResults};
+
+}
+
+
+function calculateFunctionMetric($function){
+
+	println('Function: '+ $function.signature + '\n');
+
+	var totalTime = 0;
+	results = [];
+
+	for(metric of metrics) {
+		if (typeof metric.calculateForFunction == 'function'){
+			var timeBefore = System.nanos();	
+    			var value = metric.calculateForFunction($function);
+    			var timeAfter = System.nanos();
+
+    			var time = (timeAfter - timeBefore);
+			totalTime += time;
+			
+			println('	' + metric.sigla + ' = ' + value);
+			println('	Time: ' + time/1000/1000 + ' ms.');
+			println();
+
+
+			var result = {"id":$function.id,"metric":metric.id,"value":value,"time":time};		
+			results.push(result);
+		}
+	}
+	
+	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	println();
+	println();
+	
+	return results;
+
+}
+
+
+
+function calculateFunctionMetrics() {
+	println("/////////////////////////////////");
+	println("/// Testing Function Metrics ////");
+	println("/////////////////////////////////");
+	println();	
+
+	var results=[];
+
+	for(var $function of Query.search("function"))
+		results = results.concat(calculateFunctionMetric($function));	
+
+	return results;
+}
+
+function calculateClassMetric($class){
+
+	println('Class: '+ $class.id + '\n');
+
+	var totalTime = 0;
+	var results = [];
+
+	for(metric of metrics) {
+		if (typeof metric.calculateForClass == 'function'){
+			var timeBefore = System.nanos();	
+    			var value = metric.calculateForClass($class);
+    			var timeAfter = System.nanos();
+
+    			var time = (timeAfter - timeBefore);
+			totalTime += time;
+			
+			println('	' + metric.sigla + ' = ' + value);
+			println('	Time: ' + time/1000/1000 + ' ms.');
+			println();
+
+
+			var result = {"id":$class.id,"metric":metric.id,"value":value,"time":time};		
+			results.push(result);
+		}			
+		
+	}
+	
+	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	
+	return results;
+
+}
+
+// Special Case when Calculation for whole project is faster than calculate for each class
+function calculateProjectMetricPerFunction(){	
+	var results=[];
+
+	for(metric of metrics) {
+		
+		if (typeof metric.calculateForProjectPerClass == 'function'){
+			var timeBefore = System.nanos();	
+    			var values = metric.calculateForProjectPerClass();
+    			var timeAfter = System.nanos();
+    			
+    			var time = (timeAfter - timeBefore);
+			
+			values.forEach(function(value, classId) {
+				time = (time/values.size);
+				//println('	' + metric.sigla + ' = ' + value);
+				//println('	Time: ' + time + ' ms.');
+				//println();
+						
+				var result = {"id":classId,"metric":metric.id,"result":value,"time":time};				
+				results.push(result);
+			});		
+    		}    		
+	}
+	
+	return results;
+	
+}
+
+
+
+function calculateClassMetrics() {
+	println("/////////////////////////////////");
+	println("///  Testing Class Metrics   ////");
+	println("/////////////////////////////////");
+	println();	
+
+	var results=[];
+
+	for(var $class of Query.search("class"))
+		results = results.concat(calculateClassMetric($class));	
+
+	calculateProjectMetricPerFunction();
+
+	return results;
+}
+
+
+function calculateFileMetric($file){
+
+	println('File: '+ $file.path + '\n');
+
+	var totalTime = 0;
+	results = [];
+
+	for(metric of metrics) {
+		if (typeof metric.calculateForFile == 'function'){
+			var timeBefore = System.nanos();	
+    			var value = metric.calculateForFile($file);
+    			var timeAfter = System.nanos();
+
+    			var time = (timeAfter - timeBefore);
+			totalTime += time;
+			
+			println('	' + metric.sigla + ' = ' + value);
+			println('	Time: ' + time/1000/1000 + ' ms.');
+			println();
+
+
+			var result = {"id":$file.path,"metric":metric.id,"value":value,"time":time};		
+			results.push(result);
+		}
+	}
+	
+	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	println();
+	println();
+	
+	return results;
+
+}
+
+
+
+function calculateFileMetrics() {
+	println("/////////////////////////////////");
+	println("///  Testing File Metrics   ////");
+	println("/////////////////////////////////");
+	println();	
+
+	var results=[];
+
+	for(var $file of Query.search("file"))
+		results = results.concat(calculateFileMetric($file));	
+
+	return results;
+}
+
+
+
+
+
+function calculateProjectMetrics() {
+	println("/////////////////////////////////");
+	println("/// Testing Project Metrics  ////");
+	println("/////////////////////////////////");
+	println();	
+
+	var totalTime = 0;
+	results = [];
+
+	for(metric of metrics) {
+		if (typeof metric.calculateForProject == 'function'){
+			var timeBefore = System.nanos();	
+    			var value = metric.calculateForProject();
+    			var timeAfter = System.nanos();
+
+    			var time = (timeAfter - timeBefore);
+			totalTime += time;
+			
+			println('	' + metric.sigla + ' = ' + value);
+			println('	Time: ' + time/1000/1000 + ' ms.');
+			println();
+
+
+			var result = {"metric":metric.id,"value":value,"time":time};		
+			results.push(result);
+		}
+	}
+	
+	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	println();
+	println();
+	
+	return results;
+}
+
+function writeResultsToFile(results, file_path, header){
+
+	
+	var file = Io.writeFile(file_path,header);
+	println("Results File Location: " + file.getAbsolutePath());
+	
+	for(result of results) {
+		var line = Object.values(result).join(";")+"\n";
+		//print(line);
+		
+		Io.appendFile(file_path,line);
+	
+	}
+
+}
+
+
+/*
 function testMetricsRepeated(metrics, numberOfRepeats){
 	 var results = testMetrics(metrics);
 
@@ -30,11 +323,12 @@ function testMetricsRepeated(metrics, numberOfRepeats){
 	writeResultsToFile(results,"full_results.txt");
 }
 
+
 function testMetrics(metrics){
 
 	var results = [];
 
-	/**/
+	
 	println("//////////////////////////////");
 	println("/// Testing Project Metrics ////");
 	println("//////////////////////////////");
@@ -55,7 +349,15 @@ function testMetrics(metrics){
     		results = results.concat(testClassMetric(metric));
 	}
 
-	/*
+	// Special Case when Calculation for whole project is easeier
+	for(metric of metrics) {
+		if (typeof metric.calculateForProjectPerClass == 'function')
+    		results = results.concat(testClassMetric(metric));
+	}
+
+	
+
+	
 	println("/////////////////////////////////");
 	println("/// Testing Function Metrics ////");
 	println("/////////////////////////////////");
@@ -68,28 +370,12 @@ function testMetrics(metrics){
 	}
 	
 
-	*/
+	
 	writeResultsToFile(results,"full_results.txt");
 
 }
 
-function writeResultsToFile(results, file_path){
-	if(results.length === 0)
-		return;
-	var header = Object.keys(results[0]).join(";")+"\n";
-	
-	var file = Io.writeFile(file_path,header);
-	println("Results File Location: " + file.getAbsolutePath());
-	
-	for(result of results) {
-		var line = Object.values(result).join(";")+"\n";
-		//print(line);
-		
-		Io.appendFile(file_path,line);
-	
-	}
 
-}
 
 function testFileMetrics(metrics){
 	println("/////////////////////////////////");
@@ -237,6 +523,9 @@ function testFunctionMetric(metric){
 
 }
 
+*/
+
+/*
 function testClassMetricsOld(metrics, language){
 
 	for(metric of metrics) {
@@ -293,7 +582,7 @@ function testClassMetricInd(metric){
 	println();	
 
 }
-
+*/
 
   //////////////
  /// Prints ///
@@ -340,6 +629,7 @@ function printAstAux(root, tab) {
 
 	//Javascript
 	//println(tab+root.astNode.get("type"));
+	//println(tab+root.astNode.get("type") + "  " + root.astNode.get("loc"));
 
 	if(root.instanceOf('expr')  ){
 		//var astNode = root.astNode;
