@@ -57,7 +57,7 @@ function calculateMetrics(){
 
 function calculateFunctionMetric($function){
 
-	println('Function: '+ $function.signature + '\n');
+	//println('Function: '+ $function.signature + '\n');
 
 	var totalTime = 0;
 	results = [];
@@ -71,9 +71,9 @@ function calculateFunctionMetric($function){
     			var time = (timeAfter - timeBefore);
 			totalTime += time;
 			
-			println('	' + metric.sigla + ' = ' + value);
-			println('	Time: ' + time/1000/1000 + ' ms.');
-			println();
+			//println('	' + metric.sigla + ' = ' + value);
+			//println('	Time: ' + time/1000/1000 + ' ms.');
+			//println();
 
 
 			var result = {"id":$function.id,"metric":metric.id,"value":value,"time":time};		
@@ -81,9 +81,9 @@ function calculateFunctionMetric($function){
 		}
 	}
 	
-	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
-	println();
-	println();
+	//println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	//println();
+	//println();
 	
 	return results;
 
@@ -180,7 +180,7 @@ function calculateClassMetrics() {
 	for(var $class of Query.search("class"))
 		results = results.concat(calculateClassMetric($class));	
 
-	calculateProjectMetricPerFunction();
+	results = results.concat(calculateProjectMetricPerFunction());
 
 	return results;
 }

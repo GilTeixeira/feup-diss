@@ -17,11 +17,17 @@ function NOFu() {
 
 }
 
+
+
 // Inheritance
 NOFu.prototype = Object.create(Metric.prototype);
 
 NOFu.prototype.calculateForProject = function() {
-	return Query.search("function").get().length;
+	var $functions = Query.search("function").get();
+	return $functions.length;
+	//$functions.uniqBy($functions,'id');
+	
+	//return uniqBy($functions,'id').length;
 }
 
 NOFu.prototype.calculateForFile = function($file) {
@@ -31,5 +37,10 @@ NOFu.prototype.calculateForFile = function($file) {
 
 
 NOFu.prototype.calculateForJoinPoint = function($jp) {
-	return Query.searchFrom($jp, "function").get().length;
+	var $functions = Query.searchFrom($jp, "function").get();
+	return $functions.length;
+	//for(cl of $functions)
+	//	println(cl.id);
+
+	//return uniqBy($functions,'id').length;
 }

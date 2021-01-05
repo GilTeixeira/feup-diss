@@ -13,7 +13,10 @@ import weaver.WeaverOptions;
 aspectdef Interface
 	//printAst();
 	
-	
+	printNumberOfClasses();
+
+	//NUMBER_OF_CALCULATIONS = 5;
+	calculateMetrics();
 	/*
 	var a = System.nanos();
 	printNumberOfClasses();
@@ -29,9 +32,18 @@ aspectdef Interface
 	println("First: "+ (timeMid- timeBefore));
 	println("Second: "+ (timeAfter- timeMid));
 	*/
-	NUMBER_OF_CALCULATIONS = 5;
+
+	//println(WeaverOptions.getData().get("workspace").toString());
+	
+
+	//var funcResults = calculateFunctionMetrics();
+	//var classResults = calculateClassMetrics();
+	//var fileResults = calculateFileMetrics();
 	//calculateMetrics();
-	calculateMetricsRepeated(NUMBER_OF_CALCULATIONS);
+	//var projectResults = calculateProjectMetrics();
+
+	
+	//calculateMetricsRepeated(NUMBER_OF_CALCULATIONS);
 	//testMetrics(metrics);
 	//testFileMetrics(metrics);
 	
@@ -545,13 +557,139 @@ aspectdef Interface
 	println(stmt.loc);
 	println(stmt.code.split(/\r\n|\r|\n/));
 	*/
+	/*
+	var stmt = Query.search("function","check_utf8_bytes").get()[0];
+	println(stmt.astNode.getCode());
+	*/
+	/*
+	var count = 0;
+	for(func of Query.search('function'))
+		try {
+		println((new LOC()).calculateForFunction(func));
+		}
+		catch(err){
+		count++;
+		
+		 println("ERROR:");
+		 println(err);
+		 
+		 println("NODE:");
+		 println(func.signature);
+
+		 println("LINE:");
+		 println(func.line);
+
+		 println("FILE:");
+		 println(func.ancestor("file").path);
+
+
+		 
+		 println("NODE:");
+		 println(func.astNode);
+		
+		 println();
+		 
+		}
+
+	//println("Count:" + count);
+	//println("Total:" + Query.search('function').get().length);
+	
+
+	
+	//for(file of Query.search('file'))
+		//println(file.path);
+
+	println("Number of files: " + Query.search('class').get().length);
+	println("Number of files: " + Query.search('file').get().length);
+
+	fi = Query.search('file','RegexCache.java').first();
+
+	//printAstFrom(fi);
+
+	*/
+
+	/*
+	cl = Query.search("class","Person").get()[0];
+	println(cl.astNode);
+	println(cl.id);
+	println(cl.astNode.getValue("recordDefinition").isPresent());
+	println(cl.astNode.getValue("hasDefinition"));
+	println(cl.astNode.getValue("isCompleteDefinition"));
+	//println(cl.astNode.hasDefinition());
+	println();
+
+	cl = Query.search("class","Person").get()[1];
+	println(cl.astNode);
+	println(cl.id);
+	println(cl.astNode.getValue("recordDefinition").isPresent());
+	println(cl.astNode.getValue("hasDefinition"));
+	println(cl.astNode.getValue("isCompleteDefinition"));
+	//println(cl.astNode.hasDefinition());
+	println();
+	*/
+
+	/*
+	cl = Query.search("class","Date").get()[0];
+	println(cl.astNode);
+	println(cl.id);
+	println(cl.astNode.getValue("recordDefinition").isPresent());
+	println(cl.astNode.getValue("hasDefinition"));
+	println(cl.astNode.getValue("isCompleteDefinition"));
+
+	cl = Query.search("class","Date").get()[1];
+	println(cl.astNode);
+	println(cl.id);
+	println(cl.astNode.getValue("recordDefinition").isPresent());
+	println(cl.astNode.getValue("hasDefinition"));
+	println(cl.astNode.getValue("isCompleteDefinition"));
+	*/
+
+	
+	//println(cl.astNode.hasDefinition());
+	//println();
+	/*
+	var cl = Query.search("class","Date").first();
+	var mets = cl.descendants.filter(jp=>jp.instanceOf("method"));
+	println("Number Of methods (desc): " + mets.length);
+
+	println("Number Of methods (query): " + Query.search("class","Date").search("method").get().length);
+
+	*/
+	/*
+	for (cl of Query.search("class"))
+		println(cl.astNode.getQualifiedName()+"-        -" + cl.id + "-        -" + cl.name);
+	*/
+	//println(Query.search("function").get().length);
+	//println();
+	//println(JSON.stringify(, null, 4));
+
+	
+	//println(Query.search("class").get().length);
+
+	 //println(Query.search("class", "Date").get().length);
+
+	 //for(cl of  Query.search("class", "Store").first())
+	 	//printAstFrom(cl);
+	 	//println(cl.children[0].children);
+
+	  //cl = Query.search("class", "Store").first();
+
+	  //println(cl.astNode.getMethods().length);
+	  //println(cl.allMethods.length);
+	  //println("wut");
+	  //printAstFrom(cl);
+	  //println((new RFC()).calculateForClass(cl));
+	  //println((new CogniComplex()).calculateForProject());
+/*
+	  println(cl.astNode);
+
+	  a("fd");
+	  a("fd",true);
+
+	  */
+
+	  //println( Query.search("file").get().length);
 end
-
-
-
-
-
-
 
 
 

@@ -6,45 +6,49 @@ import Metrics.OtherMetrics.OtherMetricsIndex;
 var metrics = [
 /**/
 		//CK metrics
-			
+		/**/
+			/*		*/
 		new NOC(), 
 		
 		new DIT(), 
 			
-		//new RFC(),    // not working in cpp
+		new RFC(),    // not working in cpp
 		
-			
-		//new WMC(), 
+					
+		new WMC(), 
 		
-		//new LCOM94(), 
-	
-		//new CBO(),
+		new LCOM94(), 
+
+		new CBO(),
 	
 	
 
 		//LH metrics
-		/*
+		
 		new NOM(),
 		new SIZE1(), //not working in cpp
 		new SIZE2(),
 		new MPC(), //not working in cpp
 		new DAC(),	
-		*/
-
 		
+
+	
 
 		//CC	
 		new CycloComplex(),	
 		new CogniComplex(),
+	
 
 		//OO
-		new LOC(),
+		//new LOC(), // The compilers change the format of the code, therefore is not possible to calculate
 		new NOCl(),
 		new NOFu(),
 		new NOFi(),
 		new NOL(),
 
+			
 
+/**/
 		/**/
 
 		//HH

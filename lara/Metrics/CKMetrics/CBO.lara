@@ -30,34 +30,75 @@ CBO.prototype.calculateForClass = function($class) {
 	var $varDecls = [];
 
 	var typesUsed = [];
-
-	for(jp of $class.descendants){
-		if(jp.instanceOf("fieldRef") || jp.instanceOf("memberCall"))
-			memberAccesses.push(jp);
-
-		if(jp.instanceOf("varDecl"))
-			$varDecls.push(jp);
-
+	var members = $class.fields.concat($class.allMethods);
+	for(member of members){
+		if(member.instanceOf("varDecl"))
+			$varDecls.push(member);
+	
+		for(jp of member.descendants){
+			if(jp.instanceOf("fieldRef") || jp.instanceOf("memberCall"))
+				memberAccesses.push(jp);
+	
+			if(jp.instanceOf("varDecl"))
+				$varDecls.push(jp);
+	
+		}
 	}
 
+
+	//descs = $class.descendants;
+	/*
+	println("descs");
+	for(desc of  $class.descendants)
+		if(desc.instanceOf("function"))
+			println(desc.children.length);
+	
+	println("end");
+	*/
+	//println(Query.searchFrom($class).search("method").get().length);
 	//println(memberAccesses.length);
 	//println($varDecls.length);
 
 
+
+	$class.allSuperClasses.forEach($classSuper => classesCoupled.add($classSuper.id));
+
+	
+	
 	memberAccesses = memberAccesses.filter(memberAccess=> memberAccess.class !== null && memberAccess.class.id !== $class.id && memberAccess.class.isCustom);	
 	memberAccesses.forEach(memberAccess => classesCoupled.add(memberAccess.class.id));
 
+	//println("number of ma:" + memberAccesses.length);
+	//memberAccesses.forEach(memberAccess => println(memberAccess.class.name  +"  " +memberAccess.name));
+
+	//classesCoupled.forEach(classesCoupled => println(classesCoupled));
+
+	//$varDecls.forEach($varDecl => println($varDecl.name));
+
 	//var $varDecls = Query.searchFrom($class).search("varDecl").get();
 	$varDecls = $varDecls.filter($varDecl => $varDecl.type != null); // when not in classpath
-	$varDecls.forEach($varDecl => typesUsed.push($varDecl.type.usedTypes));
+	$varDecls.forEach($varDecl => typesUsed=typesUsed.concat($varDecl.type.usedTypes));
 
+	//$varDecls.forEach($varDecl => println(typeof $varDecl.type.usedTypes));
+	//$varDecls.forEach($varDecl => println($varDecl.type.usedTypes.length));
+
+	
 
 	$class.methods.forEach($method => {
-		typesUsed.push($method.returnType.usedTypes);
+		//println("\n$method");
+		//println($method.returnType.astNode);
+		//println($method.returnType.usedTypes);
+		typesUsed=typesUsed.concat($method.returnType.usedTypes);
 	});		
 
+	//println("\n\nTypesUsed");
+	//typesUsed.forEach($type => println($type.isClass +"  " + $type.decl));
+
+	//println("\n\nTypesUsed:"+ typesUsed.length);
+
+	
 		
-	typesUsed = typesUsed.filter($type => $type.isClass && $type.decl.id !== $class.id && $type.class.isCustom);
+	typesUsed = typesUsed.filter($type => $type.isClass && $type.decl.id !== $class.id && $type.decl.isCustom);
 	typesUsed.forEach($type => classesCoupled.add($type.decl.id));
 
 	

@@ -26,10 +26,13 @@ RFC.prototype.calculateForClass = function($class) {
 	// Method elements
 	// References to any Method
 
-	var methodsSignatures = new Set();
+	var methodsIds = new Set();
 
+	//println("num mmethods:" + $class.allMethods.length);
+	//println($class.astNode);
+	
 	for (var $method of $class.allMethods){
-		methodsSignatures.add($method.id);
+		methodsIds.add($method.id);
 		 //println($method.code);
 
 		// println("method: " + $method.astNode);
@@ -39,8 +42,10 @@ RFC.prototype.calculateForClass = function($class) {
 		 if($method.instanceOf('constructor')){
 		 	//println("IS Constructor");
 		 	for(constructorCall of $method.superCalls)
-		 		methodsSignatures.add(constructorCall.constructor.id);
+		 		methodsIds.add(constructorCall.constructor.id);
 		}
+
+		//println("numb mc: " + Query.searchFrom($method,"memberCall").get().length);
 		
 		for($memberCall of Query.searchFrom($method,"memberCall")){
 			//println("$memberCall: " + $memberCall.astNode);
@@ -49,8 +54,16 @@ RFC.prototype.calculateForClass = function($class) {
 			//println("$memberCallMethod: "+$memberCall.astNode.getFunctionDecl().get().getValue("declName"));
 			//println("def: ");
 			//println($memberCall.astNode.getFunctionDecl().get().getDefinition());
+			//println("node: " +$memberCall.method.astNode);
+			//println("parent: " +$memberCall.method.parent.astNode);
+			//println("gparent: " +$memberCall.method.parent.parent);
+			//println("custom: " +$memberCall.method.isCustom);
+			//println("ancestor: "+$memberCall.method.ancestor("file")!=null);
+			//println();
+
+			
 			if($memberCall.method !== null && $memberCall.method.isCustom){
-				methodsSignatures.add($memberCall.method.id);
+				methodsIds.add($memberCall.method.id);
 				//println($memberCall.method.signature);
 				//println($memberCall.code);
 				//println($memberCall.parent.code);
@@ -62,8 +75,8 @@ RFC.prototype.calculateForClass = function($class) {
 		}
 
 	}
-	//Array.from(methodsSignatures).forEach(methodSignature => println(methodSignature));
-	return methodsSignatures.size;
+	//Array.from(methodsIds).forEach(methodSignature => println(methodSignature));
+	return methodsIds.size;
 }
 /*
 // Override

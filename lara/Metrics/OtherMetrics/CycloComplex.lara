@@ -53,7 +53,8 @@ CycloComplex.prototype.calculateForJoinPoint = function($jp) {
 
 CycloComplex.prototype.calculateForFile = function($file) {
 	var complexityCounter = 0;
-	//println("Counters:");
+	//println("descendants:"+$file.descendants.length);
+	//println("descendants:"+$file.children.length);
 
 	for(jp of $file.descendants){
 		complexityCounter += this.calculateForJoinPoint(jp);	

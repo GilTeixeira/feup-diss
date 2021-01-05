@@ -27,6 +27,8 @@ LOC.prototype.calculateForProject = function() {
 }
 
 LOC.prototype.calculateForJoinPoint = function($jp) {
+	//Remove Comments
+	//str.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'');
 	return $jp.code.split(/\r\n|\r|\n/).length;
 	//return $class.endLine-$class.line+1;
 }

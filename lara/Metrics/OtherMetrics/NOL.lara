@@ -32,7 +32,24 @@ NOL.prototype.calculateForFunction = function($function) {
 }
 
 NOL.prototype.calculateForFile = function($file) {
-	return this.calculateForJoinPoint($file);
+	// Add 1 more for the last empty line
+	return this.calculateForJoinPoint($file) + 1;
+}
+
+NOL.prototype.calculateForClass = function($class) {
+	var nol = this.calculateForJoinPoint($class);
+
+	for ($method of $class.allMethods){
+		
+		// if method not inside class
+		if($method.ancestor("class") === undefined)
+		{
+			nol+=this.calculateForJoinPoint($method);
+		}	
+		
+
+	}
+	return nol;
 }
 
 NOL.prototype.calculateForJoinPoint = function($jp) {
