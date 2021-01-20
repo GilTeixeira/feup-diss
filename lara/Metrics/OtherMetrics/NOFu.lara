@@ -30,8 +30,8 @@ NOFu.prototype.calculateForFile = function($file) {
 	return this.calculateForJoinPoint($file);
 }
 
-NOFu.prototype.calculateForClass = function($file) {
-	return this.calculateForJoinPoint($file);
+NOFu.prototype.calculateForClass = function($class) {
+	return this.calculateForJoinPoint($class);
 }
 
 NOFu.prototype.calculateForJoinPoint = function($jp) {
