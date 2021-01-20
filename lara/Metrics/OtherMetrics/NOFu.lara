@@ -23,24 +23,18 @@ function NOFu() {
 NOFu.prototype = Object.create(Metric.prototype);
 
 NOFu.prototype.calculateForProject = function() {
-	var $functions = Query.search("function").get();
-	return $functions.length;
-	//$functions.uniqBy($functions,'id');
-	
-	//return uniqBy($functions,'id').length;
+	return Query.search("function").get().length;
 }
 
 NOFu.prototype.calculateForFile = function($file) {
 	return this.calculateForJoinPoint($file);
 }
 
-
+NOFu.prototype.calculateForClass = function($file) {
+	return this.calculateForJoinPoint($file);
+}
 
 NOFu.prototype.calculateForJoinPoint = function($jp) {
-	var $functions = Query.searchFrom($jp, "function").get();
-	return $functions.length;
-	//for(cl of $functions)
-	//	println(cl.id);
+	return Query.searchFrom($jp, "function").get().length;
 
-	//return uniqBy($functions,'id').length;
 }
