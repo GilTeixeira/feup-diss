@@ -1,0 +1,13 @@
+function NOFi() {
+    var id = 'OO-NOFi';
+    var name = 'Number of Files';
+    var sigla = 'NOFi';
+    var author = '';
+    var year = '';
+    var description = 'Number of Files.';
+    Metric.call(this, id, name, sigla, author, year, description);
+}
+NOFi.prototype = Object.create(Metric.prototype);
+NOFi.prototype.calculateForProject = function ($jp) {
+    return Query.search('file').get().length;
+};

@@ -28,8 +28,6 @@ NOCl.prototype.calculateForFile = function($file) {
 	return this.calculateForJoinPoint($file);
 }
 
-
-
 NOCl.prototype.calculateForJoinPoint = function($jp) {
 	return Query.searchFrom($jp, "class").get().length;
 }

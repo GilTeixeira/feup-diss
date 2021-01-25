@@ -28,162 +28,17 @@ RFC.prototype.calculateForClass = function($class) {
 
 	var methodsIds = new Set();
 
-	//println("num mmethods:" + $class.allMethods.length);
-	//println($class.astNode);
 	
 	for (var $method of $class.allMethods){
-		methodsIds.add($method.id);
-		 //println($method.code);
-
-		// println("method: " + $method.astNode);
-		 //println();
+		methodsIds.add($method.id);		
 		
-		 // Get super calls
-		 if($method.instanceOf('constructor')){
-		 	//println("IS Constructor");
-		 	for(constructorCall of $method.superCalls)
-		 		methodsIds.add(constructorCall.constructor.id);
-		}
-
-		//println("numb mc: " + Query.searchFrom($method,"memberCall").get().length);
-		
-		for($memberCall of Query.searchFrom($method,"memberCall")){
-			//println("$memberCall: " + $memberCall.astNode);
-			//println("$memberCallMethod: ");
-			//println($memberCall.astNode.getFunctionDecl().get());
-			//println("$memberCallMethod: "+$memberCall.astNode.getFunctionDecl().get().getValue("declName"));
-			//println("def: ");
-			//println($memberCall.astNode.getFunctionDecl().get().getDefinition());
-			//println("node: " +$memberCall.method.astNode);
-			//println("parent: " +$memberCall.method.parent.astNode);
-			//println("gparent: " +$memberCall.method.parent.parent);
-			//println("custom: " +$memberCall.method.isCustom);
-			//println("ancestor: "+$memberCall.method.ancestor("file")!=null);
-			//println();
-
-			
+		for($memberCall of Query.searchFrom($method,"memberCall")){			
 			if($memberCall.method !== null && $memberCall.method.isCustom){
 				methodsIds.add($memberCall.method.id);
-				//println($memberCall.method.signature);
-				//println($memberCall.code);
-				//println($memberCall.parent.code);
-				//println($memberCall.method.stmts);
-				 //println($memberCall.astNode);
-				//println();
-
 			}
 		}
-
 	}
-	//Array.from(methodsIds).forEach(methodSignature => println(methodSignature));
+	
 	return methodsIds.size;
 }
-/*
-// Override
-RFC.prototype.calculateForClassCpp = function($class) {
-
-	// Given a class, its RFC is the addition of:
-	// Method elements
-	// References to any Method
-
-	var methodsSignatures = new Set();
-
-	for (var $method of $class.methods)
-		methodsSignatures.add($method.signature);
-
-	// Methods called by the methods of $class
-	var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
-
-	methodsCalled.forEach(methodCalled => methodsSignatures.add(methodCalled.signature));
-	
-	var rfc = methodsSignatures.size;
-
-	
-	return methodsSignatures.size;
-}
-
-
-// Override
-RFC.prototype.calculateForClassJava = function($class) {
-
-	
-	// Required
-	// call.targetType.name : $class of call
-
-	// Should main be considered a method???
-
-	// Given a class, its RFC is the addition of:
-	// Method elements
-	// References to any Method (PrintStream::println is being considered )
-
-	var methodsSignatures = new Set();	 
-
-	for (var $method of Query.searchFromInclusive($class).search("method").get())
-		methodsSignatures.add($class.name + '::' + $method.name); // TODO change to signature
-
-	//methodsSignatures.add({'class': 'Puppy', 'method': 'main'});
-
-	// Methods called by the methods of $class
-	var $calls = Query.searchFromInclusive($class).search("method").search("call").get();
-
-	$calls.forEach($call => methodsSignatures.add($call.targetType.name+ '::' + $call.name )); // TODO: does not handle method overload
-
-	
-	//println("Calls:");
-	//$calls.forEach($call => {
-//		println("attributes: " + $call.attributes);
-		//println("qualifiedDecl: " + $call.arguments);
-		//println("name: " + $call.name);
-		//println("Class:  " + $call.targetType.name);
-		//println();
-		
-	//});
-	
-
-
-	
-
-	// Methods called by the methods of $class
-	//var methodsCalled = Query.search("method", {"record": r => r.name === $class.name}).search("memberCall").get();
-
-	//methodsCalled.forEach(methodCalled => methodsSignatures.add(methodCalled.signature));
-	
-	//var rfc = methodsSignatures.size;
-	
-
-	//println(Array.from(methodsSignatures));
-	//methodsSignatures.forEach(methodSignature => println(methodSignature));
-	//println(methodsSignatures.content);
-
-	//println(Array.from(methodsSignatures));
-	
-	return methodsSignatures.size; 
-}
-
-
-
-
-RFC.prototype.calculateForClassInd = function($class) {
-
-	// Given a class, its RFC is the addition of:
-	// Method elements
-	// References to any Method
-
-	var methodsSignatures = new Set();	 
-
-	for (var $method of Query.searchFromInclusive($class).search("method").get()){
-		methodsSignatures.add(MetricQuery.getMethodSignature($method));
-
-		var $methodsCalled = MetricQuery.getMethodsCalled($method);
-		for (var $methodCalled of $methodsCalled)
-			methodsSignatures.add(MetricQuery.getMethodSignature($methodCalled));	
-
-
-	}
-
-	//println(Array.from(methodsSignatures));
-	return methodsSignatures.size;
-}
-
-*/
 

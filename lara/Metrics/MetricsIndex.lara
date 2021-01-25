@@ -4,21 +4,13 @@ import Metrics.OtherMetrics.OtherMetricsIndex;
 
 
 var metrics = [
-/**/
 		//CK metrics
-		/**/
-			/*		*/
-		new NOC(), 
-		
-		new DIT(), 
-			
-		new RFC(),    // not working in cpp
-		
-					
-		new WMC(), 
-		
-		new LCOM94(), 
 
+		new NOC(), 		
+		new DIT(), 			
+		new RFC(), 					
+		new WMC(), 		
+		new LCOM94(), 
 		new CBO(),
 	
 	
@@ -26,9 +18,9 @@ var metrics = [
 		//LH metrics
 		
 		new NOM(),
-		new SIZE1(), //not working in cpp
+		new SIZE1(), 
 		new SIZE2(),
-		new MPC(), //not working in cpp
+		new MPC(),
 		new DAC(),	
 		
 
@@ -47,12 +39,4 @@ var metrics = [
 		new NOL(),
 
 			
-
-/**/
-		/**/
-
-		//HH
-		//new HH(),
-		/**/
-	
-	];
+];

@@ -24,20 +24,10 @@ WMC.prototype = Object.create(Metric.prototype);
 // Override
 WMC.prototype.calculateForClass = function($class) {
 	var methodsComplexity = $class.allMethods.map($method=>(new CycloComplex()).calculateForFunction($method));
-	// Reduce in LARA does not accept empty array
+
 	if(methodsComplexity.length!==0)
 		return methodsComplexity.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 	return 0;
 }
 
-/*
-WMC.prototype.calculateForClassJava = function($class) {
-	
-	return  Query.searchFromInclusive($class).search("method").get().length;
-}
 
-WMC.prototype.calculateForClassInd = function($class) {
-	
-	return  Query.searchFromInclusive($class).search("method").get().length;
-}
-*/

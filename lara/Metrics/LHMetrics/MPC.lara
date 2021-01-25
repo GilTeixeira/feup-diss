@@ -30,7 +30,7 @@ MPC.prototype.calculateForClass = function($class) {
 		$memberCalls = $memberCalls.filter($memberCall=> $memberCall.class !== null && $memberCall.class.id !== $class.id && $memberCall.class.isCustom);
 		$memberCalls.forEach($memberCall => classesCoupled.add($memberCall.class.id));
 	}
-	//Array.from(classesCoupled).forEach(methodSignature => println(methodSignature));
+
 	return classesCoupled.size;
 }
 

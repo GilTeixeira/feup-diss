@@ -1,0 +1,21 @@
+function NOFu() {
+    var id = 'OO-NOFu';
+    var name = 'Number of Functions';
+    var sigla = 'NOFu';
+    var author = '';
+    var year = '';
+    var description = 'Number of Functions.';
+    Metric.call(this, id, name, sigla, author, year, description);
+}
+NOFu.prototype = Object.create(Metric.prototype);
+NOFu.prototype.calculateForProject = function () {
+    var $functions = Query.search('function').get();
+    return $functions.length;
+};
+NOFu.prototype.calculateForFile = function ($file) {
+    return this.calculateForJoinPoint($file);
+};
+NOFu.prototype.calculateForJoinPoint = function ($jp) {
+    var $functions = Query.searchFrom($jp, 'function').get();
+    return $functions.length;
+};

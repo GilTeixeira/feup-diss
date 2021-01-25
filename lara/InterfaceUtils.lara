@@ -7,9 +7,7 @@ function calculateMetricsRepeated(numberOfRepeats){
 	 for(var i = 1 ; i< numberOfRepeats ; i++){
 	 	nextResults = calculateMetrics();
 		for(var resultGranularity in results){
-		 	for(var j = 0 ; j< results[resultGranularity].length ; j++){
-		 	
-	
+		 	for(var j = 0 ; j< results[resultGranularity].length ; j++){	
 		 	
 		 		currAvg = results[resultGranularity][j].time;
 		 		lastTime = nextResults[resultGranularity][j].time;
@@ -24,8 +22,7 @@ function calculateMetricsRepeated(numberOfRepeats){
 				//println("Avg Time:  " + result.time);
 				
 		 	}
-	 	}
-	
+	 	}	
       
    }
 	var header = "id;metric;value;time\n";
@@ -38,6 +35,7 @@ function calculateMetricsRepeated(numberOfRepeats){
 
 function calculateMetrics(){
 	var funcResults = calculateFunctionMetrics();
+	//var funcResults = [];
 	var classResults = calculateClassMetrics();
 	var fileResults = calculateFileMetrics();
 	var projectResults = calculateProjectMetrics();
@@ -68,7 +66,7 @@ function calculateFunctionMetric($function){
     			var value = metric.calculateForFunction($function);
     			var timeAfter = System.nanos();
 
-    			var time = (timeAfter - timeBefore);
+    			var time = (timeAfter - timeBefore)/1000;
 			totalTime += time;
 			
 			//println('	' + metric.sigla + ' = ' + value);
@@ -118,11 +116,11 @@ function calculateClassMetric($class){
     			var value = metric.calculateForClass($class);
     			var timeAfter = System.nanos();
 
-    			var time = (timeAfter - timeBefore);
+    			var time = (timeAfter - timeBefore)/1000;
 			totalTime += time;
 			
 			println('	' + metric.sigla + ' = ' + value);
-			println('	Time: ' + time/1000/1000 + ' ms.');
+			println('	Time: ' + time/1000 + ' ms.');
 			println();
 
 
@@ -132,7 +130,7 @@ function calculateClassMetric($class){
 		
 	}
 	
-	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	println('	Time to calculate all metrics: ' + totalTime/1000 + ' ms.');
 	
 	return results;
 
@@ -149,15 +147,15 @@ function calculateProjectMetricPerFunction(){
     			var values = metric.calculateForProjectPerClass();
     			var timeAfter = System.nanos();
     			
-    			var time = (timeAfter - timeBefore);
+    			var time = (timeAfter - timeBefore)/1000;
 			
 			values.forEach(function(value, classId) {
-				time = (time/values.size);
+				var timeMetric = (time/values.size);
 				//println('	' + metric.sigla + ' = ' + value);
 				//println('	Time: ' + time + ' ms.');
 				//println();
 						
-				var result = {"id":classId,"metric":metric.id,"result":value,"time":time};				
+				var result = {"id":classId,"metric":metric.id,"result":value,"time":timeMetric};				
 				results.push(result);
 			});		
     		}    		
@@ -177,8 +175,10 @@ function calculateClassMetrics() {
 
 	var results=[];
 
-	for(var $class of Query.search("class"))
+	for(var $class of Query.search("class")){
 		results = results.concat(calculateClassMetric($class));	
+
+	}
 
 	results = results.concat(calculateProjectMetricPerFunction());
 
@@ -199,11 +199,11 @@ function calculateFileMetric($file){
     			var value = metric.calculateForFile($file);
     			var timeAfter = System.nanos();
 
-    			var time = (timeAfter - timeBefore);
+    			var time = (timeAfter - timeBefore)/1000;
 			totalTime += time;
 			
 			println('	' + metric.sigla + ' = ' + value);
-			println('	Time: ' + time/1000/1000 + ' ms.');
+			println('	Time: ' + time/1000 + ' ms.');
 			println();
 
 
@@ -212,7 +212,7 @@ function calculateFileMetric($file){
 		}
 	}
 	
-	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	println('	Time to calculate all metrics: ' + totalTime/1000 + ' ms.');
 	println();
 	println();
 	
@@ -255,11 +255,11 @@ function calculateProjectMetrics() {
     			var value = metric.calculateForProject();
     			var timeAfter = System.nanos();
 
-    			var time = (timeAfter - timeBefore);
+    			var time = (timeAfter - timeBefore)/1000;
 			totalTime += time;
 			
 			println('	' + metric.sigla + ' = ' + value);
-			println('	Time: ' + time/1000/1000 + ' ms.');
+			println('	Time: ' + time/1000 + ' ms.');
 			println();
 
 
@@ -268,7 +268,7 @@ function calculateProjectMetrics() {
 		}
 	}
 	
-	println('	Time to calculate all metrics: ' + totalTime/1000/1000 + ' ms.');
+	println('	Time to calculate all metrics: ' + totalTime/1000 + ' ms.');
 	println();
 	println();
 	
@@ -292,297 +292,7 @@ function writeResultsToFile(results, file_path, header){
 }
 
 
-/*
-function testMetricsRepeated(metrics, numberOfRepeats){
-	 var results = testMetrics(metrics);
 
-	 for(var i = 1 ; i< numberOfRepeats ; i++){
-	 	nextResults = testMetrics(metrics);
-
-	 	for(var j = 0 ; j< results.length ; j++){
-	 	
-
-	 	
-	 		currAvg = results[j].time;
-	 		lastTime = nextResults[j].time;
-	 		results[j].time = ((currAvg * i) + lastTime) / (i+1);
-
-	 		//println("Metric:    " + results[j].metric);
-			//println("Class:     " + results[j].class);
-			//println("Curr Time: " + currAvg);			
-			//println("Avg Time:  " + results[j].time);
-			//println();
-			//result.time = ((result.time * i) + nextResults[index].time) / (i+1);			
-			//println("Avg Time:  " + result.time);
-			
-	 	}
-	
-      
-   }
-
-	writeResultsToFile(results,"full_results.txt");
-}
-
-
-function testMetrics(metrics){
-
-	var results = [];
-
-	
-	println("//////////////////////////////");
-	println("/// Testing Project Metrics ////");
-	println("//////////////////////////////");
-	println();	
-
-	for(metric of metrics) {
-		if (typeof metric.calculateForProject == 'function')
-    		results = results.concat(testProjectMetric(metric));
-	}
-
-	println("//////////////////////////////");
-	println("/// Testing Class Metrics ////");
-	println("//////////////////////////////");
-	println();
-
-	for(metric of metrics) {
-		if (typeof metric.calculateForClass == 'function')
-    		results = results.concat(testClassMetric(metric));
-	}
-
-	// Special Case when Calculation for whole project is easeier
-	for(metric of metrics) {
-		if (typeof metric.calculateForProjectPerClass == 'function')
-    		results = results.concat(testClassMetric(metric));
-	}
-
-	
-
-	
-	println("/////////////////////////////////");
-	println("/// Testing Function Metrics ////");
-	println("/////////////////////////////////");
-	println();
-
-	
-	for(metric of metrics) {
-		if (typeof metric.calculateForFunction == 'function')
-    		testFunctionMetric(metric);
-	}
-	
-
-	
-	writeResultsToFile(results,"full_results.txt");
-
-}
-
-
-
-function testFileMetrics(metrics){
-	println("/////////////////////////////////");
-	println("/// Testing File Metrics ////");
-	println("/////////////////////////////////");
-	println();
-
-	var results=[];
-	for(metric of metrics) {
-		if (typeof metric.calculateForFile == 'function')
-    		results = results.concat(testFileMetric(metric));
-
-	}
-	
-	writeResultsToFile(results,"file_results.txt");
-	
-	return results;
-
-
-
-}
-
-function testClassMetrics(metrics){
-
-	for(metric of metrics) {
-		testClassMetric(metric);
-	}
-
-
-
-}
-function testFileMetric(metric){
-
-	println('Testing '+ metric.name + '\n');
-
-	var totalTime = 0;	
-
-	var results = [];
-	
-	for(var $file of Query.search("file")) {
-		var timeBefore = performance.now();	
-		var metricResult = metric.calculateForFile($file);
-		var timeAfter = performance.now();
-		//println($class);
-		var timeExecution = (timeAfter - timeBefore);
-		totalTime += timeExecution;
-		println('	' + metric.sigla + ' for file '+ $file.path + ' = ' + metricResult);
-		println('	Time: ' + timeExecution + ' ms.');
-
-		//var workspacePath = WeaverOptions.getData().get("workspace").toString();
-		//var relativePath = $file.path.slice(workspacePath.length + 1);
-
-		var result = {"file":$file.path,"metric":metric.id,"result":metricResult,"time":timeExecution*1000};		
-		results.push(result);
-		
-	}
-	
-	println('\n	Total Time: ' + totalTime + ' ms.');
-	println();
-	println();
-	return results;
-
-}
-
-
-function testClassMetric(metric){
-
-	println('Testing '+ metric.name + '\n');
-
-	var totalTime = 0;	
-
-	var results = [];
-	
-	for(var $class of Query.search("class")) {
-		//println("		Class: " + $class.id);
-		var timeBefore = performance.now();	
-		var metricResult = metric.calculateForClass($class);
-		var timeAfter = performance.now();
-		//println($class);
-		var timeExecution = (timeAfter - timeBefore);
-		totalTime += timeExecution;
-		println('	' + metric.sigla + ' for class '+ $class.id + ' = ' + metricResult);
-		println('	Time: ' + timeExecution + ' ms.');
-
-		var result = {"class":$class.id,"metric":metric.id,"result":metricResult,"time":timeExecution*1000};		
-		results.push(result);
-		
-	}
-	
-	println('\n	Total Time: ' + totalTime + ' ms.');
-	println();
-	println();
-	return results;
-
-}
-
-function testProjectMetric(metric){
-
-	println('Testing '+ metric.name + '\n');
-		
-	var results = [];
-	var timeBefore = performance.now();	
-	var metricResults = metric.calculateForProject();
-	var timeAfter = performance.now();
-	var timeExecution = (timeAfter - timeBefore);
-
-	metricResults.forEach(function(metricResult, classId) {
-			println('	' + metric.sigla + ' for class '+ classId + ' = ' + metricResult);
-			
-			var result = {"class":classId,"metric":metric.id,"result":metricResult,"time":(timeExecution*1000/metricResults.size)};				
-			results.push(result);
-	});
-	//println($class);
-
-	println();
-	println('	Total Time: ' + timeExecution + ' ms.');
-
-	println();	
-
-	return results;
-}
-
-
-function testFunctionMetrics(metrics){
-
-	for(metric of metrics) {
-		testFunctionMetric(metric);
-	}
-
-
-
-}
-
-function testFunctionMetric(metric){
-
-	println('Testing '+ metric.name + '\n');
-		
-	for(var $function of Query.search("function")) {
-		var metricResult = metric.calculateForFunction($function);
-		//println($class);
-		println('	' + metric.sigla + ' for function '+ $function.signature + ' = ' + metricResult);
-	}
-
-	println();	
-
-}
-
-*/
-
-/*
-function testClassMetricsOld(metrics, language){
-
-	for(metric of metrics) {
-		if(language === "c++")
-			 testClassMetricCpp(metric);
-
-		if(language === "java")
-			 testClassMetricJava(metric);	 
-
-		if(language === "ind")
-			 testClassMetricInd(metric);	 
-		
-	}
-}
-
-
-
-
-function testClassMetricCpp(metric){
-
-	println('Testing '+ metric.name + '\n');
-		
-	for(var $class of Query.search("class")) {
-		var metricResult = metric.calculateForClassCpp($class);
-		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
-	}
-
-	println();	
-
-}
-
-function testClassMetricJava(metric){
-
-	println('Testing '+ metric.name + '\n');
-		
-	for(var $class of Query.search("class")) {
-		var metricResult = metric.calculateForClassJava($class);
-		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
-	}
-
-	println();	
-
-}
-
-function testClassMetricInd(metric){
-
-	println('Testing '+ metric.name + '\n');
-		
-	for(var $class of Query.search("class")) {
-		var metricResult = metric.calculateForClassInd($class);
-		println('	' + metric.sigla + ' for class '+ $class.name + ' = ' + metricResult);
-	}
-
-	println();	
-
-}
-*/
 
   //////////////
  /// Prints ///

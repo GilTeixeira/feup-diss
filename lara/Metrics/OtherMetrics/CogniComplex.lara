@@ -58,37 +58,14 @@ CogniComplex.prototype.calculateForJoinPoint = function($jp) {
     	var stmt = stmtTop.stmt;
     	var nesting = stmtTop.nesting;
 
-    	//if(!stmt.instanceOf('stmt'))
-		//		continue;
-
-		// This is needed because else are inside of ifs
-		/*
-		if(stmt.instanceOf('else')){
-			nesting--;
-			println("ELSE:            " + stmt.isElseIf);
-		}
-		*/
-	
-	    //if(stmt.instanceOf('if') || stmt.instanceOf('else') || 
-    	//	stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
-    	//	 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto'))
-		//println("code: " + stmt.code);
-
-		//if((stmt.instanceOf('binary') && stmt.isLogicOp && stmt.isInnerExpr && stmt.kind !== stmt.outerExpr.kind )
-    		// || (stmt.instanceOf('binary') && stmt.isLogicOp && !stmt.isInnerExpr))
-			//println(stmt.kind);
-		
+		//B1
     	if(stmt.instanceOf('if') || (stmt.instanceOf('else') && !stmt.isElseIf) || 
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
     		 stmt.instanceOf('loop')|| stmt.instanceOf('catch') || stmt.instanceOf('goto')
     		 || (stmt.instanceOf('binary') && stmt.isLogicOp && stmt.isInnerExpr && stmt.kind !== stmt.outerExpr.kind )
     		 || (stmt.instanceOf('binary') && stmt.isLogicOp && !stmt.isInnerExpr)
-    		 // || (stmt.instanceOf('function') && stmt.hasAncestor('function'))
     		 ){
-    		complexityCounter++;
-    		//println("complexityCounter: " + 1);
-    		//println(stmt.joinPointType);
-    		
+    		complexityCounter++;    		
     	}
 
 		//B3
@@ -96,7 +73,6 @@ CogniComplex.prototype.calculateForJoinPoint = function($jp) {
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
     		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')){
     		complexityCounter+=nesting;
-    		//println("nestingInc: "  + nesting);
     	}
 
 		//B2
@@ -104,61 +80,13 @@ CogniComplex.prototype.calculateForJoinPoint = function($jp) {
     		stmt.instanceOf('ternary') || stmt.instanceOf('switch') ||
     		 stmt.instanceOf('loop')|| stmt.instanceOf('catch')
     		 || stmt.instanceOf('lambda')
-    		 //|| (stmt.instanceOf('function') && stmt.hasAncestor('function'))
-    		 //|| (stmt.instanceOf('function') && !stmt.isDeclarative && stmt.hasAncestor('function')// && !stmt.isAnonymous
-    		 //)
     		 ){
     		nesting++;
-    		//println("CurrNesting: " + nesting);
-    		//println("CurrNesting: " + stmt.joinPointType);
-    		//println("CurrNesting: " + stmt.isElseIf);
-    		//println("CurrNesting: " + stmt.parent);
     	}
 
-    	
-
-		
-    	
-    	//println();
-    	//println();
-    	//println();
-    	/*
-		*/
-    	
-		// depth first search
     	stmt.children.slice().reverse().forEach(stmtChild => stmtStack.unshift({'stmt':stmtChild,'nesting':nesting}));
 
     } 
 
 	return complexityCounter;
 }
-/*
-CogniComplex.prototype.calculateForFunctionv1 = function($function) {
-	var complexityCounter = 0;
-	
-	var stmtStack = [];
-	$function.stmts.forEach(stmt => stmtStack.push({'stmt':stmt,'nesting':0}));
-
-    while (stmtStack.length !== 0) 
-    { 
-    	var stmtTop =  stmtStack.shift();
-    	var stmt = stmtTop.stmt;
-    	var nesting = stmtTop.nesting;
-
-    	//if(!stmt.instanceOf('stmt'))
-		//		continue;
-
-    	if(stmt.instanceOf('if') || stmt.instanceOf('loop') || stmt.instanceOf('ternary') || stmt.instanceOf('switch')){
-    		nesting++;
-    		complexityCounter += nesting;
-    		
-    		
-    	}
-		// depth first search
-    	stmt.children.slice().reverse().forEach(stmtChild => stmtStack.unshift({'stmt':stmtChild,'nesting':nesting}));
-
-    } 
-
-	return complexityCounter;
-}
-*/

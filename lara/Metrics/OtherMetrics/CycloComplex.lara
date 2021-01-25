@@ -20,7 +20,6 @@ function CycloComplex() {
 // Inheritance
 CycloComplex.prototype = Object.create(Metric.prototype);
 
-//CycloComplex.prototype.calculateForClass = function($class) {
 
 CycloComplex.prototype.calculateForProject = function() {
 	var value = 0;
@@ -36,16 +35,18 @@ CycloComplex.prototype.calculateForJoinPoint = function($jp) {
 	complexityCounter += $jp.instanceOf('if')?1:0;
 	complexityCounter += $jp.instanceOf('loop')?1:0;
 	complexityCounter += $jp.instanceOf('ternary')?1:0;
-	complexityCounter += ($jp.instanceOf('case') && !$jp.instanceOf('default'))?1:0;  // already includes defaults
-	//complexityCounter += $jp.instanceOf('switch')?1:0;
+	complexityCounter += ($jp.instanceOf('case') && !$jp.instanceOf('default'))?1:0;
 	complexityCounter += ($jp.instanceOf('binary')&& ($jp.kind === '&&' || $jp.kind === '||'))?1:0;
+	complexityCounter += $jp.instanceOf('goto')?1:0;
+	complexityCounter += ($jp.instanceOf('function') && $jp.hasBody)?1:0;
+	complexityCounter += $jp.instanceOf('lambda')?1:0;
+
+	// Optional join points
+	//complexityCounter += $jp.instanceOf('switch')?1:0;
 	//complexityCounter += $jp.instanceOf('try')?1:0;  // try catch are 1
 	//complexityCounter += $jp.instanceOf('throw')?1:0;
 	//complexityCounter += $jp.instanceOf('break')?1:0;
 	//complexityCounter += $jp.instanceOf('continue')?1:0;
-	complexityCounter += $jp.instanceOf('goto')?1:0;
-	complexityCounter += ($jp.instanceOf('function') && $jp.hasBody)?1:0;
-	complexityCounter += $jp.instanceOf('lambda')?1:0;
 
 	return complexityCounter;
 
@@ -53,8 +54,6 @@ CycloComplex.prototype.calculateForJoinPoint = function($jp) {
 
 CycloComplex.prototype.calculateForFile = function($file) {
 	var complexityCounter = 0;
-	//println("descendants:"+$file.descendants.length);
-	//println("descendants:"+$file.children.length);
 
 	for(jp of $file.descendants){
 		complexityCounter += this.calculateForJoinPoint(jp);	
@@ -78,7 +77,6 @@ CycloComplex.prototype.calculateForClass = function($class) {
 
 CycloComplex.prototype.calculateForFunction = function($function) {
 	var complexityCounter = 0;
-	//println("Counters:");
 
 	for(jp of $function.descendants){
 		complexityCounter += this.calculateForJoinPoint(jp);	
@@ -87,62 +85,3 @@ CycloComplex.prototype.calculateForFunction = function($function) {
 	return complexityCounter;
 }
 
-CycloComplex.prototype.calculateForFunctionv2 = function($function) {
-	var complexityCounter = 0;
-	//println("Counters:");
-
-	for(jp of $function.descendants){
-
-		if(jp.instanceOf('if') || jp.instanceOf('loop') || jp.instanceOf('ternary') ||
-		jp.instanceOf('case') || jp.instanceOf('switch') || (jp.instanceOf('binary') && (jp.kind === '&&' || jp.kind === '||')) ||
-		jp.instanceOf('try') || jp.instanceOf('throw') || jp.instanceOf('break') || jp.instanceOf('continue') || jp.instanceOf('goto'))
-			complexityCounter++;
-		
-	
-	
-	}
-	
-	return complexityCounter;
-}
-
-
-CycloComplex.prototype.calculateForFunctionv0 = function($function) {
-	var complexityCounter = 0;
-	//println("Counters:");
-	
-	complexityCounter += Query.searchFrom($function, 'if').get().length;
-	complexityCounter += Query.searchFrom($function, 'loop').get().length;
-	complexityCounter += Query.searchFrom($function, 'ternary').get().length;
-	complexityCounter += Query.searchFrom($function, 'case').get().length; // already includes defaults
-	complexityCounter += Query.searchFrom($function, 'switch').get().length;
-	complexityCounter += Query.searchFrom($function, 'binary',{"kind": kind => kind === '&&' || kind === '||'}).get().length;
-	complexityCounter += Query.searchFrom($function, 'try').get().length; // try catch are 1
-	complexityCounter += Query.searchFrom($function, 'throw').get().length;
-	complexityCounter += Query.searchFrom($function, 'break').get().length;
-	complexityCounter += Query.searchFrom($function, 'continue').get().length;
-	complexityCounter += Query.searchFrom($function, 'goto').get().length;
-
-	return complexityCounter;
-}
-/*
-CycloComplex.prototype.calculateForFunctionOld = function($function) {
-	var complexityCounter = 0;
-
-	complexityCounter += Query.searchFrom($function, 'if').get().length;
-	complexityCounter += Query.searchFrom($function, 'loop').get().length;
-	var binaryLogicOps = ["l_and", "l_or"];
-	complexityCounter += Query.searchFrom($function, 'binaryOp', {"kind": $kind => binaryLogicOps.includes($kind)}).get().length;
-	
-	// The complexity gets incremented by one for: 
-	//x// function definitions, 
-	//x// while, do while, for, 
-	//throw statements, switch, case, default, 
-	//x// && operator, || operator, 
-	// ? ternary operator, 
-	//catch, break, continue, goto.
-
-
-
-	return complexityCounter;
-}
-*/

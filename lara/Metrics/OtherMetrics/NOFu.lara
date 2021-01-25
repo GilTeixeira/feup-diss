@@ -17,8 +17,6 @@ function NOFu() {
 
 }
 
-
-
 // Inheritance
 NOFu.prototype = Object.create(Metric.prototype);
 
